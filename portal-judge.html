@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Judge Portal — AUC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="portal.css">
+  <link rel="stylesheet" href="dropdown.css">
+</head>
+<body class="portal-body">
+
+<header class="portal-header">
+  <div class="portal-header-row">
+    <a href="index.html" class="logo"><img src="assets/img/Logo.png" alt="AUC" onerror="this.style.display='none'"><span class="logo-text">AUC</span></a>
+    <nav class="portal-breadcrumb"><i class="fas fa-gavel"></i><span>Judge Portal</span><span class="sep">/</span><span class="active" id="crumbPage">Dashboard</span></nav>
+    <div class="portal-actions">
+      <button class="portal-switcher" data-dropdown-trigger aria-haspopup="true" aria-expanded="false" aria-label="Switch portal">
+        <i class="fas fa-satellite-dish"></i><span>Portals</span><i class="fas fa-chevron-down chev"></i>
+      </button>
+      <div class="dropdown-content" role="menu" aria-label="AUC Portals">
+        <div class="dropdown-header"><h5><i class="fas fa-shield-halved"></i> AUC Portals</h5><small>3 secure systems + CMS</small></div>
+        <div class="dropdown-grid">
+          <a href="portal-student.html" class="dropdown-item" role="menuitem">
+            <div class="di-icon"><i class="fas fa-user-graduate"></i></div>
+            <div class="di-body"><strong>Student Portal</strong><small>Team dashboard · submissions</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="portal-judge.html" class="dropdown-item cyan is-active" role="menuitem">
+            <div class="di-icon"><i class="fas fa-gavel"></i></div>
+            <div class="di-body"><strong>Judge Portal <span class="di-badge cyan">YOU</span></strong><small>Review queue · rubric</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="portal-admin.html" class="dropdown-item gold" role="menuitem">
+            <div class="di-icon"><i class="fas fa-shield-halved"></i></div>
+            <div class="di-body"><strong>Admin HQ</strong><small>STAFF · operations</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="cms-editor.html" class="dropdown-item purple" role="menuitem">
+            <div class="di-icon"><i class="fas fa-feather-alt"></i></div>
+            <div class="di-body"><strong>CMS Editor <span class="di-badge purple">EDIT</span></strong><small>Inline edit · autosave</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="partnership.html" class="dropdown-item partner" role="menuitem">
+            <div class="di-icon"><i class="fas fa-handshake"></i></div>
+            <div class="di-body"><strong>Become a Partner</strong><small>Silver / Gold / Platinum</small></div>
+            <i class="fas fa-arrow-right di-arrow"></i>
+          </a>
+          <a href="index.html" class="dropdown-item" role="menuitem">
+            <div class="di-icon"><i class="fas fa-home"></i></div>
+            <div class="di-body"><strong>Public Site</strong><small>Back to main website</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+        </div>
+        <div class="dropdown-footer"><small><i class="fas fa-lock"></i> Session-encrypted · JWT auth</small></div>
+      </div>
+    </div>
+    <div class="portal-quick">
+      <button class="icon-btn" title="Queue"><i class="fas fa-inbox"></i><span class="dot">12</span></button>
+      <div class="portal-avatar" title="Dr. Kwame Acheampong"><span>KA</span><div class="avatar-pulse"></div></div>
+    </div>
+  </div>
+</header>
+
+<div class="portal-layout">
+<aside class="portal-side">
+  <div class="team-badge" style="background:linear-gradient(135deg,rgba(255,184,0,.08),rgba(255,59,48,.04)); border-color:rgba(255,184,0,.25);">
+    <div class="team-rank" style="background:var(--grad-gold);">Lead Reviewer</div>
+    <div class="team-info"><h4>Dr. Kwame Acheampong</h4><p>Aspiration 1 · FinTech (12 teams)</p></div>
+    <div class="team-progress"><div class="bar" style="height:6px;background:rgba(255,255,255,.1);border-radius:999px;overflow:hidden;"><div style="height:100%;background:var(--grad-gold);width:67%;"></div></div><span style="font-size:.72rem;color:var(--text-mute);margin-top:.5rem;display:block;">8 of 12 reviewed · 67%</span></div>
+  </div>
+  <nav class="side-menu">
+    <a href="#" class="side-link active" data-target="queue"<i class="fas fa-inbox"></i><span>Review Queue</span><span class="badge">12</span></a>
+    <a href="#" class="side-link" data-target="scores"<i class="fas fa-star-half-alt"></i><span>My Scores</span></a>
+    <a href="#" class="side-link" data-target="rubric"<i class="fas fa-balance-scale"></i><span>Rubric</span></a>
+    <a href="#" class="side-link" data-target="disclosures"<i class="fas fa-flag"></i><span>Conflict Disclosures</span></a>
+    <a href="#" class="side-link" data-target="pitches"<i class="fas fa-video"></i><span>Live Pitch Sessions</span></a>
+    <a href="#" class="side-link" data-target="forum"<i class="fas fa-comments"></i><span>Judge Forum</span></a>
+    <a href="#" class="side-link" data-target="calibration"<i class="fas fa-chart-bar"></i><span>Calibration</span></a>
+  </nav>
+</aside>
+
+<main class="portal-main">
+<section class="page active">
+  <div class="page-head">
+    <div><h1>Review Queue</h1><p>12 teams assigned · 8 reviewed · 4 remaining · 9 days until calibration lock</p></div>
+    <div class="page-actions">
+      <button class="btn btn-outline" onclick="openCoiModal()"><i class="fas fa-flag"></i> Conflict Disclosure</button>
+      <button class="btn btn-primary" onclick="exportJudgeScoresCsv()"><i class="fas fa-download"></i> Export My Scores</button>
+    </div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card reveal"><div class="kpi-icon"><i class="fas fa-list-check"></i></div><div><div class="kpi-num" id="kpiAssignedCount" data-count="12">12</div><div class="kpi-lbl">Assigned Teams</div></div><div class="kpi-trend">Aspiration 1</div></div>
+    <div class="kpi-card reveal"><div class="kpi-icon cyan"><i class="fas fa-check-double"></i></div><div><div class="kpi-num" id="kpiCompletedCount" data-count="8">8</div><div class="kpi-lbl">Completed</div></div><div class="kpi-trend up">+2 today</div></div>
+    <div class="kpi-card reveal"><div class="kpi-icon gold"><i class="fas fa-hourglass-half"></i></div><div><div class="kpi-num" id="kpiPendingCount" data-count="4">4</div><div class="kpi-lbl">Pending</div></div><div class="kpi-trend">~20 min avg</div></div>
+    <div class="kpi-card reveal"><div class="kpi-icon purple"><i class="fas fa-clock"></i></div><div><div class="kpi-num" data-count="9">9</div><div class="kpi-lbl">Days to Lock</div></div><div class="kpi-trend">Calibration Aug 30</div></div>
+  </div>
+
+  <div class="panel reveal" style="margin-top:1.5rem;">
+    <div class="panel-head">
+      <h3>Teams Awaiting Your Score</h3>
+      <span class="badge" style="background:rgba(0,229,255,0.1);color:var(--neon-cyan);border-color:rgba(0,229,255,0.3);">Aspiration 1 · FinTech</span>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;gap:1rem;flex-wrap:wrap;">
+      <div style="flex:1;min-width:240px;position:relative;">
+        <i class="fas fa-search" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-mute);font-size:.85rem;"></i>
+        <input type="search" class="form-control" placeholder="Search assigned teams by name, lead, university, or country..." style="padding-left:2.4rem;" oninput="filterJudgeQueue(this.value)">
+      </div>
+      <div class="filter-bar" style="margin-bottom:0;">
+        <button type="button" class="filter-pill active" onclick="setQueueFilter(this, 'all')">All</button>
+        <button type="button" class="filter-pill" onclick="setQueueFilter(this, 'pending')">Pending Review</button>
+        <button type="button" class="filter-pill" onclick="setQueueFilter(this, 'scored')">Completed</button>
+      </div>
+    </div>
+
+    <div class="team-table" id="judgeQueueTable">
+      <!-- Injected and managed dynamically via judge-portal.js -->
+    </div>
+  </div>
+
+  <!-- Rubric scoring panel -->
+  <div class="panel reveal" style="margin-top:1.5rem;" id="scoringWorkbench">
+    <div class="panel-head">
+      <h3>Scoring Rubric — Aspiration 1 (weighted)</h3>
+      <span style="font-size:.78rem;color:var(--text-mute);">Real-time weighted score calculation</span>
+    </div>
+
+    <!-- Active Team Dossier Header -->
+    <div style="padding:1.15rem 1.25rem;background:linear-gradient(135deg,rgba(0,255,135,.06),rgba(0,229,255,.04));border:1px solid rgba(0,255,135,.25);border-radius:14px;margin-bottom:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+      <div style="flex:1;min-width:280px;">
+        <div style="display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;">
+          <h4 id="activeTeamName" style="font-size:1.3rem;margin:0;color:#fff;">NovaPay</h4>
+          <span id="activeTeamStatusBadge" class="badge cyan"><i class="fas fa-clock"></i> In Evaluation</span>
+          <span id="activeTeamTrack" class="badge-tiny ok">Aspiration 1 · FinTech & Trade</span>
+        </div>
+        <div style="font-size:.84rem;color:var(--neon-green);margin-top:.3rem;font-weight:600;" id="activeTeamLead">Amara Diallo · Cheikh Anta Diop University (Senegal)</div>
+        <p style="font-size:.82rem;color:var(--text-soft);margin:.4rem 0 0;max-width:720px;line-height:1.45;" id="activeTeamSummary">
+          L1 Settlement Layer for AfCFTA Micro-Trade utilizing zero-knowledge rollups and CBA-anchored stablecoins to slash cross-border transaction fees from 14% to 0.4%.
+        </p>
+      </div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+        <button type="button" class="btn btn-ghost" style="padding:.35rem .75rem;font-size:.78rem;" onclick="showJudgeToast('Opening Pitch Deck v3 (PDF)...', 'fa-file-pdf', 'var(--neon-gold)')"><i class="fas fa-file-powerpoint" style="color:var(--neon-gold);"></i> Pitch Deck</button>
+        <button type="button" class="btn btn-ghost" style="padding:.35rem .75rem;font-size:.78rem;" onclick="showJudgeToast('Launching 3-Min Prototype Demo...', 'fa-video', 'var(--neon-green)')"><i class="fas fa-play-circle" style="color:var(--neon-green);"></i> Demo Video</button>
+      </div>
+    </div>
+
+    <div id="rubricCards" style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fit, minmax(280px,1fr));">
+      <div class="form-card" style="background:rgba(0,255,135,.04);border-left:3px solid var(--neon-green);">
+        <div class="form-card-head"><h4>Innovation & Novelty</h4><span style="background:rgba(0,255,135,.15);color:var(--neon-green);padding:.2rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;">25% weight</span></div>
+        <p style="font-size:.85rem;color:var(--text-mute);margin-bottom:.75rem;">Score 0-100 (integer)</p>
+        <div class="score-input"><input type="range" min="0" max="100" value="86" oninput="this.nextElementSibling.textContent=this.value;recalc()"><span>86</span></div>
+        <textarea class="form-control" style="min-height:80px;margin-top:.65rem;font-size:.85rem;" placeholder="Justify your score (≥60 words)…">NovaPay's rollup-based settlement model is genuinely novel for the AfCFTA corridor. The choice of CBA-anchored stablecoins addresses a real regulatory friction.</textarea>
+      </div>
+      <div class="form-card" style="background:rgba(0,229,255,.04);border-left:3px solid var(--neon-cyan);">
+        <div class="form-card-head"><h4>Agenda 2063 Impact</h4><span style="background:rgba(0,229,255,.15);color:var(--neon-cyan);padding:.2rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;">25% weight</span></div>
+        <p style="font-size:.85rem;color:var(--text-mute);margin-bottom:.75rem;">Score 0-100 (integer)</p>
+        <div class="score-input"><input type="range" min="0" max="100" value="90" oninput="this.nextElementSibling.textContent=this.value;recalc()"><span>90</span></div>
+        <textarea class="form-control" style="min-height:80px;margin-top:.65rem;font-size:.85rem;" placeholder="Justify your score…">Direct line to Aspiration 1 and Aspiration 2 cross-border integration. The 40,000 trader beneficiary estimate is well-sourced.</textarea>
+      </div>
+      <div class="form-card" style="background:rgba(255,184,0,.04);border-left:3px solid var(--neon-gold);">
+        <div class="form-card-head"><h4>Technical Feasibility</h4><span style="background:rgba(255,184,0,.15);color:var(--neon-gold);padding:.2rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;">20% weight</span></div>
+        <p style="font-size:.85rem;color:var(--text-mute);margin-bottom:.75rem;">Score 0-100 (integer)</p>
+        <div class="score-input"><input type="range" min="0" max="100" value="78" oninput="this.nextElementSibling.textContent=this.value;recalc()"><span>78</span></div>
+        <textarea class="form-control" style="min-height:80px;margin-top:.65rem;font-size:.85rem;" placeholder="Justify your score…">Solid architecture; threat model still shallow for production. The CDK rollup choice is reasonable but compatibility with CBS-level bank integration untested.</textarea>
+      </div>
+      <div class="form-card" style="background:rgba(0,255,135,.04);border-left:3px solid #00FF87;">
+        <div class="form-card-head"><h4>Market Scalability</h4><span style="background:rgba(0,255,135,.15);color:#00FF87;padding:.2rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;">15% weight</span></div>
+        <p style="font-size:.85rem;color:var(--text-mute);margin-bottom:.75rem;">Score 0-100 (integer)</p>
+        <div class="score-input"><input type="range" min="0" max="100" value="82" oninput="this.nextElementSibling.textContent=this.value;recalc()"><span>82</span></div>
+        <textarea class="form-control" style="min-height:80px;margin-top:.65rem;font-size:.85rem;">Realistic unit economics at 2¢ per transfer. SADC expansion plan is well-scoped.</textarea>
+      </div>
+      <div class="form-card" style="background:rgba(0,229,255,.04);border-left:3px solid #00E5FF;">
+        <div class="form-card-head"><h4>Team & Execution</h4><span style="background:rgba(0,229,255,.15);color:#00E5FF;padding:.2rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;">15% weight</span></div>
+        <p style="font-size:.85rem;color:var(--text-mute);margin-bottom:.75rem;">Score 0-100 (integer)</p>
+        <div class="score-input"><input type="range" min="0" max="100" value="88" oninput="this.nextElementSibling.textContent=this.value;recalc()"><span>88</span></div>
+        <textarea class="form-control" style="min-height:80px;margin-top:.65rem;font-size:.85rem;">Strong multidisciplinary team. Their pitch delivery was crisp and grounded.</textarea>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;padding:1.25rem;background:linear-gradient(135deg,rgba(0,255,135,.06),rgba(0,229,255,.04));border:1px solid rgba(0,255,135,.3);border-radius:14px;">
+      <div><h4 style="font-size:1.1rem;">Weighted Final Score</h4><small id="scoreWeight" style="color:var(--text-mute);">25% + 25% + 20% + 15% + 15% = 100%</small></div>
+      <div id="finalScore" style="font-size:3rem;font-weight:800;font-family:'Plus Jakarta Sans';background:var(--grad-primary);-webkit-background-clip:text;color:transparent;">84.4</div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:.75rem;margin-top:1.25rem;">
+      <button type="button" class="btn btn-ghost" onclick="saveRubricDraft()"><i class="fas fa-save"></i> Save Draft</button>
+      <button type="button" class="btn btn-primary" onclick="submitFinalScore()"><i class="fas fa-paper-plane"></i> Submit Final Score</button>
+    </div>
+  </div>
+
+  <div class="panel reveal" style="margin-top:1.5rem;" id="disclosuresSection">
+    <div class="panel-head">
+      <h3>Conflict-of-Interest & Recusal Disclosures</h3>
+      <button type="button" class="btn btn-outline" style="font-size:.8rem;" onclick="openCoiModal()"><i class="fas fa-flag"></i> File Formal Disclosure</button>
+    </div>
+    <div style="background:rgba(255,184,0,.08);border:1px solid rgba(255,184,0,.3);border-radius:12px;padding:1.25rem;display:grid;gap:.85rem;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));">
+      <div>
+        <h4 style="color:var(--neon-gold);font-size:.95rem;"><i class="fas fa-info-circle"></i> Double-Blind Protocol</h4>
+        <p style="font-size:.85rem;color:var(--text-soft);margin-top:.5rem;line-height:1.5;">AUC requires rigorous double-blind evaluation. If you have any material relationship (alumnus, thesis advisor, investment, or family) with an assigned team or its sponsors within the last 24 months, file a disclosure to trigger automatic re-routing.</p>
+      </div>
+      <div>
+        <h4 style="color:var(--neon-gold);font-size:.95rem;"><i class="fas fa-clipboard-list"></i> Active Disclosures & Status</h4>
+        <ul style="font-size:.85rem;color:var(--text-soft);margin-top:.5rem;list-style:none;display:flex;flex-direction:column;gap:.45rem;padding:0;">
+          <li><i class="fas fa-check-circle" style="color:var(--neon-green);margin-right:.4rem;"></i> Integrity scan verified (Aug 20, 2026)</li>
+          <li><i class="fas fa-shield-halved" style="color:var(--neon-cyan);margin-right:.4rem;"></i> Double-blind calibration active</li>
+          <li style="margin-top:.35rem;"><button type="button" class="btn btn-outline" style="padding:.25rem .65rem;font-size:.78rem;" onclick="openCoiModal()"><i class="fas fa-user-shield"></i> Declare Affiliation / Recusal</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+</div>
+
+<script src="portal.js"></script>
+<script>
+function recalc(){
+  const weights=[.25,.25,.20,.15,.15];
+  const ranges=document.querySelectorAll('.score-input input');
+  let total=0;
+  ranges.forEach((r,i)=>{ total += parseInt(r.value)*weights[i]; });
+  document.getElementById('finalScore').textContent = total.toFixed(1);
+}
+recalc();
+// score input visual
+const css = document.createElement('style');
+css.textContent = `.score-input{display:flex;gap:1rem;align-items:center}.score-input input[type=range]{flex:1;accent-color:var(--neon-green)}.score-input span{min-width:42px;text-align:right;font-weight:800;color:var(--neon-green);}`;
+document.head.appendChild(css);
+</script>
+  <script src="dropdown.js" defer></script>
+<link rel="stylesheet" href="login-overlay.css">
+<script src="auth-config.js"></script>
+<script src="portal-fix.js"></script>
+<script src="api-client.js"></script>
+<script src="judge-portal.js" defer></script>
+<!-- Inline-login overlay uses AUTH login() from auth-config.js -->
+<div id="loginOverlay" class="login-overlay" hidden>
+  <div class="login-card">
+    <button class="login-close" type="button" aria-label="Close"><i class="fas fa-times"></i></button>
+    <h3><i class="fas fa-shield-halved"></i> Portal Login</h3>
+    <p id="loginPortalLabel" class="login-sub"></p>
+    <label><span>Username</span><input type="text" id="loginUser" autocomplete="username"></label>
+    <label><span>Password</span><input type="password" id="loginPass" autocomplete="current-password"></label>
+    <p id="loginErr" class="login-err" hidden></p>
+    <button class="btn btn-primary" id="loginSubmit" type="button">Sign In</button>
+    <details class="login-creds">
+      <summary>Default credentials (editable in Admin HQ)</summary>
+      <table>
+        <tr><th>Portal</th><th>Username</th><th>Password</th></tr>
+        <tr><td>Student Portal</td><td>team_demo</td><td>student@2026</td></tr>
+        <tr><td>Judge Portal</td><td>judge_demo</td><td>judge@2026</td></tr>
+        <tr><td>Admin HQ</td><td>admin</td><td>AUCadmin123</td></tr>
+        <tr><td>CMS Editor</td><td>editor</td><td>cms@2026</td></tr>
+      </table>
+    </details>
+  </div>
+</div>
+<script>
+(function(){
+  var map = { 'portal-student':'Student Portal', 'portal-judge':'Judge Portal', 'portal-admin':'Admin HQ', 'cms-editor':'CMS Editor' };
+  var rawKey = (location.pathname.split('/').pop() || '').toLowerCase();
+  var key = rawKey.replace(/\.html$/, '');
+  var portal = key in map ? key : null;
+  var overlay = document.getElementById('loginOverlay');
+  if (!overlay || !portal) return;
+  function isAuthed(){ return window.AUC_AUTH && window.AUC_AUTH.current(portal); }
+  function showErr(msg){ var e = document.getElementById('loginErr'); if(e){ e.textContent = msg; e.hidden = false; } }
+  function open(){ document.getElementById('loginPortalLabel').textContent = 'Sign in to ' + map[portal] + ' — default demo credentials are filled in below.'; document.getElementById('loginUser').value=''; document.getElementById('loginPass').value=''; var e=document.getElementById('loginErr'); if(e){ e.hidden=true; } overlay.hidden = false; document.body.style.overflow='hidden'; }
+  function close(){ overlay.hidden = true; document.body.style.overflow=''; }
+  document.querySelector('.login-close').addEventListener('click', close);
+  document.getElementById('loginSubmit').addEventListener('click', function(){
+    var u = document.getElementById('loginUser').value.trim();
+    var p = document.getElementById('loginPass').value;
+    var r = window.AUC_AUTH.login(portal, u, p);
+    if (r.ok) { close(); }
+    else showErr(r.msg);
+  });
+  ['loginUser','loginPass'].forEach(function(id){ var el=document.getElementById(id); el && el.addEventListener('keydown', function(ev){ if(ev.key==='Enter') document.getElementById('loginSubmit').click(); }); });
+  overlay.addEventListener('click', function(ev){ if(ev.target===overlay) close(); });
+  // Show overlay if no session. Allow demo "Skip" so designers can preview without typing.
+  if (!isAuthed()) setTimeout(open, 400);
+})();
+
+</script>
+
+<!-- 1. Conflict-of-Interest & Recusal Declaration Modal -->
+<div id="coiDisclosureModal" class="modal-backdrop" hidden>
+  <div class="modal-card" style="max-width: 560px;">
+    <div class="modal-head">
+      <div>
+        <h3><i class="fas fa-flag" style="color:var(--neon-gold);"></i> File Conflict-of-Interest Disclosure</h3>
+        <small style="color:var(--text-mute);">Pan-African Double-Blind Evaluation Protocol</small>
+      </div>
+      <button class="modal-close" type="button" aria-label="Close modal"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="coiDisclosureForm" onsubmit="submitCoiDisclosure(event)">
+      <div class="form-group" style="margin-bottom:1rem;">
+        <label class="form-label">Target Assigned Team *</label>
+        <select id="coiTeamSelect" class="form-control" required></select>
+      </div>
+      <div class="form-group" style="margin-bottom:1rem;">
+        <label class="form-label">Nature of Material Relationship *</label>
+        <select id="coiNature" class="form-control" required>
+          <option value="Academic Alumnus / Current Faculty">Academic Alumnus / Current Faculty at Applicant Institution</option>
+          <option value="Direct Thesis / Research Advisor">Direct Thesis / Capstone / Research Advisor</option>
+          <option value="Commercial / Equity / Advisory Stake">Commercial / Equity / Advisory Stake</option>
+          <option value="Family / Personal Affiliation">Family / Personal Affiliation with Team Members</option>
+          <option value="Institutional Grantor / Sponsor">Institutional Grantor / Sponsor of the Project</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom:1.25rem;">
+        <label class="form-label">Recusal Statement / Specific Details *</label>
+        <textarea id="coiNotes" class="form-control" rows="3" required placeholder="Describe the material affiliation. HQ will re-route this team to another Agenda 2063 assessor within 24 hours..."></textarea>
+      </div>
+      <div style="padding:.75rem 1rem;background:rgba(255,184,0,0.08);border:1px solid rgba(255,184,0,0.25);border-radius:10px;margin-bottom:1.25rem;font-size:.82rem;color:var(--text-soft);">
+        <i class="fas fa-shield-alt" style="color:var(--neon-gold);margin-right:.4rem;"></i> Submitting this disclosure immediately flags your recusal and triggers blind reassignment by the AUC Continental Secretariat.
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:.75rem;">
+        <button type="button" class="btn btn-ghost" data-modal-close>Cancel</button>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Submit Formal Disclosure</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 2. Score Submitted & Calibration Locked Modal -->
+<div id="scoreSubmittedModal" class="modal-backdrop" hidden>
+  <div class="modal-card" style="max-width: 580px;text-align:center;">
+    <div style="width:72px;height:72px;border-radius:50%;background:rgba(0,255,135,0.15);border:2px solid var(--neon-green);color:var(--neon-green);display:grid;place-items:center;font-size:2rem;margin:0 auto 1.25rem auto;">
+      <i class="fas fa-stamp"></i>
+    </div>
+    <h3 style="margin-bottom:.4rem;">Stage 3 Evaluation Sealed & Locked!</h3>
+    <p style="color:var(--text-soft);font-size:.9rem;margin-bottom:1.25rem;">
+      Your weighted scoring for <strong id="certTeamName" style="color:#fff;">NovaPay</strong> has been cryptographically signed and archived for the Addis Ababa Grand Jury.
+    </p>
+    <div style="background:linear-gradient(135deg,rgba(0,255,135,0.08),rgba(0,229,255,0.05));border:1px solid rgba(0,255,135,0.3);border-radius:14px;padding:1.25rem;margin-bottom:1.5rem;text-align:left;">
+      <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:.65rem;margin-bottom:.85rem;">
+        <span style="font-size:.82rem;color:var(--text-mute);">Weighted Evaluator Total:</span>
+        <strong id="certScoreTotal" style="font-size:1.6rem;color:var(--neon-green);font-family:'Plus Jakarta Sans',sans-serif;">84.4 / 100</strong>
+      </div>
+      <div id="certCriteriaList"></div>
+      <div style="margin-top:.85rem;padding-top:.65rem;border-top:1px solid rgba(255,255,255,0.06);font-size:.76rem;color:var(--neon-cyan);font-family:monospace;">
+        SHA256: 0x9b42...f01c · JURY-KEY: KA-ASP1-2026 · CALIBRATION: LOCKED
+      </div>
+    </div>
+    <div style="display:flex;justify-content:center;gap:.75rem;">
+      <button type="button" class="btn btn-primary" data-modal-close style="min-width:180px;"><i class="fas fa-check"></i> Return to Queue</button>
+      <button type="button" class="btn btn-outline" onclick="exportJudgeScoresCsv()"><i class="fas fa-download"></i> Download Evaluation Dossier</button>
+    </div>
+  </div>
+</div>
+
+<div id="toastContainer" class="toast-container"></div>
+
+<!-- FOOTER WITH CENTRALIZED LINKS & HIDDEN ADMIN DOOR ON THE RIGHT -->
+<footer style="padding:1.5rem 0;border-top:1px solid rgba(255,255,255,0.08);background:rgba(2,5,18,0.95);font-size:.85rem;color:var(--text-soft);margin-top:3rem;">
+  <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+    <!-- Copyright -->
+    <div>
+      © 2026 African Undergraduate Challenge (AUC). All rights reserved. · Powered by <a href="https://wasard.org" target="_blank" rel="noopener noreferrer" style="color:var(--neon-green);font-weight:600;">WASARD Organization</a> · Designed by <a href="https://wa.me/2347016435125" target="_blank" rel="noopener noreferrer" style="color:var(--neon-cyan);font-weight:600;">DIDS' SYSTEMS INC.</a>
+    </div>
+
+    <!-- Centralized Footer Navigation Links -->
+    <div style="display:flex;justify-content:center;gap:1.5rem;flex:1;min-width:280px;" class="footer-center-links">
+      <a href="index.html" style="color:var(--text-soft);">Home</a>
+      <a href="about.html" style="color:var(--text-soft);">About AUC</a>
+      <a href="structure.html" style="color:var(--text-soft);">Stages</a>
+      <a href="judging.html" style="color:var(--text-soft);">Rubric</a>
+      <a href="partnership.html" style="color:var(--text-soft);">Partnership</a>
+      <a href="news.html" style="color:var(--text-soft);">News</a>
+      <a href="contact.html" style="color:var(--text-soft);">Contact HQ</a>
+    </div>
+
+    <!-- Hidden / Discreet Admin Access Link on the Right -->
+    <div>
+      <a href="portal-admin.html" class="footer-admin-link" title="Secretariat &amp; Staff Console" aria-label="Admin Access">
+        <i class="fas fa-shield-halved"></i> <span>Staff HQ</span>
+      </a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

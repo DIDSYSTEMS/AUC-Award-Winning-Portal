@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>African Undergraduate Challenge (AUC) — Shaping The Africa We Want</title>
+<meta name="description" content="The premier pan-African university innovation tournament empowering 10,000+ undergraduate minds to architect youth-led breakthroughs across technology, climate resilience, health equity, and sustainable economies — aligned with AU Agenda 2063.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dropdown.css">
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo">
+      <img src="assets/img/Logo.png" alt="AUC" onerror="this.style.display='none'">
+      <span class="logo-text">AUC</span>
+    </a>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="structure.html">Structure</a></li>
+      <li><a href="judging.html">Judging</a></li>
+      <li><a href="participate.html">Participate</a></li>
+      <li><a href="sponsors.html">Partners</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    <li class="nav-dropdown">
+      <a href="javascript:void(0)" class="dropbtn" data-dropdown-trigger role="button" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-satellite-dish"></i> <span>Portals</span> <i class="fas fa-chevron-down chev"></i>
+      </a>
+      <div class="dropdown-content" role="menu" aria-label="AUC Portals">
+        <div class="dropdown-header">
+          <h5><i class="fas fa-shield-halved"></i> AUC Portals</h5>
+          <small>3 secure systems + CMS</small>
+        </div>
+        <div class="dropdown-grid">
+          <a href="portal-student.html" class="dropdown-item" role="menuitem">
+            <div class="di-icon"><i class="fas fa-user-graduate"></i></div>
+            <div class="di-body"><strong>Student Portal</strong><small>Team dashboard · submissions · live scoreboard</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="portal-judge.html" class="dropdown-item cyan" role="menuitem">
+            <div class="di-icon"><i class="fas fa-gavel"></i></div>
+            <div class="di-body"><strong>Judge Portal</strong><small>Review queue · weighted rubric · COI reports</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="portal-admin.html" class="dropdown-item gold" role="menuitem">
+            <div class="di-icon"><i class="fas fa-shield-halved"></i></div>
+            <div class="di-body"><strong>Admin HQ <span class="di-badge">STAFF</span></strong><small>Operations · partnership inbox · audit log</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="cms-editor.html" class="dropdown-item purple" role="menuitem">
+            <div class="di-icon"><i class="fas fa-feather-alt"></i></div>
+            <div class="di-body"><strong>CMS Editor <span class="di-badge purple">EDIT</span></strong><small>Inline edit pages · autosave · schedule publish</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="partnership.html" class="dropdown-item partner" role="menuitem">
+            <div class="di-icon"><i class="fas fa-handshake"></i></div>
+            <div class="di-body"><strong>Become a Partner</strong><small>Public inquiry form · Silver / Gold / Platinum</small></div>
+            <i class="fas fa-arrow-right di-arrow"></i>
+          </a>
+        </div>
+        <div class="dropdown-footer"><small><i class="fas fa-lock"></i> Session-encrypted · JWT auth</small></div>
+      </div>
+    </li>
+    </ul>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Open navigation menu" aria-expanded="false"><i class="fas fa-bars"></i></button>
+    <div class="nav-cta">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"></button>
+      <a href="participate.html" class="btn btn-primary">Register 2026</a>
+    </div>
+  </div>
+</header>
+
+<!-- CONTINENTAL REAL-TIME NEWS WIRE -->
+<div class="news-ticker-wrap">
+  <div class="container news-ticker-inner">
+    <div class="ticker-badge"><span class="pulse-dot"></span> LIVE WIRE</div>
+    <div class="ticker-marquee">
+      <div class="ticker-content" id="indexTickerTrack">
+        <a href="news.html" class="ticker-item"><strong>Finals Venue:</strong> African Union HQ Addis Ababa confirmed for Oct 2026 Continental Gala <span class="sep">✦</span></a>
+        <a href="news.html" class="ticker-item"><strong>AfCFTA Trade Corridor:</strong> 12 Regional trade sandboxes cleared for student fintech pilots <span class="sep">✦</span></a>
+        <a href="news.html" class="ticker-item"><strong>10,000+ Enrolled:</strong> Undergraduates actively building across 54 AU nations <span class="sep">✦</span></a>
+        <a href="news.html" class="ticker-item"><strong>Stage 1 Campus Rounds:</strong> Institutional pitching underway across 500 universities <span class="sep">✦</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ANIMATED HERO (WebGL Three.js particle engine) -->
+<section class="hero">
+  <div class="hero-bg">
+    <canvas id="hero-canvas" class="hero-canvas"></canvas>
+    <div class="hero-grid"></div>
+    <div class="hero-orbits">
+      <div class="orbit"></div>
+      <div class="orbit"></div>
+      <div class="orbit"></div>
+      <div class="orbit"></div>
+    </div>
+    <!-- Africa outline silhouette -->
+    <svg class="africa-outline" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <path fill="rgba(0,229,255,0.6)" d="M88 14c14 0 22 6 28 14 6 2 12 4 14 12 4 8 0 18-4 22-2 8 4 14 8 18 12 8 14 22 6 30-2 4-2 10 2 14 6 8 4 18-6 22-6 4-12 2-16 4-2 6 2 12-4 16-4 2-10 0-14 4-4 4-2 12-10 14-8 2-16-4-20-2-8 4-10-2-14-6s-8-4-10-10c-2-8 4-14 2-22-2-6-10-8-12-14-4-8 4-16 0-22-4-8-12-12-12-22 0-8 6-14 12-18 8-6 14-12 22-14 8-4 14-6 22-6s12-6 16-12z"/>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-badge-row">
+      <div class="hero-badge"><span class="pulse"></span>2026 Continental Registrations Open</div>
+      <div class="hero-badge cyan"><i class="fas fa-globe-africa"></i>54 African Nations · AU Agenda 2063</div>
+      <div class="hero-badge gold"><i class="fas fa-trophy"></i>Continental Grants & Seed Funds</div>
+    </div>
+
+    <h1>
+      African Undergraduate Challenge:<br>
+      <span class="highlight">Shaping The Africa We Want</span>
+    </h1>
+
+    <p class="hero-sub">
+      Africa's premier pan-continental university innovation tournament, empowering 10,000+ undergraduate minds across 54 nations to architect youth-led breakthroughs in technology, climate resilience, health equity, and sustainable economies — fully aligned with the African Union's Agenda 2063 master blueprint.
+    </p>
+
+    <div class="hero-actions">
+      <a href="participate.html" class="btn btn-primary"><i class="fas fa-rocket"></i> Register Your Team</a>
+      <a href="about.html" class="btn btn-outline"><i class="fas fa-compass"></i> Explore AUC Vision</a>
+      <a href="portal-student.html" class="btn btn-outline" style="border-color:var(--neon-cyan); color:var(--neon-cyan);"><i class="fas fa-user-graduate"></i> Student Portal</a>
+      <a href="#hero-video" class="play-btn"><span class="play-icon"><i class="fas fa-play" style="margin-left:3px;font-size:.85rem;"></i></span> Watch the AUC Reel</a>
+    </div>
+
+    <div class="countdown">
+      <div class="countdown-cell">
+        <span class="countdown-num" id="count-days">00</span>
+        <span class="countdown-lbl">Days</span>
+      </div>
+      <div class="countdown-cell">
+        <span class="countdown-num" id="count-hours">00</span>
+        <span class="countdown-lbl">Hours</span>
+      </div>
+      <div class="countdown-cell">
+        <span class="countdown-num" id="count-mins">00</span>
+        <span class="countdown-lbl">Minutes</span>
+      </div>
+      <div class="countdown-cell">
+        <span class="countdown-num" id="count-secs">00</span>
+        <span class="countdown-lbl">Seconds</span>
+      </div>
+    </div>
+    <p style="margin-top: 1rem; color: var(--text-mute); font-size: .85rem; letter-spacing: 1.5px; text-transform: uppercase;">
+      <i class="fas fa-stopwatch" style="color:var(--neon-cyan);"></i> Continental Ideation Sprint 2026
+    </p>
+  </div>
+</section>
+
+<!-- CONTINENTAL COUNTRIES MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-item"><span class="flag-dot" style="background:#008753"></span> Nigeria</span>
+    <span class="marquee-item"><span class="flag-dot" style="background:#006B3F"></span> Ghana</span>
+    <span class="marquee-item"><span class="flag-dot" style="background:#BB0A1E"></span> Kenya</span>
+    <span class="marquee-item"><span class="flag-dot" style="background:#007749"></span> South Africa</span>
+    <span class="marquee-item"><span class="flag-dot" style="background:#CE1126"></span> Egypt</span>
+    <span class="marquee-item"><span class="flag-dot" style="background:#00A1DE"></span> Rwanda</span>
+    <span class="marquee-item"><span class="flag-dot" style="background:#00853F"></span> Senegal</span>
+    <span class="marquee-item"><span class="flag-dot" style="background:#078930"></span> Ethiopia</span>
+    <span class="marquee-item"><span class="flag-dot" style="background:#1EB53A"></span> Tanzania</span>
+    <span class="marquee-item"><span class="flag-dot" style="background:#FCDC04; color:#000"></span> Uganda</span>
+    <span class="marquee-item"><span class="flag-dot" style="background:#C1272D"></span> Morocco</span>
+    <span class="marquee-item"><span class="flag-dot" style="background:#009A44"></span> Cameroon</span>
+  </div>
+  <div class="marquee-track" aria-hidden="true">
+    <span class="marquee-item"><span class="flag-dot" style="background:#008753"></span> Nigeria</span>
+    <span class="marquee-item"><span class="flag-dot" style="background:#006B3F"></span> Ghana</span>
+    <span class="marquee-item"><span class="flag-dot" style="background:#BB0A1E"></span> Kenya</span>
+    <span class="marquee-item"><span class="flag-dot" style="background:#007749"></span> South Africa</span>
+    <span class="marquee-item"><span class="flag-dot" style="background:#CE1126"></span> Egypt</span>
+    <span class="marquee-item"><span class="flag-dot" style="background:#00A1DE"></span> Rwanda</span>
+    <span class="marquee-item"><span class="flag-dot" style="background:#00853F"></span> Senegal</span>
+    <span class="marquee-item"><span class="flag-dot" style="background:#078930"></span> Ethiopia</span>
+    <span class="marquee-item"><span class="flag-dot" style="background:#1EB53A"></span> Tanzania</span>
+    <span class="marquee-item"><span class="flag-dot" style="background:#FCDC04; color:#000"></span> Uganda</span>
+    <span class="marquee-item"><span class="flag-dot" style="background:#C1272D"></span> Morocco</span>
+    <span class="marquee-item"><span class="flag-dot" style="background:#009A44"></span> Cameroon</span>
+  </div>
+<style id="vt-strip-inline">
+.vt-strip-wrap{display:flex;gap:1.5rem;align-items:center;justify-content:center;flex-wrap:wrap;margin:1.5rem auto;max-width:1100px;padding:0 1rem}
+.vt-strip{position:relative;display:block;width:280px;height:230px;overflow:hidden;border-radius:14px;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 22%,#000 78%,transparent 100%);
+          mask-image:linear-gradient(180deg,transparent 0,#000 22%,#000 78%,transparent 100%);
+  background:linear-gradient(180deg,rgba(34,194,255,.06),rgba(212,175,55,.05));
+  border:1px solid rgba(34,194,255,.32);box-shadow:inset 0 0 30px rgba(0,0,0,.4)}
+.vt-track{display:flex;flex-direction:column;gap:.4rem;padding:1.6rem .75rem 1rem;animation:vtScroll 30s linear infinite;will-change:transform}
+.vt-strip:hover .vt-track,.vt-strip:focus-within .vt-track{animation-play-state:paused}
+@keyframes vtScroll{0%{transform:translateY(0)}100%{transform:translateY(-50%)}}
+.vt-item{display:flex;align-items:center;gap:.55rem;font-size:.86rem;color:#e9eefb;padding:.45rem .6rem;border-radius:9px;background:rgba(34,194,255,.05);border:1px solid rgba(34,194,255,.15);transition:transform .2s ease,background .2s ease}
+.vt-item:hover{background:rgba(34,194,255,.18);color:#fff;transform:translateX(4px)}
+.flag-dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0;border:1px solid rgba(255,255,255,.2)}
+.vt-strip-label{position:absolute;top:8px;left:10px;font-size:.62rem;letter-spacing:.22em;color:var(--neon-cyan,#22c2ff);text-transform:uppercase;font-weight:600;z-index:2;background:rgba(2,5,18,.6);padding:.25rem .5rem;border-radius:6px}
+@media (prefers-reduced-motion:reduce){.vt-track{animation:none}}
+</style>
+<div class="vt-strip-wrap" aria-label="Continental country presence ticker">
+  <div class="vt-strip" tabindex="0" aria-label="Vertical country ticker">
+    <div class="vt-strip-label">Continental Reach</div>
+    <div class="vt-track">
+    <span class="vt-item"><span class="flag-dot" style="background:#008753"></span>Nigeria</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#006B3F"></span>Ghana</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#BB0A1E"></span>Kenya</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#007749"></span>South Africa</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#CE1126"></span>Egypt</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#00A1DE"></span>Rwanda</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#00853F"></span>Senegal</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#078930"></span>Ethiopia</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#1EB53A"></span>Tanzania</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#FCDC04"></span>Uganda</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#C1272D"></span>Morocco</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#009A44"></span>Cameroon</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#006633"></span>Algeria</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#14B53A"></span>Mali</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#F77F00"></span>Cote d Ivoire</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#008753"></span>Nigeria</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#006B3F"></span>Ghana</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#BB0A1E"></span>Kenya</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#007749"></span>South Africa</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#CE1126"></span>Egypt</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#00A1DE"></span>Rwanda</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#00853F"></span>Senegal</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#078930"></span>Ethiopia</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#1EB53A"></span>Tanzania</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#FCDC04"></span>Uganda</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#C1272D"></span>Morocco</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#009A44"></span>Cameroon</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#006633"></span>Algeria</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#14B53A"></span>Mali</span>
+    <span class="vt-item"><span class="flag-dot" style="background:#F77F00"></span>Cote d Ivoire</span>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- IMPACT STATS -->
+<section class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow"><i class="fas fa-chart-line"></i> Continental Scale</span>
+      <h2 class="h-section">Catalyzing Youth Innovation Across Africa</h2>
+      <p class="lead">From campus ideation to continental commercialization — AUC bridges academia and high-impact venture creation across the African Union's 54 member states.</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card reveal">
+        <div class="stat-icon"><i class="fas fa-flag-checkered"></i></div>
+        <div class="stat-num" data-count="54">0</div>
+        <div class="stat-lbl">African Member States</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-icon" style="background:rgba(0,229,255,0.1); color:var(--neon-cyan);"><i class="fas fa-university"></i></div>
+        <div class="stat-num" data-count="500" data-suffix="+">0</div>
+        <div class="stat-lbl">Higher Institutions Engaged</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-icon" style="background:rgba(157,78,221,0.1); color:var(--africa-purple);"><i class="fas fa-user-astronaut"></i></div>
+        <div class="stat-num" data-count="10000" data-suffix="+">0</div>
+        <div class="stat-lbl">Student Innovators</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-icon" style="background:rgba(255,184,0,0.12); color:var(--neon-gold); font-size:2.2rem;"><i class="fas fa-trophy"></i></div>
+        <div class="stat-num" style="font-size:1.6rem; color:var(--neon-gold); letter-spacing:0.5px; text-transform:uppercase;">Seed Pool</div>
+        <div class="stat-lbl">Continental Grants & Seed Funds</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AU AGENDA 2063 TRACKS -->
+<section class="section" style="background: linear-gradient(180deg, transparent, rgba(7,23,58,0.5), transparent);">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow cyan"><i class="fas fa-lightbulb"></i> Strategic Focus</span>
+      <h2 class="h-section">7 Pillars of AU Agenda 2063</h2>
+      <p class="lead">Every submitted solution tackles one of the foundational aspirations defined in the African Union's 50-year master blueprint.</p>
+    </div>
+    <div class="tracks-grid">
+      <div class="track-card reveal">
+        <span class="track-pill">Aspiration 1</span>
+        <h3>Prosperity & Inclusive Growth</h3>
+        <p>FinTech, digital agriculture, green energy transitions, and youth employment models generating equitable wealth across communities.</p>
+        <a href="participate.html?track=Aspiration+1" class="track-link">Register for Track <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="track-card reveal">
+        <span class="track-pill" style="background:rgba(0,229,255,0.1); color:var(--neon-cyan); border-color:rgba(0,229,255,0.3);">Aspiration 2</span>
+        <h3>Integrated Continent & Infrastructure</h3>
+        <p>Cross-border logistics, AfCFTA digital trade corridors, renewable micro-grids, and decentralized connectivity networks.</p>
+        <a href="participate.html?track=Aspiration+2" class="track-link" style="color:var(--neon-cyan);">Register for Track <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="track-card reveal">
+        <span class="track-pill" style="background:rgba(255,184,0,0.1); color:var(--neon-gold); border-color:rgba(255,184,0,0.3);">Aspiration 3</span>
+        <h3>Good Governance & Rule of Law</h3>
+        <p>CivicTech, transparent public service delivery, corruption mitigation tools, and blockchain-verified institutional voting.</p>
+        <a href="participate.html?track=Aspiration+3" class="track-link" style="color:var(--neon-gold);">Register for Track <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="track-card reveal">
+        <span class="track-pill" style="background:rgba(157,78,221,0.1); color:var(--africa-purple); border-color:rgba(157,78,221,0.3);">Aspiration 4</span>
+        <h3>Peace, Security & Resilience</h3>
+        <p>Conflict early-warning systems, cyber security for critical infrastructure, disaster management systems, and youth peacebuilding platforms.</p>
+        <a href="participate.html?track=Aspiration+4" class="track-link" style="color:var(--africa-purple);">Register for Track <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="track-card reveal">
+        <span class="track-pill">Aspiration 5</span>
+        <h3>Cultural Heritage & Creative Tech</h3>
+        <p>African digital media, indigenous language NLP/AI, cultural preservation archives, and creative economy monetization.</p>
+        <a href="participate.html?track=Aspiration+5" class="track-link">Register for Track <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="track-card reveal">
+        <span class="track-pill" style="background:rgba(255,59,48,0.1); color:var(--africa-red); border-color:rgba(255,59,48,0.3);">Aspiration 6</span>
+        <h3>Youth & Women Empowerment</h3>
+        <p>EdTech for girls in STEM, maternal health access, micro-entrepreneurship accelerators, and student leadership frameworks.</p>
+        <a href="participate.html?track=Aspiration+6" class="track-link" style="color:var(--africa-red);">Register for Track <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="track-card reveal">
+        <span class="track-pill" style="background:rgba(0,255,135,0.1); color:var(--neon-green); border-color:rgba(0,255,135,0.3);">Aspiration 7</span>
+        <h3>Global Player & Influential Partner</h3>
+        <p>Africa as a strong, united, resilient, and influential global player and partner — Speak with one voice internationally, finance its own development, and act as a key global actor.</p>
+        <a href="participate.html?track=Aspiration+7" class="track-link" style="color:var(--neon-green);">Register for Track <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4-STAGE TIMELINE -->
+<section class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow gold"><i class="fas fa-road"></i> Competition Architecture</span>
+      <h2 class="h-section">Four Stages to the Continental Crown</h2>
+      <p class="lead">A rigorous, merit-driven trajectory providing mentorship, technical validation, and seed funding at each phase.</p>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <div class="glass">
+          <span class="stage-label">Stage 01 · Campus Level</span>
+          <h3 style="font-size:1.25rem;margin-bottom:.5rem;">Intra-University Ideation Sprints</h3>
+          <p style="color:var(--text-soft);font-size:.92rem;margin:0;">Multi-disciplinary student teams form on local university campuses to submit proof-of-concept solutions aligned to community challenges.</p>
+        </div>
+        <div class="timeline-marker"><i class="fas fa-university"></i></div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-marker" style="border-color:var(--neon-cyan); color:var(--neon-cyan); box-shadow: 0 0 25px rgba(0,229,255,0.4);"><i class="fas fa-flag"></i></div>
+        <div class="glass">
+          <span class="stage-label" style="background:rgba(0,229,255,0.1); color:var(--neon-cyan); border-color:rgba(0,229,255,0.3);">Stage 02 · National Level</span>
+          <h3 style="font-size:1.25rem;margin-bottom:.5rem;">National Championships</h3>
+          <p style="color:var(--text-soft);font-size:.92rem;margin:0;">Top 5% of university teams pitch before national juries, government ministries, and local venture hubs.</p>
+        </div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="glass">
+          <span class="stage-label" style="background:rgba(157,78,221,0.1); color:var(--africa-purple); border-color:rgba(157,78,221,0.3);">Stage 03 · Regional Hubs</span>
+          <h3 style="font-size:1.25rem;margin-bottom:.5rem;">5 Regional Innovation Semi-Finals</h3>
+          <p style="color:var(--text-soft);font-size:.92rem;margin:0;">Semi-finalists in North, West, East, Central, and Southern Africa undergo a 4-week virtual accelerator with industry mentors.</p>
+        </div>
+        <div class="timeline-marker" style="border-color:var(--africa-purple); color:var(--africa-purple); box-shadow: 0 0 25px rgba(157,78,221,0.4);"><i class="fas fa-network-wired"></i></div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-marker" style="border-color:var(--neon-gold); color:var(--neon-gold); box-shadow: 0 0 25px rgba(255,184,0,0.4);"><i class="fas fa-crown"></i></div>
+        <div class="glass">
+          <span class="stage-label" style="background:rgba(255,184,0,0.1); color:var(--neon-gold); border-color:rgba(255,184,0,0.3);">Stage 04 · Continental Finals</span>
+          <h3 style="font-size:1.25rem;margin-bottom:.5rem;">Grand Continental Demo Day & Gala</h3>
+          <p style="color:var(--text-soft);font-size:.92rem;margin:0;">Top 15 continental finalist teams pitch live at the AU Headquarters for seed grants, venture investment, and continental awards.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- THE 2026 FACE OF AU CHALLENGE (ITEM 4) -->
+    <div class="face-of-au-wrap reveal">
+      <div class="face-of-au-card">
+        <div>
+          <div class="foa-badge"><i class="fas fa-crown"></i> Pan-African Youth Ambassadorship</div>
+          <h3 style="font-size: clamp(1.8rem, 3vw, 2.3rem); margin-bottom: 1rem;">The 2026 Face of AU Challenge</h3>
+          <p style="color:var(--text-soft); font-size: 1.05rem; line-height: 1.7; margin-bottom: 1.5rem;">
+            Beyond technological innovation, the African Undergraduate Challenge crowns the continental youth voice of Agenda 2063. The <em>Face of AU Challenge</em> identifies visionary undergraduate changemakers across all 54 nations who demonstrate exceptional leadership, pan-African diplomacy, and articulate advocacy for the Africa We Want.
+          </p>
+          <div class="foa-perks">
+            <div class="foa-perk">
+              <i class="fas fa-microphone-lines"></i>
+              <div>
+                <strong>Continental Envoy Role</strong>
+                <p>Deliver the youth keynote address before African Heads of State at the AU Summit Gala in Addis Ababa.</p>
+              </div>
+            </div>
+            <div class="foa-perk">
+              <i class="fas fa-globe-africa"></i>
+              <div>
+                <strong>Global Leadership Fellowship</strong>
+                <p>Fully funded international diplomacy mission, executive coaching, and institutional fellowship.</p>
+              </div>
+            </div>
+            <div class="foa-perk">
+              <i class="fas fa-check-double"></i>
+              <div>
+                <strong>Public & Jury Selection</strong>
+                <p>Combination of university community voting and appraisal by the Continental Advisory Council.</p>
+              </div>
+            </div>
+            <div class="foa-perk">
+              <i class="fas fa-award"></i>
+              <div>
+                <strong>Agenda 2063 Gold Medal</strong>
+                <p>Official African Union youth medallion, title grant, and dedicated university chapter endowment.</p>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:2rem;">
+            <a href="participate.html" class="btn btn-gold"><i class="fas fa-crown"></i> Nominate / Compete for Face of AU</a>
+          </div>
+        </div>
+        <div class="foa-visual">
+          <div class="foa-emblem">
+            <i class="fas fa-crown"></i>
+          </div>
+          <h4 style="font-size:1.3rem; margin-bottom:.35rem; color:var(--neon-gold);">Face of AU 2026</h4>
+          <p style="font-size:.85rem; color:var(--text-soft); text-transform:uppercase; letter-spacing:2px;">Continental Ambassadorship</p>
+          <span style="font-size:.78rem; padding:.35rem .85rem; border-radius:999px; background:rgba(0,255,135,0.1); border:1px solid rgba(0,255,135,0.3); color:var(--neon-green); margin-top:.75rem; display:inline-block;">
+            <i class="fas fa-users"></i> 54 Nations · 1 Voice
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRIZES (ITEM 5) -->
+<section class="section" style="background: linear-gradient(180deg, transparent, rgba(7,23,58,0.6), transparent);">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow gold"><i class="fas fa-award"></i> Continental Awards</span>
+      <h2 class="h-section">Prize & Incubation Package</h2>
+      <p class="lead">Empowering student ventures with non-dilutive capital, global cloud credits, and accelerator access.</p>
+    </div>
+    <div class="prizes-single reveal">
+      <div class="prize-card featured-clean">
+        <div class="prize-icon-gold"><i class="fas fa-trophy"></i></div>
+        <h3 style="font-size: clamp(1.8rem, 3vw, 2.4rem); margin-bottom: 1rem;">Prize & Incubation Package</h3>
+        <p class="prize-highlight-text">Empowering student ventures with non-dilutive capital, global cloud credits, and accelerator access.</p>
+        <div class="prize-perks-row">
+          <span class="prize-pill"><i class="fas fa-check-circle"></i> Non-Dilutive Capital & Seed Grants</span>
+          <span class="prize-pill"><i class="fas fa-cloud"></i> Global Cloud Credits</span>
+          <span class="prize-pill"><i class="fas fa-rocket"></i> Pan-African Accelerator Access</span>
+          <span class="prize-pill"><i class="fas fa-scale-balanced"></i> Pro-Bono IP & Patent Protection</span>
+          <span class="prize-pill"><i class="fas fa-earth-africa"></i> AU Agenda 2063 Continental Trophy</span>
+        </div>
+        <div>
+          <a href="participate.html" class="btn btn-gold" style="font-size:1.05rem; padding:1.1rem 2.5rem;"><i class="fas fa-bolt"></i> Compete for the Package</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ELIGIBILITY CHECKER -->
+<section class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow cyan"><i class="fas fa-check-circle"></i> Quick Eligibility Check</span>
+      <h2 class="h-section">Are You Eligible to Compete in AUC 2026?</h2>
+      <p class="lead">Find out in 3 simple clicks whether your team meets the continental criteria.</p>
+    </div>
+    <div class="checker reveal" id="eligibilityChecker">
+      <div class="checker-step">
+        <div class="checker-q"><span class="num">1</span>Are you currently enrolled as an undergraduate student?</div>
+        <div class="checker-options">
+          <button type="button" class="checker-btn" data-step="student" data-val="yes">Yes, Undergraduate <i class="fas fa-check"></i></button>
+          <button type="button" class="checker-btn" data-step="student" data-val="no">No, Graduate / Other <i class="fas fa-times"></i></button>
+        </div>
+      </div>
+      <div class="checker-step">
+        <div class="checker-q"><span class="num">2</span>Is your institution located in an African nation?</div>
+        <div class="checker-options">
+          <button type="button" class="checker-btn" data-step="african" data-val="yes">Yes, in Africa <i class="fas fa-check"></i></button>
+          <button type="button" class="checker-btn" data-step="african" data-val="no">Outside Africa <i class="fas fa-times"></i></button>
+        </div>
+      </div>
+      <div class="checker-step">
+        <div class="checker-q"><span class="num">3</span>Do you have or plan to form a team of 2–4 members?</div>
+        <div class="checker-options">
+          <button type="button" class="checker-btn" data-step="team" data-val="yes">Yes, 2–4 Members <i class="fas fa-check"></i></button>
+          <button type="button" class="checker-btn" data-step="team" data-val="solo">Solo / Searching <i class="fas fa-users"></i></button>
+        </div>
+      </div>
+      <div class="checker-step" id="checkerResult" style="display:none; border-bottom:0; padding:1rem 0 0;">
+        <div id="checkerResultText" style="font-size:1rem;"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section" style="text-align:center;">
+  <div class="container">
+    <div class="glass reveal" style="text-align:center; padding:4.5rem 2rem; border-color:rgba(0,255,135,0.3); background: radial-gradient(circle at center, rgba(0, 255, 135, 0.08) 0%, transparent 70%);">
+      <span class="eyebrow"><i class="fas fa-bolt"></i> Be Part of the Continental Movement</span>
+      <h2 class="h-section" style="margin:1.25rem 0 1.25rem;">Ready to Shape the Africa We Want?</h2>
+      <p class="lead" style="margin-bottom:2.5rem;">Whether you're a student innovator with a breakthrough concept, a mentor guiding the next generation, or a partner scaling impact across 54 nations — join AUC 2026 today.</p>
+      <div style="display:flex; gap:1.25rem; justify-content:center; flex-wrap:wrap;">
+        <a href="participate.html" class="btn btn-primary"><i class="fas fa-rocket"></i> Register Your Team</a>
+        <a href="sponsors.html" class="btn btn-outline"><i class="fas fa-handshake"></i> Become a Partner</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="logo" style="margin-bottom:1rem; display:flex;">
+          <img src="assets/img/Logo.png" alt="AUC" style="height:42px;" onerror="this.style.display='none'">
+          <span class="logo-text">AUC</span>
+        </a>
+        <p style="color:var(--text-soft); margin-top:1rem; font-size:.92rem;">The African Undergraduate Challenge (AUC) is Africa's premier pan-continental innovation accelerator fully aligned with African Union Agenda 2063.</p>
+        <div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,255,135,0.08);border:1px solid rgba(0,255,135,0.3); padding:.45rem .85rem; border-radius:999px;font-size:.75rem;color:var(--neon-green);margin-top:1rem;">
+          <i class="fas fa-certificate"></i> Officially Aligned · AU Agenda 2063
+        </div>
+        <div class="social-row">
+          <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="index.html"><i class="fas fa-angle-right"></i> Home</a>
+        <a href="about.html"><i class="fas fa-angle-right"></i> About AUC</a>
+        <a href="structure.html"><i class="fas fa-angle-right"></i> Competition Stages</a>
+        <a href="judging.html"><i class="fas fa-angle-right"></i> Evaluation Matrix</a>
+        <a href="news.html"><i class="fas fa-angle-right"></i> News & Insights</a>
+      </div>
+      <div class="footer-col">
+        <h4>Portals</h4>
+        <a href="participate.html"><i class="fas fa-angle-right"></i> Eligibility Checker</a>
+        <a href="portal-student.html"><i class="fas fa-user-graduate"></i> Student Portal</a>
+        <a href="portal-judge.html"><i class="fas fa-gavel"></i> Judge Portal</a>
+        <a href="partnership.html"><i class="fas fa-handshake"></i> Become a Partner</a>
+        <a href="sponsors.html"><i class="fas fa-angle-right"></i> Partnership Tiers</a>
+      </div>
+      <div class="footer-col">
+        <h4>Newsletter</h4>
+        <p style="font-size:.88rem;color:var(--text-soft);margin-bottom:1rem;">Get monthly updates on key deadlines and regional finalists.</p>
+        <form onsubmit="event.preventDefault(); alert('Subscribed to AUC Continental Insights!');" style="display:flex; flex-direction:column; gap:.5rem;">
+          <input type="email" required placeholder="your@email.com" class="form-control">
+          <button type="submit" class="btn btn-primary" style="justify-content:center;">Subscribe</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Centralized Quick Navigation Bar -->
+    <div class="footer-nav-centered">
+      <a href="index.html"><i class="fas fa-home"></i> Home</a>
+      <a href="about.html"><i class="fas fa-info-circle"></i> About AUC</a>
+      <a href="structure.html"><i class="fas fa-stream"></i> Competition Stages</a>
+      <a href="judging.html"><i class="fas fa-gavel"></i> Evaluation Rubric</a>
+      <a href="participate.html"><i class="fas fa-user-check"></i> Eligibility</a>
+      <a href="partnership.html"><i class="fas fa-handshake"></i> Partnerships</a>
+      <a href="news.html"><i class="fas fa-newspaper"></i> News &amp; Insights</a>
+      <a href="contact.html"><i class="fas fa-envelope"></i> Contact HQ</a>
+    </div>
+
+    <div class="footer-bottom-centered">
+      <div class="copy-left">
+        © 2026 African Undergraduate Challenge (AUC). All rights reserved. · Powered by <a href="https://wasard.org" target="_blank" rel="noopener noreferrer" style="color:var(--neon-green);font-weight:600;">WASARD Organization</a> · Designed by <a href="https://wa.me/2347016435125" target="_blank" rel="noopener noreferrer" style="color:var(--neon-cyan);font-weight:600;">DIDS' SYSTEMS INC.</a>
+      </div>
+      <div class="links-center">
+        <a href="contact.html">Contact HQ</a>
+        <a href="structure.html">Governance Protocol</a>
+        <a href="judging.html">Ethics &amp; Code</a>
+        <a href="cms-editor.html" style="color:var(--neon-green);font-weight:600;"><i class="fas fa-feather-alt"></i> CMS Editor</a>
+      </div>
+      <!-- Hidden / Discreet Admin link on the far right -->
+      <div class="admin-right">
+        <a href="portal-admin.html" class="footer-admin-link" title="Secretariat &amp; Staff Console" aria-label="Admin Access">
+          <i class="fas fa-shield-halved"></i> <span>Staff HQ</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="hero-webgl.js" defer></script>
+<script src="main.js"></script>
+  <script src="dropdown.js" defer></script>
+<link rel="stylesheet" href="login-overlay.css">
+
+<!-- Floating CMS Quick-Edit Button (Item 1) -->
+<a href="cms-editor.html" class="cms-fab" title="Edit Page Content" aria-label="Open CMS Editor">
+  <i class="fas fa-feather-alt"></i>
+  <span class="cms-fab-tooltip">Edit Page Content</span>
+</a>
+</body>
+</html>
+

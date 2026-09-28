@@ -1,0 +1,14 @@
+# Node
+node_modules/
+npm-debug.log*
+
+# Data (runtime JSON storage — not source code)
+data/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.swp

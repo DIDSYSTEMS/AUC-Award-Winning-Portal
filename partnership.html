@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Partnership Inquiry Form — AUC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dropdown.css">
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo"><img src="assets/img/Logo.png" alt="AUC" onerror="this.style.display='none'"><span class="logo-text">AUC</span></a>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="structure.html">Structure</a></li>
+      <li><a href="judging.html">Judging</a></li>
+      <li><a href="participate.html">Participate</a></li>
+      <li><a href="sponsors.html">Partners</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    <li class="nav-dropdown">
+      <a href="javascript:void(0)" class="dropbtn" data-dropdown-trigger role="button" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-satellite-dish"></i> <span>Portals</span> <i class="fas fa-chevron-down chev"></i>
+      </a>
+      <div class="dropdown-content" role="menu" aria-label="AUC Portals">
+        <div class="dropdown-header">
+          <h5><i class="fas fa-shield-halved"></i> AUC Portals</h5>
+          <small>3 secure systems + CMS</small>
+        </div>
+        <div class="dropdown-grid">
+          <a href="portal-student.html" class="dropdown-item" role="menuitem">
+            <div class="di-icon"><i class="fas fa-user-graduate"></i></div>
+            <div class="di-body"><strong>Student Portal</strong><small>Team dashboard · submissions · live scoreboard</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="portal-judge.html" class="dropdown-item cyan" role="menuitem">
+            <div class="di-icon"><i class="fas fa-gavel"></i></div>
+            <div class="di-body"><strong>Judge Portal</strong><small>Review queue · weighted rubric · COI reports</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="portal-admin.html" class="dropdown-item gold" role="menuitem">
+            <div class="di-icon"><i class="fas fa-shield-halved"></i></div>
+            <div class="di-body"><strong>Admin HQ <span class="di-badge">STAFF</span></strong><small>Operations · partnership inbox · audit log</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="cms-editor.html" class="dropdown-item purple" role="menuitem">
+            <div class="di-icon"><i class="fas fa-feather-alt"></i></div>
+            <div class="di-body"><strong>CMS Editor <span class="di-badge purple">EDIT</span></strong><small>Inline edit pages · autosave · schedule publish</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="partnership.html" class="dropdown-item partner" role="menuitem">
+            <div class="di-icon"><i class="fas fa-handshake"></i></div>
+            <div class="di-body"><strong>Become a Partner</strong><small>Public inquiry form · Silver / Gold / Platinum</small></div>
+            <i class="fas fa-arrow-right di-arrow"></i>
+          </a>
+        </div>
+        <div class="dropdown-footer"><small><i class="fas fa-lock"></i> Session-encrypted · JWT auth</small></div>
+      </div>
+    </li>
+    </ul>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Open navigation menu" aria-expanded="false"><i class="fas fa-bars"></i></button>
+    <div class="nav-cta">
+      <button class="theme-toggle" id="themeToggle"></button>
+      <a href="participate.html" class="btn btn-primary">Register 2026</a>
+    </div>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow gold"><i class="fas fa-handshake"></i> Partnership Inquiry</span>
+    <h1>Partner with <span class="text-gradient">AUC 2026</span></h1>
+    <p class="lead">Tell us about your organization and the type of continental partnership you envision. We'll respond with a tailored proposal within 5 business days.</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="container">
+    <div style="display:grid;gap:2rem;grid-template-columns:repeat(auto-fit, minmax(280px,1fr));margin-bottom:3rem;">
+      <div class="glass" style="text-align:center;border-color:rgba(0,229,255,0.3);"><div style="font-size:2.5rem;font-weight:800;background:var(--grad-primary);-webkit-background-clip:text;color:transparent;">Step 1</div><h4 style="margin:1rem 0 .5rem 0;">Tell us about you</h4><p style="color:var(--text-soft);font-size:.9rem;">Organization profile, focus areas & geographic reach</p></div>
+      <div class="glass" style="text-align:center;border-color:rgba(255,184,0,0.3);"><div style="font-size:2.5rem;font-weight:800;background:var(--grad-gold);-webkit-background-clip:text;color:transparent;">Step 2</div><h4 style="margin:1rem 0 .5rem 0;">Choose partnership tier</h4><p style="color:var(--text-soft);font-size:.9rem;">Silver, Gold, Platinum or custom proposal</p></div>
+      <div class="glass" style="text-align:center;border-color:rgba(0,255,135,0.3);"><div style="font-size:2.5rem;font-weight:800;background:var(--grad-primary);-webkit-background-clip:text;color:transparent;">Step 3</div><h4 style="margin:1rem 0 .5rem 0;">HQ Proposal</h4><p style="color:var(--text-soft);font-size:.9rem;">Secretariat drafts an MOU within 5 days for signature</p></div>
+    </div>
+
+    <!-- Partner Account & Registration Bar (Item 7) -->
+    <div class="glass reveal" style="max-width:920px;margin:0 auto 1.5rem auto;padding:1.25rem 1.75rem;border-color:rgba(0,229,255,0.3);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+      <div>
+        <h4 style="color:var(--neon-cyan);font-size:1.05rem;margin-bottom:.25rem;"><i class="fas fa-handshake"></i> Interested Partner Access & Tracking</h4>
+        <p style="font-size:.85rem;color:var(--text-soft);margin:0;">Register your corporate/foundation interest below or sign in to review your organization's pending MOU.</p>
+      </div>
+      <div style="display:flex;gap:.75rem;">
+        <button type="button" class="btn btn-outline" style="padding:.5rem 1.2rem;font-size:.85rem;border-color:var(--neon-cyan);color:var(--neon-cyan);" onclick="const b=document.getElementById('partnerLoginBox'); b.hidden=!b.hidden;"><i class="fas fa-sign-in-alt"></i> Partner Sign In</button>
+      </div>
+    </div>
+    <div id="partnerLoginBox" class="glass reveal" hidden style="max-width:920px;margin:0 auto 1.5rem auto;padding:1.5rem;border-color:rgba(255,184,0,0.4);background:rgba(255,184,0,0.04);">
+      <h4 style="color:var(--neon-gold);font-size:1rem;margin-bottom:.75rem;"><i class="fas fa-shield-alt"></i> Partner Representative Sign In</h4>
+      <div style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));align-items:flex-end;">
+        <div class="form-group" style="margin:0;"><label class="form-label">Work Email Address</label><input type="email" id="partLogEmail" class="form-control" placeholder="partner@organization.org" value="partner_demo@globalfund.org"></div>
+        <div class="form-group" style="margin:0;"><label class="form-label">Password / Access Key</label><input type="password" id="partLogPass" class="form-control" placeholder="••••••••" value="partner@2026"></div>
+        <button type="button" class="btn btn-gold" style="padding:.7rem 1.25rem;" onclick="partnerLogin()"><i class="fas fa-check"></i> Sign In to Partner Desk</button>
+      </div>
+      <div id="partnerLogStatus" style="margin-top:.75rem;font-size:.85rem;display:none;"></div>
+    </div>
+
+    <div class="glass" style="max-width:920px;margin:0 auto;padding:2.5rem;border-color:rgba(0,255,135,0.3);">
+      <div id="partnerResult" style="display:none;margin-bottom:2rem;padding:2rem;background:rgba(0,255,135,0.06);border:1px solid rgba(0,255,135,0.4);border-radius:16px;text-align:center;"></div>
+      <form id="partnerForm" onsubmit="return submitPartner(event);">
+        <!-- Section 1 — Organization -->
+        <fieldset style="border:0;padding:0;margin:0 0 2rem 0;">
+          <legend style="font-size:1.2rem;font-weight:700;color:var(--neon-green);padding-bottom:.5rem;border-bottom:1px solid var(--glass-border);width:100%;"><i class="fas fa-building"></i> Organization Profile</legend>
+          <div style="display:grid;gap:1rem;grid-template-columns:repeat(2,1fr);margin-top:1rem;">
+            <div class="form-group"><label class="form-label">Organization Name *</label><input type="text" required class="form-control" name="orgName" placeholder="e.g. Acme Foundation"></div>
+            <div class="form-group"><label class="form-label">Organization Type *</label><select required class="form-control" name="orgType"><option value="">Select type</option><option>Foundation / NGO</option><option>Corporate (CSR arm)</option><option>Venture Capital / Impact Fund</option><option>Government / Multilateral</option><option>University / Research</option><option>Other</option></select></div>
+            <div class="form-group"><label class="form-label">Contact First Name *</label><input type="text" required class="form-control" name="firstName" placeholder="First name"></div>
+            <div class="form-group"><label class="form-label">Contact Last Name *</label><input type="text" required class="form-control" name="lastName" placeholder="Last name"></div>
+            <div class="form-group"><label class="form-label">Work Email *</label><input type="email" required class="form-control" name="email" placeholder="name@organization.org"></div>
+            <div class="form-group"><label class="form-label">Phone (with country code)</label><input type="tel" class="form-control" name="phone" placeholder="+27 11 555 1234"></div>
+            <div class="form-group" style="grid-column:1/-1;"><label class="form-label">Organization Headquarters Country *</label><select required class="form-control" name="hqCountry"><option value="">Select country</option><option>Algeria</option><option>Angola</option><option>Benin</option><option>Botswana</option><option>Burkina Faso</option><option>Burundi</option><option>Cabo Verde</option><option>Cameroon</option><option>Central African Rep.</option><option>Chad</option><option>Comoros</option><option>Congo (DRC)</option><option>Congo (Rep.)</option><option>Côte d'Ivoire</option><option>Djibouti</option><option>Egypt</option><option>Equatorial Guinea</option><option>Eritrea</option><option>Eswatini</option><option>Ethiopia</option><option>Gabon</option><option>Gambia</option><option>Ghana</option><option>Guinea</option><option>Guinea-Bissau</option><option>Kenya</option><option>Lesotho</option><option>Liberia</option><option>Libya</option><option>Madagascar</option><option>Malawi</option><option>Mali</option><option>Mauritania</option><option>Mauritius</option><option>Morocco</option><option>Mozambique</option><option>Namibia</option><option>Niger</option><option>Nigeria</option><option>Rwanda</option><option>Sahrawi Arab DR</option><option>São Tomé & Príncipe</option><option>Senegal</option><option>Seychelles</option><option>Sierra Leone</option><option>Somalia</option><option>South Africa</option><option>South Sudan</option><option>Sudan</option><option>Tanzania</option><option>Togo</option><option>Tunisia</option><option>Uganda</option><option>Zambia</option><option>Zimbabwe</option></select></div>
+          </div>
+        </fieldset>
+
+        <!-- Section 2 — Tier -->
+        <fieldset style="border:0;padding:0;margin:0 0 2rem 0;">
+          <legend style="font-size:1.2rem;font-weight:700;color:var(--neon-cyan);padding-bottom:.5rem;border-bottom:1px solid var(--glass-border);width:100%;"><i class="fas fa-layer-group"></i> Select Partnership Tier *</legend>
+          <div style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fit, minmax(220px,1fr));margin-top:1rem;">
+            <label class="tier-option">
+              <input type="radio" name="tier" value="silver" required>
+              <div class="tier-card"><h5>Silver</h5><div class="t-price">$25K</div><ul><li>Logo placement</li><li>Campus recruitment access</li><li>Quarterly cohort report</li></ul></div>
+            </label>
+            <label class="tier-option">
+              <input type="radio" name="tier" value="gold">
+              <div class="tier-card"><h5>Gold</h5><div class="t-price">$60K</div><ul><li>Track sponsorship</li><li>Year-round talent pipeline</li><li>Newsletter feature</li></ul></div>
+            </label>
+            <label class="tier-option">
+              <input type="radio" name="tier" value="platinum">
+              <div class="tier-card featured"><span class="pill">Most chosen</span><h5>Platinum</h5><div class="t-price">$150K</div><ul><li>Title Regional Track</li><li>Co-host Demo Days</li><li>Direct deal-flow rights</li></ul></div>
+            </label>
+            <label class="tier-option">
+              <input type="radio" name="tier" value="custom">
+              <div class="tier-card"><h5>Custom</h5><div class="t-price">Let's talk</div><ul><li>Restricted Foundation grant</li><li>Government / multilateral</li><li>Philanthropic alignment</li></ul></div>
+            </label>
+          </div>
+        </fieldset>
+
+        <!-- Section 3 — Alignment -->
+        <fieldset style="border:0;padding:0;margin:0 0 2rem 0;">
+          <legend style="font-size:1.2rem;font-weight:700;color:var(--neon-gold);padding-bottom:.5rem;border-bottom:1px solid var(--glass-border);width:100%;"><i class="fas fa-bullseye"></i> Strategic Alignment</legend>
+          <div style="margin-top:1rem;">
+            <div class="form-group">
+              <label class="form-label">Which AU Agenda 2063 Aspiration(s) align with your mission? *</label>
+              <div style="display:grid;gap:.65rem;grid-template-columns:repeat(auto-fit, minmax(220px,1fr));">
+                <label class="check-pill"><input type="checkbox" name="asp[]" value="1"> Aspiration 1 · Prosperity & Inclusive Growth</label>
+                <label class="check-pill"><input type="checkbox" name="asp[]" value="2"> Aspiration 2 · Integrated Continent</label>
+                <label class="check-pill"><input type="checkbox" name="asp[]" value="3"> Aspiration 3 · Good Governance</label>
+                <label class="check-pill"><input type="checkbox" name="asp[]" value="4"> Aspiration 4 · Peace & Security</label>
+                <label class="check-pill"><input type="checkbox" name="asp[]" value="5"> Aspiration 5 · Cultural Heritage</label>
+                <label class="check-pill"><input type="checkbox" name="asp[]" value="6"> Aspiration 6 · Youth & Women</label>
+                <label class="check-pill"><input type="checkbox" name="asp[]" value="7"> Aspiration 7 · Global Player & Influential Partner</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Geographic priority regions</label>
+              <div style="display:flex;gap:.65rem;flex-wrap:wrap;">
+                <label class="check-pill"><input type="checkbox" name="region[]" value="north"> North Africa</label>
+                <label class="check-pill"><input type="checkbox" name="region[]" value="west"> West Africa</label>
+                <label class="check-pill"><input type="checkbox" name="region[]" value="east"> East Africa</label>
+                <label class="check-pill"><input type="checkbox" name="region[]" value="central"> Central Africa</label>
+                <label class="check-pill"><input type="checkbox" name="region[]" value="south"> Southern Africa</label>
+                <label class="check-pill"><input type="checkbox" name="region[]" value="all"> Continental (all 54)</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Annual Contribution Budget (USD) *</label>
+              <select required class="form-control" name="budget">
+                <option value="">Select range</option>
+                <option>$25K – $60K (Silver/Gold)</option>
+                <option>$60K – $150K (Gold/Platinum)</option>
+                <option>$150K – $500K (Platinum+)</option>
+                <option>$500K+ (Continental Patron)</option>
+                <option>In-kind only (no cash)</option>
+                <option>To be discussed</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Anything we should know? Goals, motivation, prior programs.</label>
+              <textarea class="form-control" name="notes" rows="6" placeholder="Tell us about your programs, why AUC matters to your mission, etc."></textarea>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Section 4 — Compliance -->
+        <fieldset style="border:0;padding:0;margin:0 0 2rem 0;">
+          <legend style="font-size:1.2rem;font-weight:700;color:var(--africa-purple);padding-bottom:.5rem;border-bottom:1px solid var(--glass-border);width:100%;"><i class="fas fa-shield-alt"></i> Compliance & Verification</legend>
+          <div style="margin-top:1rem;display:flex;flex-direction:column;gap:.75rem;">
+            <label style="display:flex;gap:.5rem;align-items:flex-start;font-size:.9rem;cursor:pointer;"><input type="checkbox" required style="accent-color:var(--neon-green);margin-top:.25rem;"> I confirm my organization is in good legal standing and not subject to pending sanctions or litigation material to this partnership.</label>
+            <label style="display:flex;gap:.5rem;align-items:flex-start;font-size:.9rem;cursor:pointer;"><input type="checkbox" required style="accent-color:var(--neon-green);margin-top:.25rem;"> I accept that AUC student intellectual property remains 100% with the student inventors — AUC takes no equity <em>and we receive no equity</em> in participating ventures.</label>
+            <label style="display:flex;gap:.5rem;align-items:flex-start;font-size:.9rem;cursor:pointer;"><input type="checkbox" style="accent-color:var(--neon-green);margin-top:.25rem;"> Subscribe me to the AUC Continental Insights newsletter (optional).</label>
+          </div>
+        </fieldset>
+
+        <div id="partnerResult" style="display:none;margin-bottom:1.5rem;padding:1.25rem;background:rgba(0,255,135,.08);border:1px solid rgba(0,255,135,.3);border-radius:12px;color:var(--neon-green);font-size:.95rem;"></div>
+
+        <div style="display:flex;gap:.75rem;justify-content:flex-end;">
+          <button type="reset" class="btn btn-ghost"><i class="fas fa-undo"></i> Reset</button>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Submit Partnership Inquiry</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style>
+.tier-option { cursor: pointer; position: relative; }
+.tier-option input { position: absolute; opacity: 0; pointer-events: none; }
+.tier-card { padding: 1.5rem 1.25rem; background: rgba(255,255,255,.035); border: 1px solid var(--glass-border); border-radius: 14px; transition: var(--transition); position: relative; }
+.tier-card.featured { border-color: rgba(255,184,0,.35); background: linear-gradient(180deg, rgba(255,184,0,.08), rgba(0,229,255,.04)); }
+.tier-card h5 { font-size: 1.05rem; }
+.tier-card .t-price { font-size: 1.8rem; font-weight: 800; background: var(--grad-primary); -webkit-background-clip: text; color: transparent; margin: .35rem 0 .85rem; }
+.tier-card.featured .t-price { background: var(--grad-gold); -webkit-background-clip: text; color: transparent; }
+.tier-card ul { list-style: none; font-size: .82rem; color: var(--text-soft); display: flex; flex-direction: column; gap: .35rem; }
+.tier-card ul li::before { content: '✓'; color: var(--neon-green); margin-right: .35rem; font-weight: 800; }
+.tier-card .pill { position: absolute; top: -.65rem; right: .85rem; background: var(--grad-gold); color: var(--obsidian); padding: .15rem .65rem; border-radius: 999px; font-size: .68rem; font-weight: 800; letter-spacing: 1.5px; }
+.tier-option:hover .tier-card, .tier-option input:checked + .tier-card { border-color: var(--neon-green); transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,255,135,.2); }
+.check-pill { display: inline-flex; align-items: center; gap: .5rem; padding: .55rem .95rem; background: rgba(255,255,255,.04); border: 1px solid var(--glass-border); border-radius: 999px; font-size: .82rem; cursor: pointer; transition: var(--transition); }
+.check-pill:hover { border-color: var(--neon-cyan); }
+.check-pill input { accent-color: var(--neon-green); }
+</style>
+
+<script>
+function partnerLogin() {
+  const email = document.getElementById('partLogEmail').value.trim();
+  const pass = document.getElementById('partLogPass').value;
+  const status = document.getElementById('partnerLogStatus');
+  if (email && pass) {
+    status.style.display = 'block';
+    status.style.color = 'var(--neon-green)';
+    status.innerHTML = '<i class="fas fa-check-circle"></i> Signed in as <strong>' + email + '</strong>. You can submit or update your partnership category below.';
+    setTimeout(() => { document.getElementById('partnerLoginBox').hidden = true; }, 2000);
+  } else {
+    status.style.display = 'block';
+    status.style.color = '#ff4d4f';
+    status.textContent = 'Please provide your organizational email and password.';
+  }
+}
+
+async function submitPartner(e){
+  e.preventDefault();
+  const f = e.target;
+  const submitBtn = f.querySelector('button[type="submit"]');
+  const origBtnText = submitBtn ? submitBtn.innerHTML : '';
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering Inquiry...';
+  }
+
+  const tier = f.querySelector('input[name="tier"]:checked')?.value || 'custom';
+  const org = f.orgName.value;
+  const orgType = f.orgType.value;
+  const contact = f.firstName.value + ' ' + f.lastName.value;
+  const email = f.email.value;
+  const phone = f.phone.value;
+  const hqCountry = f.hqCountry.value;
+  const budget = f.budget.value;
+  const notes = f.notes ? f.notes.value : '';
+
+  const ref = 'AUC-PART-' + Math.floor(Math.random() * 9000 + 1000);
+
+  const inquiry = {
+    ref,
+    org,
+    orgType,
+    contact,
+    email,
+    phone,
+    hqCountry,
+    tier,
+    budget,
+    notes,
+    status: 'Under Review',
+    submittedAt: new Date().toISOString()
+  };
+
+  try {
+    if (window.AUC_API && window.AUC_API.partnerships) {
+      await window.AUC_API.partnerships.submit(inquiry);
+    } else {
+      const existing = JSON.parse(localStorage.getItem('auc_partner_inquiries') || '[]');
+      existing.unshift(inquiry);
+      localStorage.setItem('auc_partner_inquiries', JSON.stringify(existing));
+
+      const audits = JSON.parse(localStorage.getItem('auc_audit_events') || '[]');
+      audits.unshift({
+        actor: org + ' (' + contact + ')',
+        role: 'Partner Applicant',
+        action: 'Submitted ' + tier.toUpperCase() + ' Partnership Inquiry (' + budget + ')',
+        status: 'Inquiry Logged',
+        time: new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' })
+      });
+      localStorage.setItem('auc_audit_events', JSON.stringify(audits));
+    }
+  } catch(err) {
+    console.warn('[Partnership Submit Error]', err);
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = origBtnText;
+    }
+  }
+
+  const res = document.getElementById('partnerResult');
+    res.style.display = 'block';
+    res.innerHTML = `
+      <div style="display:inline-block;width:56px;height:56px;border-radius:50%;background:rgba(0,255,135,0.15);margin-bottom:1rem;line-height:56px;font-size:1.8rem;color:var(--neon-green);">
+        <i class="fas fa-handshake"></i>
+      </div>
+      <h3 style="color:#fff;font-size:1.4rem;margin-bottom:.5rem;">Partnership Inquiry Successfully Logged!</h3>
+      <p style="color:var(--neon-gold);font-weight:700;font-family:monospace;font-size:1.1rem;margin-bottom:1rem;">DOCKET REF: #${ref}</p>
+      <div style="max-width:560px;margin:0 auto 1.5rem auto;background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);padding:1.25rem;border-radius:12px;text-align:left;font-size:.9rem;color:var(--text-soft);line-height:1.6;">
+        <div><strong>Organization:</strong> ${org} (${orgType})</div>
+        <div><strong>Designated Tier:</strong> <span class="badge-tiny gold">${tier.toUpperCase()} PARTNER</span></div>
+        <div><strong>Pledged Budget:</strong> ${budget}</div>
+        <div><strong>Primary Representative:</strong> ${contact} (<span style="color:var(--neon-cyan);">${email}</span>)</div>
+        <div style="margin-top:.75rem;padding-top:.75rem;border-top:1px solid rgba(255,255,255,0.08);font-size:.82rem;color:var(--text-mute);">
+          <i class="fas fa-shield-alt" style="color:var(--neon-green);margin-right:.3rem;"></i> An official bilateral Memorandum of Understanding (MOU) draft has been queued for the Secretariat Executive Director and will be dispatched to ${email}.
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;">
+        <button type="button" class="btn btn-outline" onclick="location.reload()"><i class="fas fa-redo"></i> Submit Another Inquiry</button>
+        <a href="portal-admin.html" class="btn btn-primary"><i class="fas fa-shield-halved"></i> Review in Admin HQ (Staff)</a>
+      </div>
+    `;
+    f.style.display = 'none';
+    window.scrollTo({top: res.offsetTop - 100, behavior: 'smooth'});
+    return false;
+  }
+</script>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="logo" style="margin-bottom:1rem; display:flex;"><img src="assets/img/Logo.png" alt="AUC" style="height:42px;" onerror="this.style.display='none'"><span class="logo-text">AUC</span></a>
+        <p style="color:var(--text-soft); margin-top:1rem; font-size:.92rem;">The African Undergraduate Challenge (AUC) is Africa's premier pan-continental innovation accelerator fully aligned with African Union Agenda 2063.</p>
+        <div class="social-row">
+          <a href="#"><i class="fab fa-x-twitter"></i></a><a href="#"><i class="fab fa-linkedin-in"></i></a><a href="#"><i class="fab fa-youtube"></i></a><a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Explore</h4><a href="index.html">Home</a><a href="about.html">About</a><a href="structure.html">Stages</a><a href="judging.html">Judging</a><a href="news.html">News</a></div>
+      <div class="footer-col"><h4>Portals</h4><a href="participate.html">Eligibility</a><a href="portal-student.html">Student Portal</a><a href="portal-judge.html">Judge Portal</a><a href="partnership.html">Partnership</a><a href="sponsors.html">Tiers</a></div>
+      <div class="footer-col"><h4>Newsletter</h4><p style="font-size:.88rem;color:var(--text-soft);margin-bottom:1rem;">Get monthly updates.</p><form onsubmit="event.preventDefault();alert('Subscribed!');"><input type="email" required placeholder="your@email.com" class="form-control"><button class="btn btn-primary" style="margin-top:.5rem; justify-content:center;">Subscribe</button></form></div>
+    </div>
+
+    <!-- Centralized Quick Navigation Bar -->
+    <div class="footer-nav-centered">
+      <a href="index.html"><i class="fas fa-home"></i> Home</a>
+      <a href="about.html"><i class="fas fa-info-circle"></i> About AUC</a>
+      <a href="structure.html"><i class="fas fa-stream"></i> Competition Stages</a>
+      <a href="judging.html"><i class="fas fa-gavel"></i> Evaluation Rubric</a>
+      <a href="participate.html"><i class="fas fa-user-check"></i> Eligibility</a>
+      <a href="partnership.html"><i class="fas fa-handshake"></i> Partnerships</a>
+      <a href="news.html"><i class="fas fa-newspaper"></i> News &amp; Insights</a>
+      <a href="contact.html"><i class="fas fa-envelope"></i> Contact HQ</a>
+    </div>
+
+    <div class="footer-bottom-centered">
+      <div class="copy-left">
+        © 2026 African Undergraduate Challenge (AUC). All rights reserved. · Powered by <a href="https://wasard.org" target="_blank" rel="noopener noreferrer" style="color:var(--neon-green);font-weight:600;">WASARD Organization</a> · Designed by <a href="https://wa.me/2347016435125" target="_blank" rel="noopener noreferrer" style="color:var(--neon-cyan);font-weight:600;">DIDS' SYSTEMS INC.</a>
+      </div>
+      <div class="links-center">
+        <a href="contact.html">Contact HQ</a>
+        <a href="structure.html">Governance</a>
+        <a href="judging.html">Ethics</a>
+        <a href="cms-editor.html" style="color:var(--neon-green);font-weight:600;"><i class="fas fa-feather-alt"></i> CMS Editor</a>
+      </div>
+      <!-- Hidden Admin Link on the Right -->
+      <div class="admin-right">
+        <a href="portal-admin.html" class="footer-admin-link" title="Secretariat &amp; Staff Console" aria-label="Admin Access">
+          <i class="fas fa-shield-halved"></i> <span>Staff HQ</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="api-client.js"></script>
+<script src="main.js"></script>
+  <script src="dropdown.js" defer></script>
+<!-- Floating CMS Quick-Edit Button (Item 1) -->
+<a href="cms-editor.html" class="cms-fab" title="Edit Page Content" aria-label="Open CMS Editor">
+  <i class="fas fa-feather-alt"></i>
+  <span class="cms-fab-tooltip">Edit Page Content</span>
+</a>
+</body>
+</html>

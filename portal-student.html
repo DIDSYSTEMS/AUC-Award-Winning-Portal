@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Portal — AUC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="portal.css">
+  <link rel="stylesheet" href="dropdown.css">
+</head>
+<body class="portal-body">
+<!-- ─── Portal Header (logged-in chrome) ─── -->
+<header class="portal-header">
+  <div class="portal-header-row">
+    <a href="index.html" class="logo"><img src="assets/img/Logo.png" alt="AUC" onerror="this.style.display='none'"><span class="logo-text">AUC</span></a>
+    <nav class="portal-breadcrumb"><i class="fas fa-user-graduate"></i><span>Student Portal</span><span class="sep">/</span><span class="active" id="crumbPage">Dashboard</span></nav>
+    <div class="portal-actions">
+      <button class="portal-switcher" data-dropdown-trigger aria-haspopup="true" aria-expanded="false" aria-label="Switch portal">
+        <i class="fas fa-satellite-dish"></i><span>Portals</span><i class="fas fa-chevron-down chev"></i>
+      </button>
+      <div class="dropdown-content" role="menu" aria-label="AUC Portals">
+        <div class="dropdown-header"><h5><i class="fas fa-shield-halved"></i> AUC Portals</h5><small>3 secure systems + CMS</small></div>
+        <div class="dropdown-grid">
+          <a href="portal-student.html" class="dropdown-item is-active" role="menuitem">
+            <div class="di-icon"><i class="fas fa-user-graduate"></i></div>
+            <div class="di-body"><strong>Student Portal <span class="di-badge">YOU</span></strong><small>Team dashboard · submissions</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="portal-judge.html" class="dropdown-item cyan" role="menuitem">
+            <div class="di-icon"><i class="fas fa-gavel"></i></div>
+            <div class="di-body"><strong>Judge Portal</strong><small>Review queue · rubric</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="portal-admin.html" class="dropdown-item gold" role="menuitem">
+            <div class="di-icon"><i class="fas fa-shield-halved"></i></div>
+            <div class="di-body"><strong>Admin HQ</strong><small>STAFF · operations</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="cms-editor.html" class="dropdown-item purple" role="menuitem">
+            <div class="di-icon"><i class="fas fa-feather-alt"></i></div>
+            <div class="di-body"><strong>CMS Editor <span class="di-badge purple">EDIT</span></strong><small>Inline edit · autosave</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="partnership.html" class="dropdown-item partner" role="menuitem">
+            <div class="di-icon"><i class="fas fa-handshake"></i></div>
+            <div class="di-body"><strong>Become a Partner</strong><small>Silver / Gold / Platinum</small></div>
+            <i class="fas fa-arrow-right di-arrow"></i>
+          </a>
+          <a href="index.html" class="dropdown-item" role="menuitem">
+            <div class="di-icon"><i class="fas fa-home"></i></div>
+            <div class="di-body"><strong>Public Site</strong><small>Back to main website</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+        </div>
+        <div class="dropdown-footer"><small><i class="fas fa-lock"></i> Session-encrypted · JWT auth</small></div>
+      </div>
+    </div>
+    <div class="portal-quick">
+      <div id="teamSwitcherContainer" style="display:flex;align-items:center;gap:.4rem;">
+        <i class="fas fa-layer-group" style="color:var(--neon-cyan);font-size:.85rem;"></i>
+        <select id="teamSwitcherSelect" class="form-control" style="font-size:.8rem;padding:.3rem .6rem;height:auto;background:rgba(255,255,255,0.06);border-color:var(--glass-border);color:var(--neon-green);" onchange="switchStudentTeam(this.value)">
+        </select>
+      </div>
+      <button class="icon-btn" title="Notifications"><i class="fas fa-bell"></i><span class="dot">3</span></button>
+      <button class="icon-btn" title="Search"><i class="fas fa-search"></i></button>
+      <div class="portal-avatar" title="Team Lead" id="portalAvatarBox">
+        <span id="avatarInitials">AD</span>
+        <div class="avatar-pulse"></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="portal-layout">
+  <!-- ─── Side Navigation ─── -->
+  <aside class="portal-side">
+    <div class="team-badge">
+      <div class="team-rank">#47</div>
+      <div class="team-info">
+        <h4 id="sideTeamName">Team NovaPay</h4>
+        <p id="sideTeamTrack">Aspiration 1 · FinTech</p>
+      </div>
+      <div class="team-progress"><div class="bar"><div id="teamProgressBarFill" style="width:62%;height:100%;background:var(--grad-primary);border-radius:999px;transition:width .4s ease;"></div></div><span id="teamProgressText">62% complete (Stage 3)</span></div>
+    </div>
+    <nav class="side-menu" id="sideMenu">
+      <a href="#" class="side-link active" data-page="dashboard" data-target="dashboard"><i class="fas fa-th-large"></i><span>Dashboard</span></a>
+      <a href="#" class="side-link" data-page="team" data-target="team"><i class="fas fa-users"></i><span>My Team</span><span class="badge" id="sideTeamCountBadge">4</span></a>
+      <a href="#" class="side-link" data-page="submission" data-target="submission"><i class="fas fa-file-upload"></i><span>Submission</span></a>
+      <a href="#" class="side-link" data-page="track" data-target="track"><i class="fas fa-flag-checkered"></i><span>Track Details</span></a>
+      <a href="#" class="side-link" data-page="eligibility" data-target="eligibility"><i class="fas fa-id-card"></i><span>Eligibility & KYC</span><span class="badge warn">!</span></a>
+      <a href="#" class="side-link" data-page="mentors" data-target="mentors"><i class="fas fa-chalkboard-teacher"></i><span>Mentors</span></a>
+      <a href="#" class="side-link" data-page="resources" data-target="resources"><i class="fas fa-book-open"></i><span>Resources</span></a>
+      <a href="#" class="side-link" data-page="schedule" data-target="schedule"><i class="fas fa-calendar-alt"></i><span>Schedule</span></a>
+      <a href="#" class="side-link" data-page="scoreboard" data-target="scoreboard"><i class="fas fa-trophy"></i><span>Live Scoreboard</span></a>
+      <a href="#" class="side-link" data-page="messages" data-target="messages"><i class="fas fa-comments"></i><span>Messages</span><span class="badge cyan">5</span></a>
+      <a href="#" class="side-link" data-page="settings" data-target="settings"><i class="fas fa-cog"></i><span>Settings</span></a>
+    </nav>
+    <div class="side-footer">
+      <div class="support-card">
+        <i class="fas fa-headset"></i>
+        <h5>Need help?</h5>
+        <p>24/7 student helpline</p>
+        <a href="https://wa.me/2347016435125" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding:.5rem 1rem; font-size:.8rem;"><i class="fab fa-whatsapp"></i> Open Chat</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ─── Page Content (dynamically switched) ─── -->
+  <main class="portal-main">
+
+    <!-- DASHBOARD -->
+    <section class="page active" data-page="dashboard">
+      <div class="page-head">
+        <div>
+          <h1 id="dashGreeting">Welcome back, Amara 👋</h1>
+          <p>You are 62% through your Stage 3 deliverables. Keep pushing — Continental Finals are <strong>42 days</strong> away.</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-ghost" id="exportTeamBtn"><i class="fas fa-download"></i> Export Dossier</button>
+          <button class="btn btn-primary" id="newSubmissionBtn"><i class="fas fa-plus"></i> Go to Submission</button>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card reveal">
+          <div class="kpi-icon cyan"><i class="fas fa-tasks"></i></div>
+          <div><div class="kpi-num" id="kpiTasksCompleted" data-count="8">8</div><div class="kpi-lbl">Tasks Completed</div></div>
+          <div class="kpi-trend up">+2 this week</div>
+        </div>
+        <div class="kpi-card reveal">
+          <div class="kpi-icon"><i class="fas fa-star"></i></div>
+          <div><div class="kpi-num" data-count="84">84</div><div class="kpi-lbl">Judge Score (avg)</div></div>
+          <div class="kpi-trend up">+3 pts since Stage 2</div>
+        </div>
+        <div class="kpi-card reveal">
+          <div class="kpi-icon gold"><i class="fas fa-clock"></i></div>
+          <div><div class="kpi-num" data-count="42">42</div><div class="kpi-lbl">Days to Finals</div></div>
+          <div class="kpi-trend">Oct 15, 2026</div>
+        </div>
+        <div class="kpi-card reveal">
+          <div class="kpi-icon purple"><i class="fas fa-users"></i></div>
+          <div><div class="kpi-num" id="kpiTeamMembers" data-count="4">4</div><div class="kpi-lbl">Team Members</div></div>
+          <div class="kpi-trend up">All active</div>
+        </div>
+      </div>
+
+      <div class="dash-grid">
+        <div class="panel reveal">
+          <div class="panel-head"><h3>Submission Timeline</h3><a href="#" class="panel-link">See all <i class="fas fa-arrow-right"></i></a></div>
+          <ol class="timeline-vertical">
+            <li class="done"><span class="dot"></span><div><strong>Team Registration</strong><small>Approved · Jan 12, 2026</small></div></li>
+            <li class="done"><span class="dot"></span><div><strong>Campus Pitch (Stage 1)</strong><small>1st Place · Feb 24, 2026</small></div></li>
+            <li class="done"><span class="dot"></span><div><strong>Nationals (Stage 2)</strong><small>Top 5 · Apr 18, 2026</small></div></li>
+            <li class="active"><span class="dot"></span><div><strong>Regional Accelerator (Stage 3)</strong><small>In progress · Mentor: Dr. Kwame A.</small></div></li>
+            <li><span class="dot"></span><div><strong>Continental Finals (Stage 4)</strong><small>Scheduled · Oct 15, 2026</small></div></li>
+          </ol>
+        </div>
+        <div class="panel reveal">
+          <div class="panel-head"><h3>Latest Judge Feedback</h3><a href="#" class="panel-link">Open thread <i class="fas fa-arrow-right"></i></a></div>
+          <div class="quote-card">
+            <div class="quote-mark">“</div>
+            <p>The proposed cross-border payment architecture addresses a real seam in the AfCFTA digital rail — but the cybersecurity model needs deeper threat modeling before scaling. Highly recommend the upcoming secure-by-design workshop.</p>
+            <div class="quote-meta"><div class="team-avatar" style="width:36px;height:36px;font-size:.8rem;background:linear-gradient(135deg,var(--neon-cyan),var(--neon-gold));">KA</div><div><strong>Dr. Kwame Acheampong</strong><small>Lead Reviewer · Stage 2</small></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel reveal">
+        <div class="panel-head">
+          <h3>Upcoming Milestones</h3>
+          <span class="task-tag ok" id="milestoneCounterBadge">1 of 4 completed</span>
+        </div>
+        <div class="task-list" id="milestoneTaskList">
+          <div class="task-row"><input type="checkbox" class="milestone-chk" checked><div><strong>Submit updated business model canvas</strong><small>Due Aug 25 · Aspiration 1</small></div><span class="task-tag done">submitted</span></div>
+          <div class="task-row"><input type="checkbox" class="milestone-chk"><div><strong>Upload demo video (max 3 min)</strong><small>Due Sep 02 · Stage 3 deliverable</small></div><span class="task-tag warn">3 days left</span></div>
+          <div class="task-row"><input type="checkbox" class="milestone-chk"><div><strong>Pitch deck final lock</strong><small>Due Sep 09 · Stage 3 deliverable</small></div><span class="task-tag">in 10 days</span></div>
+          <div class="task-row"><input type="checkbox" class="milestone-chk"><div><strong>Team travel & visa paperwork</strong><small>Due Sep 20 · Continental Finals</small></div><span class="task-tag">in 21 days</span></div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- TEAM -->
+    <section id="team" class="page" data-page="team">
+      <div class="page-head">
+        <div>
+          <h1 id="teamHeading">Team NovaPay</h1>
+          <p id="teamSubtitleText">4 members · 3 countries · Multidisciplinary</p>
+        </div>
+        <button class="btn btn-outline" id="inviteMemberBtn"><i class="fas fa-user-plus"></i> Invite Member</button>
+      </div>
+      <div class="team-table" id="studentTeamTable">
+        <div class="row head"><div>Member</div><div>Role</div><div>Country</div><div>Contribution</div><div>Status</div><div></div></div>
+        <div class="row"><div class="member"><div class="team-avatar" style="width:40px;height:40px;font-size:.9rem;background:linear-gradient(135deg,var(--neon-green),var(--neon-cyan));">AD</div><div><strong>Amara Diallo</strong><small>Lead · amara@nova.africa</small></div></div><div>Lead / Product</div><div>🇸🇳 Senegal · <small style="color:var(--text-mute);">UCAD</small></div><div class="contrib"><div class="bar"><div class="fill" style="width:92%;"></div></div><span>92%</span></div><div><span class="dot online"></span>Active</div><div><i class="fas fa-ellipsis-h"></i></div></div>
+        <div class="row"><div class="member"><div class="team-avatar" style="width:40px;height:40px;font-size:.9rem;background:linear-gradient(135deg,var(--neon-cyan),var(--neon-gold));">KO</div><div><strong>Kwame Osei</strong><small>k.osei@nova.africa</small></div></div><div>Engineer</div><div>🇬🇭 Ghana · <small style="color:var(--text-mute);">Univ of Ghana</small></div><div class="contrib"><div class="bar"><div class="fill" style="width:84%;"></div></div><span>84%</span></div><div><span class="dot online"></span>Active</div><div><i class="fas fa-ellipsis-h"></i></div></div>
+        <div class="row"><div class="member"><div class="team-avatar" style="width:40px;height:40px;font-size:.9rem;background:linear-gradient(135deg,var(--neon-gold),#FF6A3D);">JM</div><div><strong>Joseph Mwangi</strong><small>j.mwangi@nova.africa</small></div></div><div>Finance</div><div>🇰🇪 Kenya · <small style="color:var(--text-mute);">Univ of Nairobi</small></div><div class="contrib"><div class="bar"><div class="fill" style="width:71%;"></div></div><span>71%</span></div><div><span class="dot online"></span>Active</div><div><i class="fas fa-ellipsis-h"></i></div></div>
+        <div class="row"><div class="member"><div class="team-avatar" style="width:40px;height:40px;font-size:.9rem;background:linear-gradient(135deg,#9D4EDD,var(--neon-cyan));">LB</div><div><strong>Lina Bekele</strong><small>l.bekele@nova.africa</small></div></div><div>Design / UX</div><div>🇪🇹 Ethiopia · <small style="color:var(--text-mute);">Addis Ababa Univ</small></div><div class="contrib"><div class="bar"><div class="fill" style="width:58%;"></div></div><span>58%</span></div><div><span class="dot idle"></span>Idle 2d</div><div><i class="fas fa-ellipsis-h"></i></div></div>
+      </div>
+    </section>
+
+    <!-- SUBMISSION -->
+    <section id="submission" class="page" data-page="submission">
+      <div class="page-head">
+        <div>
+          <h1>Stage 3 Application & Deliverables</h1>
+          <p>Complete all 7 milestone modules. Work saves automatically to your secure local session.</p>
+        </div>
+        <div style="display:flex;gap:.75rem;align-items:center;">
+          <span class="save-status" id="submissionAutosaveStatus"><i class="fas fa-check-circle"></i> Auto-saved · Just now</span>
+        </div>
+      </div>
+
+      <div class="submit-tabs" data-target="submissionPanels">
+        <button class="tab active" aria-selected="true"><i class="fas fa-id-card"></i> 1. Identity</button>
+        <button class="tab" aria-selected="false"><i class="fas fa-file-alt"></i> 2. Solution Brief</button>
+        <button class="tab" aria-selected="false"><i class="fas fa-file-powerpoint"></i> 3. Pitch Deck</button>
+        <button class="tab" aria-selected="false"><i class="fas fa-video"></i> 4. Demo Video</button>
+        <button class="tab" aria-selected="false"><i class="fas fa-code"></i> 5. Code & Tech</button>
+        <button class="tab" aria-selected="false"><i class="fas fa-calculator"></i> 6. Financial Model</button>
+        <button class="tab" aria-selected="false"><i class="fas fa-folder-open"></i> 7. Appendices</button>
+      </div>
+
+      <div id="submissionPanels">
+        <!-- 1. IDENTITY -->
+        <div class="tab-panel">
+          <div class="form-grid">
+            <div class="form-card">
+              <div class="form-card-head"><i class="fas fa-flag"></i><h4>Project Name / Venture Title *</h4></div>
+              <input type="text" id="subTitle" class="form-control" value="NovaPay: An L1 Settlement Layer for AfCFTA Micro-Trade">
+            </div>
+            <div class="form-card">
+              <div class="form-card-head"><i class="fas fa-globe-africa"></i><h4>AU Agenda 2063 Innovation Track *</h4></div>
+              <select id="subTrack" class="form-control">
+                <option selected>Aspiration 1 · Prosperity & Inclusive Growth (FinTech, Agritech)</option>
+                <option>Aspiration 2 · Integrated Continent (Trade & Logistics)</option>
+                <option>Aspiration 3 · Good Governance & CivicTech</option>
+                <option>Aspiration 4 · Peace & Security (Cyber Resilience)</option>
+                <option>Aspiration 5 · Cultural Identity & Creative Tech</option>
+                <option>Aspiration 6 · People-Driven & Youth Empowerment (Health, EdTech)</option>
+                <option>Aspiration 7 · Global Player & Diplomatic Partner</option>
+              </select>
+            </div>
+            <div class="form-card" style="grid-column:1/-1;">
+              <div class="form-card-head"><i class="fas fa-bolt"></i><h4>One-Sentence Elevator Pitch / Value Proposition</h4></div>
+              <input type="text" id="subTagline" class="form-control" value="Instant, sub-cent cross-border settlement for 40,000 West and East African informal traders via sovereign digital currency rails.">
+            </div>
+            <div class="form-card">
+              <div class="form-card-head"><i class="fas fa-university"></i><h4>Lead Academic Institution</h4></div>
+              <input type="text" id="subUni" class="form-control" value="Université Cheikh Anta Diop (Senegal)">
+            </div>
+            <div class="form-card">
+              <div class="form-card-head"><i class="fas fa-layer-group"></i><h4>Technology Readiness Level (TRL)</h4></div>
+              <select id="subTRL" class="form-control">
+                <option>TRL 3 — Proof of Concept validated</option>
+                <option selected>TRL 4 — Prototype validated in lab / campus testbed</option>
+                <option>TRL 5 — Prototype demonstrated in relevant market environment</option>
+                <option>TRL 6 — Operational model ready for regional sandbox</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. SOLUTION BRIEF -->
+        <div class="tab-panel" hidden>
+          <div class="form-grid">
+            <div class="form-card" style="grid-column:1/-1;">
+              <div class="form-card-head">
+                <i class="fas fa-align-left"></i>
+                <h4>Solution Narrative & Theory of Change (≤ 800 words) *</h4>
+                <span class="word-count" id="briefWordCount">412 / 800 words</span>
+              </div>
+              <textarea id="subNarrative" class="form-control tall" rows="11" oninput="updateBriefWordCount(this)">NovaPay is a settlement layer purpose-built for informal cross-border micro-trade across the AfCFTA region. Existing rails (SWIFT, traditional mobile money) lose 9–17% of transfer value to intermediary fees and FX spreads, disadvantaging small-value traders who cannot transact. NovaPay issues stablecoin-backed value across a permissioned Polygon CDK rollup, denominated in CBA-issued digital cedi equivalents. Settlement completes in under 4 seconds at a stable US$0.02 per transfer.
+
+Our solution interfaces seamlessly with USSD handsets and regional mobile money wallets (Wave, M-Pesa, Orange Money), requiring no smartphone or internet connection for market women and border merchants.</textarea>
+            </div>
+            <div class="form-card">
+              <div class="form-card-head"><i class="fas fa-bullseye"></i><h4>Specific Problem Addressed</h4></div>
+              <textarea id="subProblem" class="form-control" rows="4">Excessive cross-border currency conversion friction and high transaction costs preventing informal traders in the ECOWAS-EAC corridors from scaling regional trade.</textarea>
+            </div>
+            <div class="form-card">
+              <div class="form-card-head"><i class="fas fa-users"></i><h4>Target Impact Beneficiaries</h4></div>
+              <textarea id="subBeneficiaries" class="form-control" rows="4">40,000 cross-border micro-merchants (74% female-led) across Senegal ↔ Mali and Kenya ↔ Uganda border hubs within first 18 months of deployment.</textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. PITCH DECK -->
+        <div class="tab-panel" hidden>
+          <div class="dash-grid" style="grid-template-columns:1.4fr 1fr; margin-bottom:1.5rem;">
+            <div>
+              <div class="upload-card" id="deckDropZone" style="padding:2.5rem 1.5rem; border:2px dashed rgba(0,229,255,0.4); cursor:pointer; background:rgba(0,229,255,0.02);" onclick="document.getElementById('deckFileInput').click()">
+                <i class="fas fa-cloud-upload-alt" style="font-size:3rem; color:var(--neon-cyan); margin-bottom:1rem;"></i>
+                <h4>Upload Stage 3 Pitch Deck (PDF or PPTX)</h4>
+                <p>Drag and drop your file here, or <span style="color:var(--neon-cyan);text-decoration:underline;">browse files</span> (Max 25MB)</p>
+                <input type="file" id="deckFileInput" accept=".pdf,.pptx,.ppt" style="display:none;" onchange="handleDeckUpload(this.files)">
+              </div>
+              <div id="deckFileInfo" style="margin-top:1rem; padding:.85rem 1.25rem; background:rgba(0,255,135,0.06); border:1px solid rgba(0,255,135,0.3); border-radius:12px; display:flex; align-items:center; justify-content:space-between;">
+                <div style="display:flex;align-items:center;gap:.75rem;">
+                  <i class="fas fa-file-pdf" style="font-size:1.5rem; color:var(--neon-green);"></i>
+                  <div><strong id="deckFileName">NovaPay_Stage3_Continental_Pitch_v3.pdf</strong><br><small id="deckFileSize" style="color:var(--text-soft);">12.4 MB · Uploaded Aug 22, 2026</small></div>
+                </div>
+                <span class="upload-status ok">✓ Validated</span>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-head"><h3>Pitch Deck Evaluation Criteria</h3></div>
+              <div style="display:flex;flex-direction:column;gap:.6rem;font-size:.85rem;color:var(--text-soft);">
+                <div><i class="fas fa-check-circle" style="color:var(--neon-green);margin-right:.5rem;"></i> Problem validation & AU impact alignment</div>
+                <div><i class="fas fa-check-circle" style="color:var(--neon-green);margin-right:.5rem;"></i> Deep tech feasibility & architecture</div>
+                <div><i class="fas fa-check-circle" style="color:var(--neon-green);margin-right:.5rem;"></i> Unit economics & AfCFTA market sizing</div>
+                <div><i class="fas fa-check-circle" style="color:var(--neon-green);margin-right:.5rem;"></i> Multi-disciplinary team credentials</div>
+                <div><i class="fas fa-check-circle" style="color:var(--neon-green);margin-right:.5rem;"></i> Max 12 slides recommended</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. DEMO VIDEO -->
+        <div class="tab-panel" hidden>
+          <div class="dash-grid" style="grid-template-columns:1fr 1fr; margin-bottom:1.5rem;">
+            <div>
+              <div class="form-card" style="margin-bottom:1rem;">
+                <div class="form-card-head"><i class="fas fa-link"></i><h4>Live Video Stream / Loom / YouTube Link</h4></div>
+                <input type="url" id="videoUrlInput" class="form-control" value="https://www.youtube.com/watch?v=dQw4w9WgXcQ" placeholder="https://youtube.com/watch?v=... or https://loom.com/share/..." oninput="updateVideoPreview(this.value)">
+              </div>
+              <div class="upload-card" id="videoDropZone" style="padding:2rem 1rem; border:2px dashed rgba(255,184,0,0.3); cursor:pointer;" onclick="document.getElementById('videoFileInput').click()">
+                <i class="fas fa-video" style="font-size:2.5rem; color:var(--neon-gold); margin-bottom:.75rem;"></i>
+                <h4>Upload MP4 Video Directly (Max 200MB, ≤ 3 mins)</h4>
+                <p>English or French narration with subtitles recommended</p>
+                <input type="file" id="videoFileInput" accept="video/mp4,video/webm" style="display:none;" onchange="handleVideoUpload(this.files)">
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-head"><h3>Video Preview</h3><span class="badge cyan">3:00 Max</span></div>
+              <div id="videoPlayerBox" style="background:#000; border-radius:12px; overflow:hidden; aspect-ratio:16/9; display:flex; flex-direction:column; align-items:center; justify-content:center; border:1px solid var(--glass-border); position:relative;">
+                <div style="text-align:center; padding:1.5rem;">
+                  <i class="fas fa-play-circle" style="font-size:3rem; color:var(--neon-green); margin-bottom:.75rem; cursor:pointer;" onclick="alert('Playing Stage 3 Prototype Demonstration Video: NovaPay USSD settlement test.')"></i>
+                  <div style="font-weight:700;">NovaPay 3-Minute Working Prototype Demonstration</div>
+                  <small style="color:var(--text-soft);">Click to preview simulated video playback</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. CODE & ARCHITECTURE -->
+        <div class="tab-panel" hidden>
+          <div class="form-grid">
+            <div class="form-card">
+              <div class="form-card-head"><i class="fab fa-github"></i><h4>Public or Evaluator Git Repository</h4></div>
+              <input type="url" id="subRepoUrl" class="form-control" value="https://github.com/novapay-africa/core-settlement">
+            </div>
+            <div class="form-card">
+              <div class="form-card-head"><i class="fas fa-code-branch"></i><h4>Active Branch & Target Commit</h4></div>
+              <div style="display:flex;gap:.5rem;">
+                <input type="text" id="subRepoBranch" class="form-control" value="main" style="flex:1;">
+                <input type="text" id="subRepoCommit" class="form-control" value="7f4b80a" style="width:120px;">
+              </div>
+            </div>
+            <div class="form-card" style="grid-column:1/-1;">
+              <div class="form-card-head"><i class="fas fa-laptop-code"></i><h4>Technology Stack (Click to toggle)</h4></div>
+              <div id="techStackPills" style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.25rem;">
+                <span class="filter-pill active" onclick="this.classList.toggle('active')">Polygon CDK</span>
+                <span class="filter-pill active" onclick="this.classList.toggle('active')">Solidity</span>
+                <span class="filter-pill active" onclick="this.classList.toggle('active')">Node.js / Express</span>
+                <span class="filter-pill active" onclick="this.classList.toggle('active')">USSD Gateway (Africa's Talking)</span>
+                <span class="filter-pill active" onclick="this.classList.toggle('active')">PostgreSQL</span>
+                <span class="filter-pill active" onclick="this.classList.toggle('active')">Docker</span>
+                <span class="filter-pill" onclick="this.classList.toggle('active')">Python / FastAPI</span>
+                <span class="filter-pill" onclick="this.classList.toggle('active')">React Native</span>
+                <span class="filter-pill" onclick="this.classList.toggle('active')">Flutter</span>
+                <span class="filter-pill" onclick="this.classList.toggle('active')">TensorFlow Lite</span>
+              </div>
+            </div>
+            <div class="form-card" style="grid-column:1/-1;">
+              <div class="form-card-head"><i class="fas fa-terminal"></i><h4>Live Sandbox / Testnet URL</h4></div>
+              <input type="url" id="subDemoUrl" class="form-control" value="https://testnet.novapay.africa">
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. FINANCIAL MODEL -->
+        <div class="tab-panel" hidden>
+          <div class="panel" style="margin-bottom:1.5rem;">
+            <div class="panel-head">
+              <h3><i class="fas fa-calculator" style="color:var(--neon-green);margin-right:.5rem;"></i> Interactive Unit Economics & Break-Even Calculator</h3>
+              <span class="badge cyan">AfCFTA Projections</span>
+            </div>
+            <p style="color:var(--text-soft);font-size:.9rem;margin-bottom:1.5rem;">
+              Adjust the sliders or numbers below to simulate your venture's operating scale and break-even milestone.
+            </p>
+            <div class="form-grid" style="margin-bottom:1.5rem;">
+              <div class="form-card">
+                <label style="font-size:.85rem;color:var(--text-soft);display:block;margin-bottom:.5rem;">Target Year 1 Active Traders / Users</label>
+                <input type="number" id="calcUsers" class="form-control" value="40000" min="1000" max="1000000" step="5000" oninput="runFinancialModel()">
+              </div>
+              <div class="form-card">
+                <label style="font-size:.85rem;color:var(--text-soft);display:block;margin-bottom:.5rem;">Annual Gross Transactions per User ($)</label>
+                <input type="number" id="calcVol" class="form-control" value="650" min="50" max="10000" step="50" oninput="runFinancialModel()">
+              </div>
+              <div class="form-card">
+                <label style="font-size:.85rem;color:var(--text-soft);display:block;margin-bottom:.5rem;">Our Transaction Take-Rate (%)</label>
+                <input type="number" id="calcRate" class="form-control" value="0.75" min="0.1" max="5.0" step="0.05" oninput="runFinancialModel()">
+              </div>
+              <div class="form-card">
+                <label style="font-size:.85rem;color:var(--text-soft);display:block;margin-bottom:.5rem;">Monthly Fixed Operational Burn ($)</label>
+                <input type="number" id="calcBurn" class="form-control" value="4500" min="500" max="50000" step="500" oninput="runFinancialModel()">
+              </div>
+            </div>
+
+            <div class="calc-box">
+              <div class="calc-stat">
+                <small style="color:var(--text-mute);">Gross Annual Processed Volume</small>
+                <strong id="resGrossVol">$26,000,000</strong>
+              </div>
+              <div class="calc-stat">
+                <small style="color:var(--text-mute);">Projected Annual Net Revenue</small>
+                <strong id="resNetRev" style="color:var(--neon-cyan);">$195,000</strong>
+              </div>
+              <div class="calc-stat">
+                <small style="color:var(--text-mute);">Annual Operating Profit</small>
+                <strong id="resProfit" style="color:var(--neon-green);">$141,000</strong>
+              </div>
+              <div class="calc-stat">
+                <small style="color:var(--text-mute);">Estimated Break-Even Horizon</small>
+                <strong id="resBreakEven" style="color:var(--neon-gold);">7.2 Months</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. APPENDICES -->
+        <div class="tab-panel" hidden>
+          <div class="form-grid">
+            <div class="form-card">
+              <div class="form-card-head"><i class="fas fa-university"></i><h4>Institutional Endorsement Letter</h4></div>
+              <div class="upload-card" style="cursor:pointer;" onclick="alert('Upload Dean or Vice Chancellor recommendation letter (PDF)');">
+                <i class="fas fa-file-signature"></i>
+                <h4>Dean / Head of Department Letter</h4>
+                <p>UCAD_Faculty_Engineering_Endorsement.pdf · 1.2 MB</p>
+                <span class="upload-status ok">✓ Verified on File</span>
+              </div>
+            </div>
+            <div class="form-card">
+              <div class="form-card-head"><i class="fas fa-balance-scale"></i><h4>Ethics & Research Clearance</h4></div>
+              <div class="upload-card" style="cursor:pointer;" onclick="alert('Upload Research & Human Subjects Ethics clearance if applicable');">
+                <i class="fas fa-certificate"></i>
+                <h4>Institutional Ethics Certificate</h4>
+                <p>Ethics_Consent_Form_v2.pdf · 640 KB</p>
+                <span class="upload-status ok">✓ Approved</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="submit-footer" style="margin-top:2rem;">
+        <button class="btn btn-ghost" id="btnSaveDraft"><i class="fas fa-save"></i> Save Draft to Session</button>
+        <button class="btn btn-primary" id="btnSubmitFinal"><i class="fas fa-paper-plane"></i> Submit Final Stage 3 Application</button>
+      </div>
+    </section>
+
+    <!-- TRACK -->
+    <section id="track" class="page" data-page="track"><div class="page-head"><div><h1>Track Details — Aspiration 1 (FinTech)</h1><p>Criteria, calendar, and prize pot for your selected track.</p></div></div>
+      <div class="tracks-grid">
+        <div class="track-card">
+          <span class="track-pill">Aspiration 1</span>
+          <h3>Inclusive Growth</h3>
+          <p>Your team's track for cross-border financial inclusion. Reviewed by 5 judges including 2 venture partners.</p>
+        </div>
+        <div class="track-card">
+          <span class="track-pill" style="background:rgba(0,229,255,0.1);color:var(--neon-cyan);border-color:rgba(0,229,255,0.3);">$60K</span>
+          <h3>Grand Prize</h3>
+          <p>Awarded to the top inclusive-growth project across 54 nations, voted on by combined jury + peer score.</p>
+        </div>
+      </div></section>
+
+    <!-- ELIGIBILITY -->
+    <section id="eligibility" class="page" data-page="eligibility">
+      <div class="page-head">
+        <div>
+          <h1>Eligibility & KYC</h1>
+          <p>All members must complete institutional verification. Status updates automatically.</p>
+        </div>
+        <button class="btn btn-outline" id="btnUploadMissingDoc"><i class="fas fa-id-card"></i> Upload Missing Doc</button>
+      </div>
+      <div class="kyc-grid">
+        <div class="kyc-card done"><div class="kyc-head"><i class="fas fa-check-circle"></i><h4>Amara Diallo</h4></div><p>Student ID Verified · Université Cheikh Anta Diop</p><span class="kyc-tag ok">verified</span></div>
+        <div class="kyc-card done"><div class="kyc-head"><i class="fas fa-check-circle"></i><h4>Kwame Osei</h4></div><p>Student ID Verified · University of Ghana</p><span class="kyc-tag ok">verified</span></div>
+        <div class="kyc-card done"><div class="kyc-head"><i class="fas fa-check-circle"></i><h4>Joseph Mwangi</h4></div><p>Student ID Verified · University of Nairobi</p><span class="kyc-tag ok">verified</span></div>
+        <div class="kyc-card pending" id="kycLinaCard"><div class="kyc-head"><i class="fas fa-exclamation-circle"></i><h4>Lina Bekele</h4></div><p>Student ID pending review — uploaded Aug 14, last updated Aug 17.</p><span class="kyc-tag warn">pending</span></div>
+      </div>
+    </section>
+
+    <!-- MENTORS -->
+    <section id="mentors" class="page" data-page="mentors"><div class="page-head"><div><h1>Your Mentors</h1><p>Industry experts paired with your team at Stage 3.</p></div></div>
+      <div class="tracks-grid">
+        <div class="team-card"><div class="team-avatar" style="width:80px;height:80px;font-size:1.4rem;background:linear-gradient(135deg,var(--neon-cyan),var(--neon-gold));">KA</div><h4>Dr. Kwame Acheampong</h4><p style="color:var(--neon-cyan);font-weight:600;font-size:.85rem;">FinTech & Regulation</p><p style="font-size:.85rem;">Next session: Sep 03</p></div>
+        <div class="team-card"><div class="team-avatar" style="width:80px;height:80px;font-size:1.4rem;background:linear-gradient(135deg,#9D4EDD,var(--neon-cyan));">EO</div><h4>Eng. Esther Ouko</h4><p style="color:var(--africa-purple);font-weight:600;font-size:.85rem;">Scalable Architecture</p><p style="font-size:.85rem;">Next session: Sep 06</p></div>
+      </div></section>
+
+    <!-- RESOURCES -->
+    <section id="resources" class="page" data-page="resources"><div class="page-head"><div><h1>Resources & Toolkits</h1><p>Curated playbooks, templates, and regulation primers.</p></div></div>
+      <div class="resource-grid">
+        <a class="res-card" href="javascript:alert('Downloading Stage 3 Submission Playbook (PDF)');"><i class="fas fa-file-pdf"></i><h4>Stage 3 Submission Playbook</h4><p>PDF · 2.4 MB · v3.1 Aug 2026</p></a>
+        <a class="res-card" href="javascript:alert('Downloading Pitch Deck Template (PPTX)');"><i class="fas fa-file-powerpoint"></i><h4>Pitch Deck Template</h4><p>PPTX · Master brand-aligned</p></a>
+        <a class="res-card" href="javascript:alert('Downloading AU Agenda 2063 Brief (PDF)');"><i class="fas fa-book"></i><h4>AU Agenda 2063 Brief</h4><p>PDF · Continental context</p></a>
+        <a class="res-card" href="javascript:alert('Downloading IP & NDA Legal Toolkit (DOC)');"><i class="fas fa-shield-alt"></i><h4>IP & NDA Templates</h4><p>DOC · Legal toolkit</p></a>
+      </div></section>
+
+    <!-- SCHEDULE -->
+    <section id="schedule" class="page" data-page="schedule"><div class="page-head"><div><h1>Schedule</h1><p>Pre-finals key dates (your local time: GMT+1).</p></div></div>
+      <div class="cal-grid">
+        <div class="cal-day"><div class="cal-day-head">SEP 03</div><div class="cal-event cyan"><strong>Mentor session</strong><small>10:00 · Dr. Kwame A.</small></div><div class="cal-event"><strong>Submissions QA</strong><small>14:00 · HQ Live</small></div></div>
+        <div class="cal-day"><div class="cal-day-head">SEP 06</div><div class="cal-event purple"><strong>Mentor session</strong><small>11:00 · Esther O.</small></div></div>
+        <div class="cal-day"><div class="cal-day-head">SEP 09</div><div class="cal-event gold"><strong>Pitch Deck Lock</strong><small>23:59 deadline</small></div></div>
+        <div class="cal-day"><div class="cal-day-head">OCT 15</div><div class="cal-event big"><strong>Continental Finals</strong><small>Addis Ababa · AU HQ</small></div></div>
+      </div></section>
+
+    <!-- SCOREBOARD -->
+    <section id="scoreboard" class="page" data-page="scoreboard">
+      <div class="page-head">
+        <div>
+          <h1>Continental Live Scoreboard</h1>
+          <p>Top teams across Stage 3 Accelerator — click any team row to inspect rubric criteria and evaluator marks.</p>
+        </div>
+      </div>
+      
+      <div class="filter-bar">
+        <button class="filter-pill active" data-sb-filter="all">All Tracks</button>
+        <button class="filter-pill" data-sb-filter="Aspiration 1">Aspiration 1 · FinTech</button>
+        <button class="filter-pill" data-sb-filter="Aspiration 2">Aspiration 2 · Logistics</button>
+        <button class="filter-pill" data-sb-filter="Aspiration 6">Aspiration 6 · Health/EdTech</button>
+        <input type="text" class="search-input" id="sbSearchInput" placeholder="Search by team, university, or country..." oninput="filterScoreboardTable(this.value)">
+      </div>
+
+      <div class="scoreboard" id="scoreboardList">
+        <div class="score-row leader" style="cursor:pointer;" data-track="Aspiration 1" data-team="Team AgriMesh" data-country="Kenya" onclick="openScoreBreakdown('Team AgriMesh', 'Aspiration 1 · Inclusive Growth', 'University of Nairobi (Kenya)', 96, [25, 24, 19, 19, 9], 'Exceptional field validation with 40,000 smallholders. Scalability model is outstanding.')">
+          <div class="rank">🥇 1</div>
+          <div class="who"><strong>Team AgriMesh</strong><small>🇰🇪 Kenya · Aspiration 1 (FinTech)</small></div>
+          <div class="bar"><div class="fill" style="width:96%;"></div></div>
+          <div class="pts">96</div>
+        </div>
+        <div class="score-row leader" style="cursor:pointer;" data-track="Aspiration 2" data-team="Team SolarLedger" data-country="South Africa" onclick="openScoreBreakdown('Team SolarLedger', 'Aspiration 2 · Integrated Corridor', 'University of Cape Town (South Africa)', 92, [24, 23, 18, 18, 9], 'High-reliability peer-to-peer micro-grid accounting mechanism.')">
+          <div class="rank">🥈 2</div>
+          <div class="who"><strong>Team SolarLedger</strong><small>🇿🇦 South Africa · Aspiration 2 (Logistics)</small></div>
+          <div class="bar"><div class="fill" style="width:92%;"></div></div>
+          <div class="pts">92</div>
+        </div>
+        <div class="score-row" style="cursor:pointer;" data-track="Aspiration 6" data-team="Team MediRoute AI" data-country="Rwanda" onclick="openScoreBreakdown('Team MediRoute AI', 'Aspiration 6 · Health/EdTech', 'University of Rwanda', 88, [23, 22, 17, 18, 8], 'Excellent drone route optimization for cold-chain vaccines in mountainous terrain.')">
+          <div class="rank">🥉 3</div>
+          <div class="who"><strong>Team MediRoute AI</strong><small>🇷🇼 Rwanda · Aspiration 6 (Health/EdTech)</small></div>
+          <div class="bar"><div class="fill" style="width:88%;"></div></div>
+          <div class="pts">88</div>
+        </div>
+        <div class="score-row you" style="cursor:pointer;" data-track="Aspiration 1" data-team="Team NovaPay" data-country="Senegal" onclick="openScoreBreakdown('Team NovaPay (Your Team)', 'Aspiration 1 · Inclusive Growth', 'UCAD Senegal / Univ of Ghana / Univ of Nairobi', 84, [22, 21, 17, 16, 8], 'Pioneering AfCFTA settlement architecture. Deepen threat modeling on cyber rails before Stage 4 finals.')">
+          <div class="rank">▸ 47</div>
+          <div class="who"><strong>Team NovaPay</strong><small>🇸🇳 You · Aspiration 1 (FinTech)</small></div>
+          <div class="bar"><div class="fill" style="width:84%;background:linear-gradient(90deg,var(--neon-green),var(--neon-cyan));"></div></div>
+          <div class="pts">84</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MESSAGES -->
+    <section id="messages" class="page" data-page="messages">
+      <div class="page-head">
+        <div>
+          <h1>Advisory & Mentorship Messages</h1>
+          <p>Direct encrypted dialogue with your assigned Stage 3 assessor (Dr. Kwame Acheampong) and Secretariat HQ.</p>
+        </div>
+        <span class="badge cyan"><i class="fas fa-shield-alt"></i> End-to-End Logged</span>
+      </div>
+
+      <div class="msg-thread" id="msgThreadList">
+        <div class="msg-from">
+          <div class="team-avatar" style="width:36px;height:36px;font-size:.8rem;background:linear-gradient(135deg,var(--neon-cyan),var(--neon-gold));">KA</div>
+          <div class="msg-body">
+            <strong>Dr. Kwame Acheampong (Stage 3 Lead Assessor) · 2h ago</strong>
+            <p>Strong improvement on slide 7. Re: the FX spread assumption — please reference a 2025 publication rather than the 2019 IMF brief.</p>
+          </div>
+        </div>
+        <div class="msg-reply">
+          <div class="team-avatar" style="width:36px;height:36px;font-size:.8rem;background:linear-gradient(135deg,var(--neon-green),var(--neon-cyan));">AD</div>
+          <div class="msg-body">
+            <strong>Amara Diallo (Team Lead) · 1h ago</strong>
+            <p>Updated. Cited Bank of Senegal 2025 report. Pushed to repo.</p>
+            <a href="#" style="color:var(--neon-cyan);font-size:.85rem;"><i class="fas fa-link"></i> github.com/novapay-africa/core-settlement</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-input-row">
+        <textarea id="studentMsgInput" placeholder="Write a reply to Dr. Kwame Acheampong or request clarification..."></textarea>
+        <button class="btn btn-primary" id="studentMsgSend" onclick="sendStudentMessage()"><i class="fas fa-paper-plane"></i> Send</button>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="settings" class="page" data-page="settings">
+      <div class="page-head">
+        <div>
+          <h1>Account & Notification Preferences</h1>
+          <p>Manage your lead contact profile, institutional affiliations, and continental alert channels.</p>
+        </div>
+        <button class="btn btn-primary" onclick="saveProfileSettings()"><i class="fas fa-check"></i> Save Preferences</button>
+      </div>
+      <div class="settings-grid">
+        <div class="form-card">
+          <h4>Profile Details</h4>
+          <div class="form-row" style="margin-top:.75rem; display:grid; grid-template-columns:1fr 1fr; gap:.75rem;">
+            <input class="form-control" id="profName" placeholder="Full Name" value="Amara Diallo">
+            <input class="form-control" id="profEmail" placeholder="Email" value="amara@nova.africa">
+          </div>
+          <div class="form-row" style="margin-top:.75rem; display:grid; grid-template-columns:1fr 1fr; gap:.75rem;">
+            <input class="form-control" id="profPhone" placeholder="WhatsApp Phone" value="+221 77 123 4567">
+            <input class="form-control" id="profUni" placeholder="University" value="Université Cheikh Anta Diop">
+          </div>
+        </div>
+        <div class="form-card">
+          <h4>Notification Channels</h4>
+          <div class="toggle-row" style="margin-top:.75rem;">
+            <label><input type="checkbox" id="notifEmail" checked> Official Evaluator & Secretariat Emails</label>
+            <label><input type="checkbox" id="notifWhatsapp" checked> WhatsApp Stage 3 Accelerator Reminders</label>
+            <label><input type="checkbox" id="notifSms"> SMS Urgent Deadline Alerts</label>
+            <label><input type="checkbox" id="notifPeer" checked> Cross-border Peer Networking Invitations</label>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- MODALS -->
+
+<!-- 1. Invite Member Modal -->
+<div id="inviteMemberModal" class="modal-backdrop" hidden>
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3><i class="fas fa-user-plus" style="color:var(--neon-green);"></i> Invite Team Member</h3>
+      <button class="modal-close" type="button" aria-label="Close modal"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="inviteMemberForm">
+      <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:.75rem; margin-bottom:.75rem;">
+        <label><span>Full Name *</span><input type="text" id="invName" required class="form-control" placeholder="e.g. Fatima Zara"></label>
+        <label><span>Academic Email *</span><input type="email" id="invEmail" required class="form-control" placeholder="fatima@univ.ac.ma"></label>
+      </div>
+      <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:.75rem; margin-bottom:.75rem;">
+        <label><span>University / Institution *</span><input type="text" id="invUni" required class="form-control" placeholder="e.g. Mohammed V University"></label>
+        <label><span>Country *</span><input type="text" id="invCountry" required class="form-control" placeholder="e.g. 🇲🇦 Morocco"></label>
+      </div>
+      <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:.75rem; margin-bottom:1.25rem;">
+        <label><span>Team Role *</span><input type="text" id="invRole" required class="form-control" placeholder="e.g. AI / Data Scientist"></label>
+        <label><span>Project Equity / Contrib (%)</span><input type="number" id="invContrib" min="1" max="100" class="form-control" placeholder="60"></label>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:.75rem;">
+        <button type="button" class="btn btn-ghost" data-modal-close>Cancel</button>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Dispatch Invitation</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 2. KYC Upload Modal -->
+<div id="kycUploadModal" class="modal-backdrop" hidden>
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3><i class="fas fa-id-card" style="color:var(--neon-cyan);"></i> Verify Member KYC</h3>
+      <button class="modal-close" type="button" aria-label="Close modal"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="kycUploadForm">
+      <label style="margin-bottom:.75rem; display:block;">
+        <span>Select Member to Verify</span>
+        <select class="form-control" style="margin-top:.35rem;">
+          <option selected>Lina Bekele (Design / UX · Addis Ababa Univ)</option>
+          <option>Amara Diallo (Lead · UCAD Senegal)</option>
+          <option>Kwame Osei (Engineer · Univ of Ghana)</option>
+          <option>Joseph Mwangi (Finance · Univ of Nairobi)</option>
+        </select>
+      </label>
+      <label style="margin-bottom:.75rem; display:block;">
+        <span>Document Type</span>
+        <select class="form-control" style="margin-top:.35rem;">
+          <option>Official University Student ID Card (Current Year)</option>
+          <option>Dean / Registrar Letter of Good Standing</option>
+          <option>National Passport / Regional ECOWAS/EAC ID</option>
+        </select>
+      </label>
+      <div class="upload-card" style="padding:2rem 1rem; border:2px dashed rgba(0,255,135,0.4); margin-bottom:1.25rem; cursor:pointer;" onclick="this.querySelector('p').textContent='✓ Lina_Bekele_Student_ID_2026.pdf attached';">
+        <i class="fas fa-cloud-upload-alt" style="font-size:2.5rem; color:var(--neon-green); margin-bottom:.5rem;"></i>
+        <h4>Drop Document Here or Browse</h4>
+        <p>Supports PDF, PNG, JPG (Max 10MB)</p>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:.75rem;">
+        <button type="button" class="btn btn-ghost" data-modal-close>Cancel</button>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-check-circle"></i> Validate & Submit Verification</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 3. Score Breakdown Modal -->
+<div id="scoreBreakdownModal" class="modal-backdrop" hidden>
+  <div class="modal-card">
+    <div class="modal-head">
+      <div>
+        <h3 id="sbModalTeamName">Team AgriMesh</h3>
+        <small id="sbModalTrack" style="color:var(--neon-cyan);">Aspiration 1 · FinTech</small> · <small id="sbModalUni" style="color:var(--text-mute);">Univ of Nairobi</small>
+      </div>
+      <button class="modal-close" type="button" aria-label="Close modal"><i class="fas fa-times"></i></button>
+    </div>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; padding:.75rem 1rem; background:rgba(0,255,135,0.06); border:1px solid rgba(0,255,135,0.25); border-radius:12px;">
+      <span>Evaluator Weighted Score:</span>
+      <strong id="sbModalTotal" style="font-size:1.4rem; color:var(--neon-green);">96 / 100</strong>
+    </div>
+    <h4 style="font-size:.92rem; margin-bottom:.75rem;">Stage 3 Rubric Breakdown</h4>
+    <div id="sbModalBars"></div>
+    <div style="margin-top:1.25rem; padding:.85rem; background:rgba(255,255,255,0.03); border-radius:10px; border:1px solid var(--glass-border);">
+      <strong style="font-size:.82rem; color:var(--neon-cyan); display:block; margin-bottom:.35rem;"><i class="fas fa-comment-dots"></i> Lead Assessor Synthesis:</strong>
+      <p id="sbModalComments" style="font-size:.85rem; color:var(--text-soft); margin:0; line-height:1.5;"></p>
+    </div>
+  </div>
+</div>
+
+<!-- 4. Submission Success Modal -->
+<div id="submissionSuccessModal" class="modal-backdrop" hidden>
+  <div class="modal-card" style="text-align:center;">
+    <div style="width:70px; height:70px; border-radius:50%; background:rgba(0,255,135,0.15); border:2px solid var(--neon-green); color:var(--neon-green); display:grid; place-items:center; font-size:2rem; margin:0 auto 1.25rem auto;">
+      <i class="fas fa-check"></i>
+    </div>
+    <h3 style="margin-bottom:.5rem;">Stage 3 Application Locked & Submitted!</h3>
+    <p style="color:var(--text-soft); font-size:.9rem; margin-bottom:1.5rem;">
+      Congratulations Amara and Team NovaPay! Your complete Stage 3 deliverables dossier has been timestamped and encrypted for Continental Jury evaluation.
+    </p>
+    <div style="padding:.75rem 1rem; background:rgba(255,255,255,0.04); border-radius:10px; font-family:monospace; font-size:.85rem; color:var(--neon-cyan); margin-bottom:1.5rem;">
+      REF: AUC-SUB-2026-9842 · HASH: 0x7e8f...9a12 · STATUS: LOCKED FOR CALIBRATION
+    </div>
+    <button type="button" class="btn btn-primary" data-modal-close style="justify-content:center; width:100%;">Return to Portal Dashboard</button>
+  </div>
+</div>
+
+<div id="toastContainer" class="toast-container"></div>
+
+<script src="portal.js"></script>
+<script src="dropdown.js" defer></script>
+<link rel="stylesheet" href="login-overlay.css">
+<script src="auth-config.js"></script>
+<script src="portal-fix.js"></script>
+<script src="api-client.js"></script>
+<script src="student-portal.js" defer></script>
+<!-- Inline-login overlay uses AUTH login() from auth-config.js -->
+<div id="loginOverlay" class="login-overlay" hidden>
+  <div class="login-card">
+    <button class="login-close" type="button" aria-label="Close"><i class="fas fa-times"></i></button>
+    <h3><i class="fas fa-shield-halved"></i> Portal Login</h3>
+    <p id="loginPortalLabel" class="login-sub"></p>
+    <label><span>Username</span><input type="text" id="loginUser" autocomplete="username"></label>
+    <label><span>Password</span><input type="password" id="loginPass" autocomplete="current-password"></label>
+    <p id="loginErr" class="login-err" hidden></p>
+    <button class="btn btn-primary" id="loginSubmit" type="button">Sign In</button>
+    <details class="login-creds">
+      <summary>Default credentials (editable in Admin HQ)</summary>
+      <table>
+        <tr><th>Portal</th><th>Username</th><th>Password</th></tr>
+        <tr><td>Student Portal</td><td>team_demo</td><td>student@2026</td></tr>
+        <tr><td>Judge Portal</td><td>judge_demo</td><td>judge@2026</td></tr>
+        <tr><td>Admin HQ</td><td>admin</td><td>AUCadmin123</td></tr>
+        <tr><td>CMS Editor</td><td>editor</td><td>cms@2026</td></tr>
+      </table>
+    </details>
+  </div>
+</div>
+<script>
+(function(){
+  var map = { 'portal-student':'Student Portal', 'portal-judge':'Judge Portal', 'portal-admin':'Admin HQ', 'cms-editor':'CMS Editor' };
+  var rawKey = (location.pathname.split('/').pop() || '').toLowerCase();
+  var key = rawKey.replace(/\.html$/, '');
+  var portal = key in map ? key : null;
+  var overlay = document.getElementById('loginOverlay');
+  if (!overlay || !portal) return;
+  function isAuthed(){ return window.AUC_AUTH && window.AUC_AUTH.current(portal); }
+  function showErr(msg){ var e = document.getElementById('loginErr'); if(e){ e.textContent = msg; e.hidden = false; } }
+  function open(){ document.getElementById('loginPortalLabel').textContent = 'Sign in to ' + map[portal] + ' — default demo credentials are filled in below.'; document.getElementById('loginUser').value=''; document.getElementById('loginPass').value=''; var e=document.getElementById('loginErr'); if(e){ e.hidden=true; } overlay.hidden = false; document.body.style.overflow='hidden'; }
+  function close(){ overlay.hidden = true; document.body.style.overflow=''; }
+  document.querySelector('.login-close').addEventListener('click', close);
+  document.getElementById('loginSubmit').addEventListener('click', function(){
+    var u = document.getElementById('loginUser').value.trim();
+    var p = document.getElementById('loginPass').value;
+    var r = window.AUC_AUTH.login(portal, u, p);
+    if (r.ok) { close(); }
+    else showErr(r.msg);
+  });
+  ['loginUser','loginPass'].forEach(function(id){ var el=document.getElementById(id); el && el.addEventListener('keydown', function(ev){ if(ev.key==='Enter') document.getElementById('loginSubmit').click(); }); });
+  overlay.addEventListener('click', function(ev){ if(ev.target===overlay) close(); });
+  // Show overlay if no session. Allow demo "Skip" so designers can preview without typing.
+  if (!isAuthed()) setTimeout(open, 400);
+})();
+</script>
+
+<!-- FOOTER WITH CENTRALIZED LINKS & HIDDEN ADMIN DOOR ON THE RIGHT -->
+<footer style="padding:1.5rem 0;border-top:1px solid rgba(255,255,255,0.08);background:rgba(2,5,18,0.95);font-size:.85rem;color:var(--text-soft);margin-top:3rem;">
+  <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+    <!-- Copyright -->
+    <div>
+      © 2026 African Undergraduate Challenge (AUC). All rights reserved. · Powered by <a href="https://wasard.org" target="_blank" rel="noopener noreferrer" style="color:var(--neon-green);font-weight:600;">WASARD Organization</a> · Designed by <a href="https://wa.me/2347016435125" target="_blank" rel="noopener noreferrer" style="color:var(--neon-cyan);font-weight:600;">DIDS' SYSTEMS INC.</a>
+    </div>
+
+    <!-- Centralized Footer Navigation Links -->
+    <div style="display:flex;justify-content:center;gap:1.5rem;flex:1;min-width:280px;" class="footer-center-links">
+      <a href="index.html" style="color:var(--text-soft);">Home</a>
+      <a href="about.html" style="color:var(--text-soft);">About AUC</a>
+      <a href="structure.html" style="color:var(--text-soft);">Stages</a>
+      <a href="judging.html" style="color:var(--text-soft);">Rubric</a>
+      <a href="partnership.html" style="color:var(--text-soft);">Partnership</a>
+      <a href="news.html" style="color:var(--text-soft);">News</a>
+      <a href="contact.html" style="color:var(--text-soft);">Contact HQ</a>
+    </div>
+
+    <!-- Hidden / Discreet Admin Access Link on the Right -->
+    <div>
+      <a href="portal-admin.html" class="footer-admin-link" title="Secretariat &amp; Staff Console" aria-label="Admin Access">
+        <i class="fas fa-shield-halved"></i> <span>Staff HQ</span>
+      </a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

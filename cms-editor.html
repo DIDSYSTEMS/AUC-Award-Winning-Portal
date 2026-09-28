@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUC Visual CMS Editor — Elementor &amp; WordPress Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="portal.css">
+<link rel="stylesheet" href="editor.css">
+<link rel="stylesheet" href="dropdown.css">
+<link rel="stylesheet" href="login-overlay.css">
+</head>
+<body class="portal-body editor-body">
+
+<!-- 1. WORDPRESS / ELEMENTOR TOP ADMIN BAR -->
+<div class="admin-bar" id="adminBar">
+  <div class="ab-left">
+    <a href="portal-admin.html" class="ab-btn ghost" title="Return to Admin HQ Dashboard">
+      <i class="fas fa-chevron-left"></i> <span>Admin HQ</span>
+    </a>
+    <a href="index.html" class="ab-logo" title="African Undergraduate Challenge">
+      <img src="assets/img/Logo.png" alt="AUC" style="height:26px;" onerror="this.style.display='none'">
+      <span>AUC</span>
+      <span class="ab-logo-badge">BUILDER</span>
+    </a>
+    <select class="ab-page-selector" id="abPageSelector" title="Switch page to edit">
+      <option value="about">About AUC (about.html)</option>
+      <option value="index">Home Page (index.html)</option>
+      <option value="structure">Competition Stages (structure.html)</option>
+      <option value="judging">Judging Matrix (judging.html)</option>
+      <option value="partnership">Become a Partner (partnership.html)</option>
+      <option value="sponsors">Partnership Tiers (sponsors.html)</option>
+      <option value="news">News &amp; Insights (news.html)</option>
+      <option value="contact">Contact HQ (contact.html)</option>
+    </select>
+  </div>
+
+  <div class="ab-center">
+    <!-- Viewport Switcher -->
+    <div class="ab-devices">
+      <button class="device-btn active" data-device="desktop" title="Desktop view (100%)"><i class="fas fa-desktop"></i></button>
+      <button class="device-btn" data-device="tablet" title="Tablet view (768px)"><i class="fas fa-tablet-alt"></i></button>
+      <button class="device-btn" data-device="mobile" title="Mobile view (375px)"><i class="fas fa-mobile-alt"></i></button>
+    </div>
+
+    <!-- Undo / Redo & Status -->
+    <button class="ab-btn" id="abUndo" title="Undo change"><i class="fas fa-undo"></i></button>
+    <button class="ab-btn" id="abRedo" title="Redo change"><i class="fas fa-redo"></i></button>
+    <div class="ab-status" id="abStatus">
+      <span class="pulse-dot"></span> Autosaved · Real-time
+    </div>
+  </div>
+
+  <div class="ab-right">
+    <button class="ab-btn" id="abRevisions" title="View past revisions"><i class="fas fa-history"></i> Revisions</button>
+    <button class="ab-btn ghost" id="abPreview" title="Toggle preview mode"><i class="fas fa-eye"></i> Preview</button>
+    <button class="ab-btn primary" id="abPublish" title="Publish live to website"><i class="fas fa-rocket"></i> Update</button>
+    <button class="ab-btn ghost" id="btnLogoutCms" title="Sign out of Editor" style="color:#FF6A3D;padding:0 .6rem;" aria-label="Sign out"><i class="fas fa-arrow-right-from-bracket"></i></button>
+  </div>
+</div>
+
+<!-- 2. MAIN THREE-PANEL EDITOR LAYOUT -->
+<div class="editor-layout">
+
+  <!-- LEFT ELEMENTOR WIDGET DOCK -->
+  <aside class="editor-side left" id="editorLeftDock">
+    <div class="dock-header">
+      <div class="dock-tabs">
+        <button class="dock-tab active" data-pane="elements"><i class="fas fa-th-large"></i> Elements</button>
+        <button class="dock-tab" data-pane="document"><i class="fas fa-cog"></i> Page</button>
+        <button class="dock-tab" data-pane="style"><i class="fas fa-palette"></i> Style</button>
+        <button class="dock-tab" data-pane="navigator"><i class="fas fa-layer-group"></i> Layers</button>
+      </div>
+    </div>
+
+    <!-- Search input -->
+    <div class="widget-search-wrap">
+      <i class="fas fa-search widget-search-icon"></i>
+      <input type="text" class="widget-search" id="widgetSearch" placeholder="Search Widget...">
+    </div>
+
+    <div class="dock-content">
+
+      <!-- PANE 1: ELEMENTS PALETTE -->
+      <div class="dock-pane active" id="pane-elements">
+        <div class="widget-category-title"><i class="fas fa-cube"></i> Basic Widgets</div>
+        <div class="elementor-grid">
+          <div class="el-widget-item" data-widget="heading">
+            <i class="fas fa-heading"></i>
+            <span>Heading</span>
+          </div>
+          <div class="el-widget-item" data-widget="paragraph">
+            <i class="fas fa-paragraph"></i>
+            <span>Text Editor</span>
+          </div>
+          <div class="el-widget-item" data-widget="image">
+            <i class="fas fa-image"></i>
+            <span>Image Box</span>
+          </div>
+          <div class="el-widget-item" data-widget="button">
+            <i class="fas fa-hand-pointer"></i>
+            <span>Button CTA</span>
+          </div>
+          <div class="el-widget-item" data-widget="divider">
+            <i class="fas fa-minus"></i>
+            <span>Divider</span>
+          </div>
+          <div class="el-widget-item" data-widget="quote">
+            <i class="fas fa-quote-right"></i>
+            <span>Quote / Callout</span>
+          </div>
+        </div>
+
+        <div class="widget-category-title" style="color:var(--el-green);"><i class="fas fa-star"></i> AUC Continental Theme</div>
+        <div class="elementor-grid">
+          <div class="el-widget-item theme-widget" data-widget="kpi">
+            <i class="fas fa-chart-line"></i>
+            <span>Agenda 2063 KPIs</span>
+          </div>
+          <div class="el-widget-item theme-widget" data-widget="tracks">
+            <i class="fas fa-layer-group"></i>
+            <span>6 Track Cards</span>
+          </div>
+          <div class="el-widget-item theme-widget" data-widget="accordion">
+            <i class="fas fa-question-circle"></i>
+            <span>Tournament FAQ</span>
+          </div>
+          <div class="el-widget-item theme-widget" data-widget="button">
+            <i class="fas fa-trophy"></i>
+            <span>$150K Prize Pool</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANE 2: DOCUMENT / PAGE SETTINGS -->
+      <div class="dock-pane" id="pane-document">
+        <div class="insp-group">
+          <label class="insp-label">Page Title</label>
+          <input type="text" class="insp-input" id="docTitleInput" value="About AUC — African Undergraduate Challenge">
+        </div>
+        <div class="insp-group">
+          <label class="insp-label">Slug / Permalink</label>
+          <input type="text" class="insp-input" id="docSlugInput" value="about" readonly style="opacity:0.7;">
+        </div>
+        <div class="insp-group">
+          <label class="insp-label">Publish Status</label>
+          <select class="insp-select" id="docStatusSelect">
+            <option value="published">Published</option>
+            <option value="draft">Draft</option>
+            <option value="pending">Pending Review</option>
+          </select>
+        </div>
+        <div class="insp-group">
+          <label class="insp-label">SEO Meta Description</label>
+          <textarea class="insp-textarea" id="docExcerptInput" rows="3">Empowering 10,000+ African undergraduates across 54 countries to pioneer solutions aligned with AU Agenda 2063.</textarea>
+        </div>
+      </div>
+
+      <!-- PANE 3: GLOBAL DESIGN TOKENS -->
+      <div class="dock-pane" id="pane-style">
+        <div class="insp-group">
+          <label class="insp-label">Primary Brand Accent</label>
+          <div class="color-presets-row">
+            <span class="color-dot active" data-color="#00ff87" style="background:#00ff87;"></span>
+            <span class="color-dot" data-color="#00e5ff" style="background:#00e5ff;"></span>
+            <span class="color-dot" data-color="#ffb800" style="background:#ffb800;"></span>
+            <span class="color-dot" data-color="#9d4edd" style="background:#9d4edd;"></span>
+            <span class="color-dot" data-color="#ff2a85" style="background:#ff2a85;"></span>
+          </div>
+        </div>
+        <div class="insp-group">
+          <label class="insp-label">Heading Font Family</label>
+          <select class="insp-select">
+            <option>Plus Jakarta Sans (Default)</option>
+            <option>Inter</option>
+            <option>Syne</option>
+          </select>
+        </div>
+        <div class="insp-group">
+          <label class="insp-label">Canvas Background Theme</label>
+          <select class="insp-select">
+            <option>Obsidian Navy (#02050e)</option>
+            <option>Deep Slate (#0d1430)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- PANE 4: NAVIGATOR (LAYERS TREE) -->
+      <div class="dock-pane" id="pane-navigator">
+        <div id="navigatorList"></div>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- CENTER VISUAL WYSIWYG CANVAS -->
+  <main class="editor-canvas-wrap" id="canvasWrap">
+    <div class="canvas-device-container" id="canvasDeviceContainer">
+      <div class="canvas-inner" id="canvasInner">
+        <!-- Dynamically injected blocks -->
+      </div>
+
+      <!-- Elementor + Add Section Area -->
+      <div class="el-add-section-area">
+        <button class="el-add-btn" id="elAddSectionBtn" title="Add New Section / Columns">
+          <i class="fas fa-plus"></i>
+        </button>
+        <div style="font-size:.82rem;color:var(--text-mute);margin-top:.6rem;">Click + to add a column layout or drag elements from the left dock</div>
+
+        <!-- Structure Picker -->
+        <div class="structure-picker" id="structurePicker">
+          <div class="structure-box" data-layout="1" title="Single Column">
+            <div class="struct-cols"><div class="struct-col" style="flex:1;"></div></div>
+            <small>1 Column</small>
+          </div>
+          <div class="structure-box" data-layout="2" title="50% / 50% Two Columns">
+            <div class="struct-cols"><div class="struct-col" style="flex:1;"></div><div class="struct-col" style="flex:1;"></div></div>
+            <small>50 / 50</small>
+          </div>
+          <div class="structure-box" data-layout="3" title="Three Equal Columns">
+            <div class="struct-cols"><div class="struct-col" style="flex:1;"></div><div class="struct-col" style="flex:1;"></div><div class="struct-col" style="flex:1;"></div></div>
+            <small>3 Columns</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- RIGHT CONTEXTUAL ELEMENTOR INSPECTOR PANEL -->
+  <aside class="editor-side right" id="editorRightInspector">
+    <div class="inspector-tabs">
+      <button class="insp-tab active" data-pane="content"><i class="fas fa-pen"></i> Content</button>
+      <button class="insp-tab" data-pane="style"><i class="fas fa-paint-brush"></i> Style</button>
+      <button class="insp-tab" data-pane="advanced"><i class="fas fa-sliders-h"></i> Advanced</button>
+    </div>
+
+    <div class="inspector-body">
+      <!-- TAB 1: CONTENT -->
+      <div class="insp-pane active" id="insp-pane-content">
+        <h5 id="inspSelectedTitle" style="font-size:.82rem;color:var(--el-accent);text-transform:uppercase;letter-spacing:1px;margin:0 0 1rem 0;">Selected Element</h5>
+
+        <div class="insp-group">
+          <label class="insp-label">Content Text / Markup</label>
+          <textarea class="insp-textarea" id="inspText" rows="4" placeholder="Edit content..."></textarea>
+        </div>
+
+        <div class="insp-group" id="inspImageGroup" style="display:none;">
+          <label class="insp-label"><i class="fas fa-image" style="color:var(--el-accent);margin-right:.35rem;"></i> Image Asset / Upload</label>
+          <div style="display:flex;gap:.5rem;margin-bottom:.5rem;">
+            <input type="text" class="insp-input" id="inspImageUrl" placeholder="assets/img/Logo.png" style="flex:1;">
+            <button type="button" class="btn btn-primary" id="btnUploadInspImage" style="padding:.35rem .75rem;font-size:.78rem;" title="Upload new image"><i class="fas fa-upload"></i></button>
+          </div>
+          <input type="file" id="inspImageFileInput" accept="image/*" style="display:none;">
+          <div id="inspImagePreview" style="max-height:120px;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);display:none;margin-top:.4rem;">
+            <img id="inspPreviewImg" src="" alt="preview" style="width:100%;height:100%;object-fit:cover;">
+          </div>
+        </div>
+
+        <div class="insp-group">
+          <label class="insp-label">HTML Tag</label>
+          <select class="insp-select" id="inspTag">
+            <option value="h1">H1 — Main Title</option>
+            <option value="h2" selected>H2 — Section Header</option>
+            <option value="h3">H3 — Subheading</option>
+            <option value="p">P — Paragraph</option>
+          </select>
+        </div>
+
+        <div class="insp-group">
+          <label class="insp-label">Alignment</label>
+          <div style="display:flex;gap:.35rem;">
+            <button class="ab-btn insp-align-btn active" data-align="left" style="flex:1;justify-content:center;"><i class="fas fa-align-left"></i></button>
+            <button class="ab-btn insp-align-btn" data-align="center" style="flex:1;justify-content:center;"><i class="fas fa-align-center"></i></button>
+            <button class="ab-btn insp-align-btn" data-align="right" style="flex:1;justify-content:center;"><i class="fas fa-align-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: STYLE -->
+      <div class="insp-pane" id="insp-pane-style">
+        <div class="insp-group">
+          <label class="insp-label">Text Color</label>
+          <div style="display:flex;align-items:center;gap:.5rem;">
+            <input type="color" id="inspTextColorPicker" value="#ffffff" style="background:transparent;border:none;width:36px;height:36px;cursor:pointer;">
+            <div class="color-presets-row">
+              <span class="color-dot" data-color="#ffffff" style="background:#ffffff;"></span>
+              <span class="color-dot" data-color="#00ff87" style="background:#00ff87;"></span>
+              <span class="color-dot" data-color="#00e5ff" style="background:#00e5ff;"></span>
+              <span class="color-dot" data-color="#ffb800" style="background:#ffb800;"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="insp-group">
+          <div style="display:flex;justify-content:space-between;">
+            <label class="insp-label">Font Size</label>
+            <span id="inspFontSizeVal" style="font-size:.75rem;color:var(--el-accent);">24px</span>
+          </div>
+          <input type="range" class="form-control" id="inspFontSize" min="14" max="64" value="24" style="accent-color:var(--el-accent);width:100%;">
+        </div>
+      </div>
+
+      <!-- TAB 3: ADVANCED -->
+      <div class="insp-pane" id="insp-pane-advanced">
+        <div class="insp-group">
+          <label class="insp-label">CSS ID</label>
+          <input type="text" class="insp-input" placeholder="custom-section-id">
+        </div>
+        <div class="insp-group">
+          <label class="insp-label">CSS Classes</label>
+          <input type="text" class="insp-input" placeholder="reveal animated my-class">
+        </div>
+        <div class="insp-group">
+          <label class="insp-label">Responsive Visibility</label>
+          <div style="display:flex;flex-direction:column;gap:.5rem;margin-top:.4rem;font-size:.82rem;">
+            <label style="display:flex;justify-content:space-between;cursor:pointer;"><span>Hide on Desktop</span><input type="checkbox" style="accent-color:var(--el-accent);"></label>
+            <label style="display:flex;justify-content:space-between;cursor:pointer;"><span>Hide on Tablet</span><input type="checkbox" style="accent-color:var(--el-accent);"></label>
+            <label style="display:flex;justify-content:space-between;cursor:pointer;"><span>Hide on Mobile</span><input type="checkbox" style="accent-color:var(--el-accent);"></label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<!-- FOOTER WITH CENTRALIZED LINKS & HIDDEN ADMIN DOOR ON THE RIGHT -->
+<footer style="padding:1.5rem 0;border-top:1px solid rgba(255,255,255,0.08);background:rgba(2,5,18,0.95);font-size:.85rem;color:var(--text-soft);">
+  <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+    <!-- Copyright -->
+    <div>
+      © 2026 African Undergraduate Challenge (AUC). All rights reserved. · Powered by <a href="https://wasard.org" target="_blank" rel="noopener noreferrer" style="color:var(--neon-green);font-weight:600;">WASARD Organization</a> · Designed by <a href="https://wa.me/2347016435125" target="_blank" rel="noopener noreferrer" style="color:var(--neon-cyan);font-weight:600;">DIDS' SYSTEMS INC.</a>
+    </div>
+
+    <!-- Centralized Footer Navigation Links -->
+    <div style="display:flex;justify-content:center;gap:1.5rem;flex:1;min-width:280px;" class="footer-center-links">
+      <a href="index.html" style="color:var(--text-soft);">Home</a>
+      <a href="about.html" style="color:var(--text-soft);">About AUC</a>
+      <a href="structure.html" style="color:var(--text-soft);">Stages</a>
+      <a href="judging.html" style="color:var(--text-soft);">Rubric</a>
+      <a href="partnership.html" style="color:var(--text-soft);">Partnership</a>
+      <a href="news.html" style="color:var(--text-soft);">News</a>
+      <a href="contact.html" style="color:var(--text-soft);">Contact HQ</a>
+    </div>
+
+    <!-- Hidden / Discreet Admin Access Link on the Right -->
+    <div>
+      <a href="portal-admin.html" class="footer-admin-link" title="Secretariat &amp; Staff Console" aria-label="Admin Access">
+        <i class="fas fa-shield-halved"></i> <span>Staff HQ</span>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- Inline-login overlay uses AUTH login() from auth-config.js -->
+<div id="loginOverlay" class="login-overlay" hidden>
+  <div class="login-card">
+    <button class="login-close" type="button" aria-label="Close"><i class="fas fa-times"></i></button>
+    <h3><i class="fas fa-feather-alt" style="color:var(--el-accent);"></i> CMS Builder Login</h3>
+    <p id="loginPortalLabel" class="login-sub"></p>
+    <label><span>Username</span><input type="text" id="loginUser" autocomplete="username"></label>
+    <label><span>Password</span><input type="password" id="loginPass" autocomplete="current-password"></label>
+    <p id="loginErr" class="login-err" hidden></p>
+    <button class="btn btn-primary" id="loginSubmit" type="button" style="background:var(--el-accent);border-color:var(--el-accent);">Sign In to Editor</button>
+    <details class="login-creds">
+      <summary>Default credentials (editable in Admin HQ)</summary>
+      <table>
+        <tr><th>Portal</th><th>Username</th><th>Password</th></tr>
+        <tr><td>CMS Editor</td><td>editor</td><td>cms@2026</td></tr>
+        <tr><td>Admin HQ</td><td>admin</td><td>AUCadmin123</td></tr>
+        <tr><td>Student Portal</td><td>team_demo</td><td>student@2026</td></tr>
+        <tr><td>Judge Portal</td><td>judge_demo</td><td>judge@2026</td></tr>
+      </table>
+    </details>
+  </div>
+</div>
+
+<script src="auth-config.js"></script>
+<script src="api-client.js"></script>
+<script src="editor.js"></script>
+<script>
+(function(){
+  var map = { 'portal-student':'Student Portal', 'portal-judge':'Judge Portal', 'portal-admin':'Admin HQ', 'cms-editor':'CMS Editor' };
+  var rawKey = (location.pathname.split('/').pop() || '').toLowerCase();
+  var key = rawKey.replace(/\.html$/, '');
+  var portal = key in map ? key : 'cms-editor';
+  var overlay = document.getElementById('loginOverlay');
+  if (!overlay) return;
+  function isAuthed(){ return window.AUC_AUTH && window.AUC_AUTH.current(portal); }
+  function showErr(msg){ var e = document.getElementById('loginErr'); if(e){ e.textContent = msg; e.hidden = false; } }
+  function open(){
+    document.getElementById('loginPortalLabel').textContent = 'Sign in to ' + (map[portal] || 'CMS Editor') + ' — default credentials are provided below.';
+    document.getElementById('loginUser').value = 'editor';
+    document.getElementById('loginPass').value = '';
+    var e = document.getElementById('loginErr'); if(e){ e.hidden = true; }
+    overlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  function close(){
+    overlay.hidden = true;
+    document.body.style.overflow = '';
+  }
+  var closeBtn = document.querySelector('.login-close');
+  if (closeBtn) closeBtn.addEventListener('click', close);
+  var submitBtn = document.getElementById('loginSubmit');
+  if (submitBtn) {
+    submitBtn.addEventListener('click', function(){
+      var u = document.getElementById('loginUser').value.trim();
+      var p = document.getElementById('loginPass').value;
+      var r = window.AUC_AUTH.login(portal, u, p);
+      if (r.ok) { close(); }
+      else showErr(r.msg);
+    });
+  }
+  ['loginUser','loginPass'].forEach(function(id){
+    var el = document.getElementById(id);
+    el && el.addEventListener('keydown', function(ev){ if(ev.key==='Enter') document.getElementById('loginSubmit').click(); });
+  });
+  overlay.addEventListener('click', function(ev){ if(ev.target===overlay) close(); });
+
+  var btnOut = document.getElementById('btnLogoutCms');
+  if (btnOut) {
+    btnOut.addEventListener('click', function(){
+      if (confirm('Sign out of CMS Editor?')) {
+        window.AUC_AUTH.logout(portal);
+        open();
+      }
+    });
+  }
+
+  if (!isAuthed()) {
+    setTimeout(open, 350);
+  }
+})();
+</script>
+</body>
+</html>

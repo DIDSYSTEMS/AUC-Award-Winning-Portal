@@ -1,0 +1,53 @@
+.login-overlay{position:fixed;inset:0;background:rgba(2,5,18,.78);backdrop-filter:blur(10px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:2rem}
+.login-overlay[hidden]{display:none!important}
+.login-card{position:relative;max-width:480px;width:100%;background:linear-gradient(165deg,rgba(7,23,58,.98),rgba(4,9,31,.98));border:1px solid rgba(34,194,255,.18);border-radius:18px;padding:2rem;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.login-card h3{margin:0 0 .35rem;font-size:1.25rem;color:#fff;display:flex;align-items:center;gap:.6rem}
+.login-card h3 i{color:var(--neon-cyan)}
+.login-sub{color:var(--text-mute,#9aa6c4);font-size:.86rem;margin-bottom:1.25rem}
+.login-card label{display:block;margin:.65rem 0;color:#cdd5e8;font-size:.82rem}
+.login-card input{width:100%;padding:.65rem .8rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;margin-top:.25rem;font:inherit}
+.login-card input:focus{outline:none;border-color:var(--neon-cyan,#22c2ff);box-shadow:0 0 0 3px rgba(34,194,255,.18)}
+.login-card .btn-primary{width:100%;margin-top:1rem}
+.login-err{color:#FF6A3D;background:rgba(255,106,61,.08);border:1px solid rgba(255,106,61,.3);border-radius:8px;padding:.6rem .8rem;font-size:.83rem;margin-top:.5rem}
+.login-close{position:absolute;top:.6rem;right:.6rem;background:transparent;border:0;color:#9aa6c4;font-size:1rem;cursor:pointer;width:34px;height:34px;border-radius:8px}
+.login-close:hover{background:rgba(255,255,255,.06);color:#fff}
+.login-creds{margin-top:1.25rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.07)}
+.login-creds summary{color:var(--text-mute,#9aa6c4);font-size:.78rem;cursor:pointer;user-select:none}
+.login-creds table{width:100%;margin-top:.6rem;border-collapse:collapse;font-size:.76rem;color:#cdd5e8}
+.login-creds th,.login-creds td{padding:.35rem .5rem;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+.login-creds th{color:var(--neon-cyan)}
+
+/* ── sticky editor rail ── */
+.editor-side{position:sticky;top:1rem;align-self:flex-start;display:flex;flex-direction:column;gap:.6rem;width:300px;max-width:30vw;flex-shrink:0}
+.editor-side > *{width:100%;box-sizing:border-box}
+.editor-side .side-panel{padding:.85rem;border-radius:12px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06)}
+.editor-side .side-panel h5{margin:0 0 .5rem;font-size:.78rem;letter-spacing:.06em;color:var(--neon-cyan);text-transform:uppercase}
+.editor-side .pattern-add{padding:.55rem .7rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;color:#cdd5e8;cursor:pointer;text-align:left;font:inherit;display:flex;align-items:center;gap:.5rem}
+.editor-side .pattern-add:hover{border-color:var(--neon-cyan);color:#fff}
+.editor-side .pattern-add i{color:var(--neon-cyan);width:18px}
+
+/* block insert feedback */
+.pulse-once{animation:pulseOnce .6s ease}
+@keyframes pulseOnce{0%{transform:scale(1)}50%{transform:scale(1.06)}100%{transform:scale(1)}}
+
+/* ── vertical scrolling country column ── */
+.vt-strip{position:relative;display:flex;gap:.5rem;flex-direction:column;overflow:hidden;max-height:170px;border-radius:10px;padding:.4rem .5rem;background:rgba(255,255,255,.02);border:1px solid rgba(34,194,255,.22)}
+.vt-strip::before,.vt-strip::after{content:'';position:absolute;left:0;right:0;height:34px;pointer-events:none;z-index:2}
+.vt-strip::before{top:0;background:linear-gradient(180deg,rgba(2,5,18,.85),transparent)}
+.vt-strip::after{bottom:0;background:linear-gradient(0deg,rgba(2,5,18,.85),transparent)}
+.vt-track{display:flex;flex-direction:column;gap:.45rem;animation:vtScroll 22s linear infinite}
+.vt-strip:hover .vt-track,.vt-strip:focus-within .vt-track{animation-play-state:paused}
+@keyframes vtScroll{0%{transform:translateY(0)}100%{transform:translateY(-50%)}}
+.vt-item{display:flex;align-items:center;gap:.6rem;font-size:.86rem;color:#cdd5e8;padding:.25rem .35rem;border-radius:8px}
+.vt-item:hover{background:rgba(34,194,255,.07);color:#fff}
+.flag-dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0}
+
+/* canvas block selection ring */
+.canvas-block{position:relative;border-radius:14px;padding:1.2rem;margin:1rem 0;background:rgba(255,255,255,.03);border:1px solid transparent;transition:border-color .15s ease, background .15s ease}
+.canvas-block:hover{border-color:rgba(34,194,255,.25)}
+.canvas-block.is-selected{border-color:var(--neon-cyan);background:rgba(34,194,255,.04);outline-offset:4px}
+
+/* misc */
+.spin-once{animation:spinOnce .8s ease}
+@keyframes spinOnce{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.btn.active{outline:2px solid var(--neon-cyan)}

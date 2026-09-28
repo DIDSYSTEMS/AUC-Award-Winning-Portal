@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact AUC — African Undergraduate Challenge</title>
+<meta name="description" content="Contact the African Undergraduate Challenge Secretariat for inquiries about registration, partnerships, judging, and press.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dropdown.css">
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo"><img src="assets/img/Logo.png" alt="AUC" onerror="this.style.display='none'"><span class="logo-text">AUC</span></a>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="structure.html">Structure</a></li>
+      <li><a href="judging.html">Judging</a></li>
+      <li><a href="participate.html">Participate</a></li>
+      <li><a href="sponsors.html">Partners</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="contact.html" class="active">Contact</a></li>
+    <li class="nav-dropdown">
+      <a href="javascript:void(0)" class="dropbtn" data-dropdown-trigger role="button" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-satellite-dish"></i> <span>Portals</span> <i class="fas fa-chevron-down chev"></i>
+      </a>
+      <div class="dropdown-content" role="menu" aria-label="AUC Portals">
+        <div class="dropdown-header">
+          <h5><i class="fas fa-shield-halved"></i> AUC Portals</h5>
+          <small>3 secure systems + CMS</small>
+        </div>
+        <div class="dropdown-grid">
+          <a href="portal-student.html" class="dropdown-item" role="menuitem">
+            <div class="di-icon"><i class="fas fa-user-graduate"></i></div>
+            <div class="di-body"><strong>Student Portal</strong><small>Team dashboard · submissions · live scoreboard</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="portal-judge.html" class="dropdown-item cyan" role="menuitem">
+            <div class="di-icon"><i class="fas fa-gavel"></i></div>
+            <div class="di-body"><strong>Judge Portal</strong><small>Review queue · weighted rubric · COI reports</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="portal-admin.html" class="dropdown-item gold" role="menuitem">
+            <div class="di-icon"><i class="fas fa-shield-halved"></i></div>
+            <div class="di-body"><strong>Admin HQ <span class="di-badge">STAFF</span></strong><small>Operations · partnership inbox · audit log</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="cms-editor.html" class="dropdown-item purple" role="menuitem">
+            <div class="di-icon"><i class="fas fa-feather-alt"></i></div>
+            <div class="di-body"><strong>CMS Editor <span class="di-badge purple">EDIT</span></strong><small>Inline edit pages · autosave · schedule publish</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="partnership.html" class="dropdown-item partner" role="menuitem">
+            <div class="di-icon"><i class="fas fa-handshake"></i></div>
+            <div class="di-body"><strong>Become a Partner</strong><small>Public inquiry form · Silver / Gold / Platinum</small></div>
+            <i class="fas fa-arrow-right di-arrow"></i>
+          </a>
+        </div>
+        <div class="dropdown-footer"><small><i class="fas fa-lock"></i> Session-encrypted · JWT auth</small></div>
+      </div>
+    </li>
+    </ul>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Open navigation menu" aria-expanded="false"><i class="fas fa-bars"></i></button>
+    <div class="nav-cta">
+      <button class="theme-toggle" id="themeToggle"></button>
+      <a href="participate.html" class="btn btn-primary">Register 2026</a>
+    </div>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow"><i class="fas fa-headset"></i> Connect with HQ</span>
+    <h1>Get in Touch with <span class="text-gradient">AUC Secretariat</span></h1>
+    <p class="lead">Have questions about university registration, regional partnerships, judging panels, or media inquiries? We're here to assist.</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="container">
+    <div style="display:grid; gap:2.5rem; grid-template-columns:repeat(auto-fit, minmax(340px,1fr));">
+      <div class="glass reveal" style="border-color:rgba(0,255,135,0.3); padding:2.5rem;">
+        <h3 style="font-size:1.5rem;margin-bottom:1.5rem;"><i class="fas fa-paper-plane" style="color:var(--neon-green);margin-right:.5rem;"></i> Send a Message</h3>
+        <form id="contactForm" onsubmit="submitContactForm(event);">
+          <div class="form-group"><label class="form-label">Full Name *</label><input type="text" id="contactName" required class="form-control" placeholder="e.g. Kwame Mensah"></div>
+          <div class="form-group"><label class="form-label">Email Address *</label><input type="email" id="contactEmail" required class="form-control" placeholder="kwame@organization.org"></div>
+          <div class="form-group">
+            <label class="form-label">Inquiry Category *</label>
+            <select id="contactCategory" required class="form-control">
+              <option>Student / Team Registration</option>
+              <option>Corporate / Foundation Partnership</option>
+              <option>Judging & Mentor Application</option>
+              <option>University Faculty Onboarding</option>
+              <option>Press & Media Relations</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Your Message *</label><textarea id="contactMessage" required class="form-control" rows="5" placeholder="Provide details regarding your inquiry..."></textarea></div>
+          <div id="contactAlert" style="display:none;margin-bottom:1.25rem;padding:1.25rem;background:rgba(0,255,135,0.08);border:1px solid rgba(0,255,135,0.3);border-radius:12px;color:var(--neon-green);line-height:1.6;"></div>
+          <button type="submit" id="contactSubmitBtn" class="btn btn-primary" style="width:100%;"><i class="fas fa-paper-plane"></i> Send Direct Inquiry</button>
+        </form>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:1.5rem;">
+        <div class="glass">
+          <h4 style="color:var(--neon-green);margin-bottom:.75rem;"><i class="fas fa-envelope"></i> Continental Secretariat</h4>
+          <p style="font-size:.92rem;color:var(--text-soft);margin-bottom:.5rem;">Executive Admin: <a href="mailto:admin@africanundergraduatechallenge.com" style="color:var(--neon-cyan);font-weight:600;">admin@africanundergraduatechallenge.com</a></p>
+          <p style="font-size:.92rem;color:var(--text-soft);margin-bottom:.5rem;">General: <a href="mailto:info@africanundergraduatechallenge.org" style="color:var(--neon-cyan);">info@africanundergraduatechallenge.org</a></p>
+          <p style="font-size:.92rem;color:var(--text-soft);margin-bottom:.5rem;">Partnerships: <a href="mailto:partnerships@africanundergraduatechallenge.org" style="color:var(--neon-cyan);">partnerships@africanundergraduatechallenge.org</a></p>
+          <p style="font-size:.92rem;color:var(--text-soft);">Press: <a href="mailto:press@africanundergraduatechallenge.org" style="color:var(--neon-cyan);">press@africanundergraduatechallenge.org</a></p>
+        </div>
+        <div class="glass">
+          <h4 style="color:var(--neon-cyan);margin-bottom:.75rem;"><i class="fas fa-building"></i> Secretariat HQ</h4>
+          <p style="font-size:.92rem;color:var(--text-soft);margin-bottom:.25rem;">African Union Youth & Innovation Pavilion</p>
+          <p style="font-size:.92rem;color:var(--text-soft);margin-bottom:.25rem;">Roosevelt Street, Old Airport Area</p>
+          <p style="font-size:.92rem;color:var(--text-soft);">Addis Ababa, Ethiopia</p>
+        </div>
+        <div class="glass" style="border-color:rgba(255,184,0,0.3);">
+          <h4 style="color:var(--neon-gold);margin-bottom:.75rem;"><i class="fab fa-whatsapp"></i> Quick Community Chat</h4>
+          <p style="font-size:.88rem;color:var(--text-soft);margin-bottom:1.25rem;">Join the official AUC Continental Student Telegram & WhatsApp channels for real-time announcements.</p>
+          <a href="#" class="btn btn-gold"><i class="fab fa-whatsapp"></i> Join WhatsApp Community</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="text-align:center;">
+  <div class="container">
+    <div class="glass" style="text-align:center; padding:4rem 2rem; border-color:rgba(0,255,135,0.3);">
+      <span class="eyebrow"><i class="fas fa-bolt"></i> Be Part of the Movement</span>
+      <h2 class="h-section" style="margin:1.25rem 0 1.25rem;">Ready to Shape the Africa We Want?</h2>
+      <div style="display:flex; gap:1.25rem; justify-content:center; flex-wrap:wrap;">
+        <a href="participate.html" class="btn btn-primary"><i class="fas fa-rocket"></i> Register Your Team</a>
+        <a href="sponsors.html" class="btn btn-outline"><i class="fas fa-handshake"></i> Become a Partner</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="logo" style="margin-bottom:1rem; display:flex;"><img src="assets/img/Logo.png" alt="AUC" style="height:42px;" onerror="this.style.display='none'"><span class="logo-text">AUC</span></a>
+        <p style="color:var(--text-soft); margin-top:1rem; font-size:.92rem;">The African Undergraduate Challenge (AUC) is Africa's premier pan-continental innovation accelerator fully aligned with African Union Agenda 2063.</p>
+        <div class="social-row">
+          <a href="#"><i class="fab fa-x-twitter"></i></a><a href="#"><i class="fab fa-linkedin-in"></i></a><a href="#"><i class="fab fa-youtube"></i></a><a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Explore</h4><a href="index.html">Home</a><a href="about.html">About</a><a href="structure.html">Stages</a><a href="judging.html">Judging</a><a href="news.html">News</a></div>
+      <div class="footer-col"><h4>Portals</h4><a href="participate.html">Eligibility</a><a href="portal-student.html">Student Portal</a><a href="portal-judge.html">Judge Portal</a><a href="partnership.html">Partnership</a><a href="sponsors.html">Tiers</a></div>
+      <div class="footer-col"><h4>Newsletter</h4><p style="font-size:.88rem;color:var(--text-soft);margin-bottom:1rem;">Get monthly updates.</p><form onsubmit="event.preventDefault();alert('Subscribed!');"><input type="email" required placeholder="your@email.com" class="form-control"><button class="btn btn-primary" style="margin-top:.5rem; justify-content:center;">Subscribe</button></form></div>
+    </div>
+
+    <!-- Centralized Quick Navigation Bar -->
+    <div class="footer-nav-centered">
+      <a href="index.html"><i class="fas fa-home"></i> Home</a>
+      <a href="about.html"><i class="fas fa-info-circle"></i> About AUC</a>
+      <a href="structure.html"><i class="fas fa-stream"></i> Competition Stages</a>
+      <a href="judging.html"><i class="fas fa-gavel"></i> Evaluation Rubric</a>
+      <a href="participate.html"><i class="fas fa-user-check"></i> Eligibility</a>
+      <a href="partnership.html"><i class="fas fa-handshake"></i> Partnerships</a>
+      <a href="news.html"><i class="fas fa-newspaper"></i> News &amp; Insights</a>
+      <a href="contact.html"><i class="fas fa-envelope"></i> Contact HQ</a>
+    </div>
+
+    <div class="footer-bottom-centered">
+      <div class="copy-left">
+        © 2026 African Undergraduate Challenge (AUC). All rights reserved. · Powered by <a href="https://wasard.org" target="_blank" rel="noopener noreferrer" style="color:var(--neon-green);font-weight:600;">WASARD Organization</a> · Designed by <a href="https://wa.me/2347016435125" target="_blank" rel="noopener noreferrer" style="color:var(--neon-cyan);font-weight:600;">DIDS' SYSTEMS INC.</a>
+      </div>
+      <div class="links-center">
+        <a href="contact.html">Contact HQ</a>
+        <a href="structure.html">Governance</a>
+        <a href="judging.html">Ethics</a>
+        <a href="cms-editor.html" style="color:var(--neon-green);font-weight:600;"><i class="fas fa-feather-alt"></i> CMS Editor</a>
+      </div>
+      <!-- Hidden Admin Link on the Right -->
+      <div class="admin-right">
+        <a href="portal-admin.html" class="footer-admin-link" title="Secretariat &amp; Staff Console" aria-label="Admin Access">
+          <i class="fas fa-shield-halved"></i> <span>Staff HQ</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="api-client.js"></script>
+<script src="main.js"></script>
+<script src="dropdown.js" defer></script>
+
+<script>
+async function submitContactForm(e) {
+  e.preventDefault();
+  const name = document.getElementById('contactName').value.trim();
+  const email = document.getElementById('contactEmail').value.trim();
+  const category = document.getElementById('contactCategory').value;
+  const message = document.getElementById('contactMessage').value.trim();
+  const alertBox = document.getElementById('contactAlert');
+  const btn = document.getElementById('contactSubmitBtn');
+  const origBtnText = btn.innerHTML;
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Transmitting Message...';
+
+  const payload = {
+    name,
+    email,
+    category,
+    message
+  };
+
+  try {
+    let res = null;
+    if (window.AUC_API && window.AUC_API.contact) {
+      res = await window.AUC_API.contact.submit(payload);
+    } else {
+      const existing = JSON.parse(localStorage.getItem('auc_contact_messages') || '[]');
+      const localMsg = { ...payload, id: 'MSG-' + Math.floor(10000 + Math.random()*90000), submittedAt: new Date().toISOString() };
+      existing.unshift(localMsg);
+      localStorage.setItem('auc_contact_messages', JSON.stringify(existing));
+      res = { ok: true, data: localMsg };
+    }
+
+    alertBox.style.display = 'block';
+    alertBox.innerHTML = `
+      <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.4rem;">
+        <i class="fas fa-check-circle" style="font-size:1.25rem;"></i>
+        <strong>Message Dispatched to AUC Secretariat!</strong>
+      </div>
+      <div>Reference ID: <strong>#${res.data.id}</strong></div>
+      <div style="font-size:.85rem;color:var(--text-soft);margin-top:.35rem;">
+        Thank you, <strong>${name}</strong>. An AUC desk officer in Addis Ababa has received your inquiry under <em>${category}</em> and will follow up at <span style="color:var(--neon-cyan);">${email}</span> within 24 business hours.
+      </div>
+    `;
+
+    document.getElementById('contactForm').reset();
+  } catch (err) {
+    alertBox.style.display = 'block';
+    alertBox.style.color = '#ff6b6b';
+    alertBox.style.borderColor = 'rgba(255,107,107,0.4)';
+    alertBox.innerHTML = `<strong>Error sending message.</strong> Please check your connection or contact admin@africanundergraduatechallenge.com directly.`;
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = origBtnText;
+  }
+}
+</script>
+
+<!-- Floating CMS Quick-Edit Button (Item 1) -->
+<a href="cms-editor.html" class="cms-fab" title="Edit Page Content" aria-label="Open CMS Editor">
+  <i class="fas fa-feather-alt"></i>
+  <span class="cms-fab-tooltip">Edit Page Content</span>
+</a>
+</body>
+</html>

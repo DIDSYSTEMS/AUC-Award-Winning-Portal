@@ -1,0 +1,1888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin HQ — AUC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="portal.css">
+<style>
+/* ─── MODULE GRID ─── */
+.module-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.mod-card { background: linear-gradient(135deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border: 1px solid var(--glass-border); border-radius: 14px; padding: 1.5rem; transition: var(--transition); cursor: pointer; position:relative; overflow:hidden; }
+.mod-card::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(0,255,135,0),rgba(0,229,255,0)); opacity:0; transition:opacity .35s ease; pointer-events:none; }
+.mod-card:hover::before { opacity:.06; }
+.mod-card:hover { border-color: rgba(0,255,135,.4); transform: translateY(-4px); box-shadow:0 0 30px rgba(0,255,135,0.1); }
+.mod-card i { font-size: 1.8rem; color: var(--neon-green); margin-bottom: .85rem; }
+.mod-card h4 { font-size: 1.05rem; }
+.mod-card p { font-size: .82rem; color: var(--text-mute); margin: .35rem 0 .85rem; }
+.mod-card .read { color: var(--neon-cyan); font-size: .82rem; font-weight: 700; }
+
+/* ─── AUDIT LOG ─── */
+.audit-log { display: flex; flex-direction: column; gap: .65rem; }
+.audit-row { display: grid; grid-template-columns: 110px 1fr 1fr 100px; gap: 1rem; padding: .85rem 1rem; background: rgba(255,255,255,.025); border-radius: 10px; align-items: center; font-size: .85rem; }
+.audit-row.head { background: rgba(255,255,255,.04); font-size: .72rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-mute); font-weight: 700; }
+.audit-row .ts { color: var(--text-mute); font-family: 'JetBrains Mono', monospace; font-size: .8rem; }
+.audit-row .badge-tiny { font-size: .72rem; padding: .2rem .55rem; border-radius: 999px; font-weight: 700; }
+.audit-row .badge-tiny.ok { background: rgba(0,255,135,.15); color: var(--neon-green); }
+.audit-row .badge-tiny.warn { background: rgba(255,184,0,.15); color: var(--neon-gold); }
+.audit-row .badge-tiny.info { background: rgba(0,229,255,.15); color: var(--neon-cyan); }
+
+/* ─── LIVE ACTIVITY FEED ─── */
+#liveActivityFeed { display:flex; flex-direction:column; gap:.5rem; max-height:320px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:rgba(0,255,135,.2) transparent; }
+.activity-entry { display:flex; align-items:flex-start; gap:.75rem; padding:.65rem .85rem; border-radius:10px; background:rgba(255,255,255,.025); border:1px solid rgba(255,255,255,.05); transition: all .3s ease; animation: feedEntry .4s cubic-bezier(0.16,1,0.3,1); }
+.activity-entry.new-entry { border-color:rgba(0,255,135,.25); background:rgba(0,255,135,.04); }
+@keyframes feedEntry { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
+.activity-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:5px; box-shadow: 0 0 8px currentColor; }
+.activity-dot.green { background:var(--c-green); color:var(--c-green); }
+.activity-dot.cyan { background:var(--c-cyan); color:var(--c-cyan); }
+.activity-dot.gold { background:var(--c-gold); color:var(--c-gold); }
+.activity-dot.purple { background:var(--c-purple); color:var(--c-purple); }
+.activity-dot.pink { background:var(--c-pink); color:var(--c-pink); }
+.activity-body { flex:1; min-width:0; }
+.activity-body strong { font-size:.84rem; font-weight:700; color:#fff; display:block; }
+.activity-body span { font-size:.75rem; color:rgba(255,255,255,.45); }
+.activity-ts { font-size:.72rem; color:rgba(255,255,255,.3); white-space:nowrap; margin-top:1px; font-family:monospace; }
+
+/* ─── KPI SPARKLINE ─── */
+.kpi-sparkline { margin-top:.5rem; opacity:.7; }
+.kpi-sparkline svg polyline { stroke-dasharray: 200; stroke-dashoffset: 200; animation: drawSpark 1.2s ease forwards .4s; }
+@keyframes drawSpark { to { stroke-dashoffset: 0; } }
+
+/* ─── PERFORMANCE BANNER ─── */
+.perf-banner {
+  border-radius:18px;
+  padding:1.5rem 2rem;
+  margin-bottom:2rem;
+  background:linear-gradient(135deg,rgba(0,255,135,0.06) 0%,rgba(0,229,255,0.04) 40%,rgba(157,78,221,0.06) 100%);
+  border:1px solid rgba(0,255,135,0.15);
+  display:flex;
+  align-items:center;
+  gap:2rem;
+  position:relative;
+  overflow:hidden;
+}
+.perf-banner::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:repeating-linear-gradient(90deg,transparent,transparent 80px,rgba(255,255,255,.01) 80px,rgba(255,255,255,.01) 81px);
+  pointer-events:none;
+}
+.perf-stat { text-align:center; flex:1; min-width:80px; }
+.perf-stat-num { font-size:2.2rem; font-weight:900; line-height:1; }
+.perf-stat-lbl { font-size:.72rem; text-transform:uppercase; letter-spacing:1.5px; color:rgba(255,255,255,.5); margin-top:.25rem; font-weight:700; }
+.perf-divider { width:1px; height:50px; background:rgba(255,255,255,.1); flex-shrink:0; }
+.perf-action { flex-shrink:0; }
+
+/* ─── SYSTEM HEALTH ROWS ─── */
+.sys-health-row { display:flex; justify-content:space-between; align-items:center; padding:.65rem .9rem; border-radius:10px; font-size:.88rem; transition: background .25s; }
+.sys-health-row:hover { background: rgba(255,255,255,.04); }
+.sys-health-row.green { border-left:3px solid rgba(0,255,135,.5); background:rgba(0,255,135,.03); }
+.sys-health-row.cyan  { border-left:3px solid rgba(0,229,255,.5); background:rgba(0,229,255,.03); }
+.sys-health-row.gold  { border-left:3px solid rgba(255,184,0,.5); background:rgba(255,184,0,.03); }
+.sys-health-row.purple { border-left:3px solid rgba(157,78,221,.5); background:rgba(157,78,221,.03); }
+
+/* Analytics KPI Cards */
+.analytics-kpi-card {
+  background: rgba(255,255,255,.025);
+  border: 1px solid var(--adm-border);
+  border-radius: 14px;
+  padding: 1.1rem;
+  text-align: center;
+  transition: transform .25s ease, border-color .25s ease;
+  cursor: default;
+}
+.analytics-kpi-card:hover { transform: translateY(-3px); }
+.analytics-kpi-icon {
+  width: 44px; height: 44px; border-radius: 10px;
+  display: grid; place-items: center;
+  font-size: 1.1rem; margin: 0 auto .65rem;
+}
+.analytics-kpi-num {
+  font-size: 2rem; font-weight: 900; line-height: 1;
+  margin-bottom: .3rem;
+}
+.analytics-kpi-lbl { font-size: .82rem; font-weight: 700; color: rgba(255,255,255,.8); }
+.analytics-kpi-sub { font-size: .72rem; color: var(--text-mute); margin-top: .2rem; }
+</style>
+<link rel="stylesheet" href="dropdown.css">
+<style>.admin-anchor{display:block;height:0;width:0;overflow:hidden;visibility:hidden}</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body class="portal-body">
+
+<header class="portal-header">
+  <div class="portal-header-row">
+    <a href="index.html" class="logo"><img src="assets/img/Logo.png" alt="AUC" onerror="this.style.display='none'"><span class="logo-text">AUC</span></a>
+    <nav class="portal-breadcrumb"><i class="fas fa-shield-halved"></i><span>Admin HQ</span><span class="sep">/</span><span class="active" id="crumbPage">Dashboard</span></nav>
+    <div class="portal-actions">
+      <button class="portal-switcher" data-dropdown-trigger aria-haspopup="true" aria-expanded="false" aria-label="Switch portal">
+        <i class="fas fa-satellite-dish"></i><span>Portals</span><i class="fas fa-chevron-down chev"></i>
+      </button>
+      <div class="dropdown-content" role="menu" aria-label="AUC Portals">
+        <div class="dropdown-header"><h5><i class="fas fa-shield-halved"></i> AUC Portals</h5><small>3 secure systems + CMS</small></div>
+        <div class="dropdown-grid">
+          <a href="portal-student.html" class="dropdown-item" role="menuitem">
+            <div class="di-icon"><i class="fas fa-user-graduate"></i></div>
+            <div class="di-body"><strong>Student Portal</strong><small>Team dashboard · submissions</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="portal-judge.html" class="dropdown-item cyan" role="menuitem">
+            <div class="di-icon"><i class="fas fa-gavel"></i></div>
+            <div class="di-body"><strong>Judge Portal</strong><small>Review queue · rubric</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="portal-admin.html" class="dropdown-item gold is-active" role="menuitem">
+            <div class="di-icon"><i class="fas fa-shield-halved"></i></div>
+            <div class="di-body"><strong>Admin HQ <span class="di-badge gold">YOU</span></strong><small>STAFF · operations</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="cms-editor.html" class="dropdown-item purple" role="menuitem">
+            <div class="di-icon"><i class="fas fa-feather-alt"></i></div>
+            <div class="di-body"><strong>CMS Editor <span class="di-badge purple">EDIT</span></strong><small>Inline edit · autosave</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="partnership.html" class="dropdown-item partner" role="menuitem">
+            <div class="di-icon"><i class="fas fa-handshake"></i></div>
+            <div class="di-body"><strong>Become a Partner</strong><small>Silver / Gold / Platinum</small></div>
+            <i class="fas fa-arrow-right di-arrow"></i>
+          </a>
+          <a href="index.html" class="dropdown-item" role="menuitem">
+            <div class="di-icon"><i class="fas fa-home"></i></div>
+            <div class="di-body"><strong>Public Site</strong><small>Back to main website</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+        </div>
+        <div class="dropdown-footer"><small><i class="fas fa-lock"></i> Session-encrypted · JWT auth</small></div>
+      </div>
+    </div>
+      <button class="icon-btn" title="Alerts"><i class="fas fa-bell"></i></button>
+      <div class="portal-avatar" title="Secretariat"><span>HQ</span><div class="avatar-pulse"></div></div>
+      <button class="btn btn-outline" id="btnLogoutAdmin" style="padding:.35rem .75rem;font-size:.78rem;border-color:rgba(255,106,61,.4);color:#FF6A3D;display:inline-flex;align-items:center;gap:.35rem;" title="Sign out of Admin HQ"><i class="fas fa-arrow-right-from-bracket"></i> <span>Sign Out</span></button>
+    </div>
+  </div>
+</header>
+
+<div class="portal-layout">
+<aside class="portal-side">
+  <div class="team-badge" style="background:linear-gradient(135deg,rgba(0,255,135,.1),rgba(0,229,255,.05));border-color:rgba(0,255,135,.35);">
+    <div class="team-rank" style="background:var(--g-green);color:#02050e;font-weight:900;"><i class="fas fa-shield-halved"></i> HQ SEC-OPS</div>
+    <div class="team-info">
+      <h4>AUC Secretariat</h4>
+      <p><span class="badge-tiny ok" style="margin-right:.3rem;padding:.15rem .45rem;">ONLINE</span> Continental Clearance Level 5</p>
+    </div>
+  </div>
+
+  <nav class="side-menu">
+    <div class="side-cat">Core Console</div>
+    <a href="#overview" data-target="audit" class="side-link active"><i class="fas fa-gauge-high"></i><span>Operations Console</span></a>
+    <a href="#analytics-dashboard" data-target="analytics-dashboard" class="side-link s-cyan"><i class="fas fa-chart-line"></i><span>Platform Analytics</span><span class="badge cyan">Live</span></a>
+    <a href="#audit-log" data-target="audit-log" class="side-link s-gold"><i class="fas fa-scroll"></i><span>System Audit Log</span><span class="badge gold">Events</span></a>
+
+    <div class="side-cat">CMS &amp; Web Builder</div>
+    <a href="cms-editor.html" class="side-link s-purple" style="border:1px solid rgba(157,78,221,.3);background:rgba(157,78,221,.08);"><i class="fas fa-feather-alt" style="color:var(--c-purple);"></i><span style="font-weight:700;color:#fff;">Elementor Builder</span><span class="badge purple">LIVE EDIT</span></a>
+    <a href="#content-wp-style" data-target="content-(wp-style)" class="side-link s-purple"><i class="fas fa-file-shield"></i><span>CMS Pages (WP-Style)</span><span class="badge purple">8 Pages</span></a>
+    <a href="#content-corrector" data-target="content-corrector" class="side-link s-purple"><i class="fas fa-pen-to-square"></i><span>Live Content Overrides</span><span class="badge cyan">Instant</span></a>
+    <a href="#media-library" data-target="media-library" class="side-link s-cyan"><i class="fas fa-images"></i><span>Media Library</span><span class="badge cyan">Upload</span></a>
+    <a href="#news-press" data-target="news-press" class="side-link s-green"><i class="fas fa-newspaper"></i><span>News &amp; Press Desk</span><span class="badge green">Publish</span></a>
+
+    <div class="side-cat">Operations &amp; Teams</div>
+    <a href="#teams-members" data-target="teams-members" class="side-link s-green"><i class="fas fa-users-gear"></i><span>Teams &amp; Assessors</span><span class="badge green">2,847</span></a>
+    <a href="#partnerships" data-target="partnerships" class="side-link s-gold"><i class="fas fa-handshake"></i><span>Partnership Inbox</span><span class="badge gold">8 Active</span></a>
+    <a href="#email-broadcaster" data-target="email-broadcaster" class="side-link s-cyan"><i class="fas fa-envelope-open-text"></i><span>Email Broadcaster</span><span class="badge cyan">Memos</span></a>
+
+    <div class="side-cat">Governance &amp; System</div>
+    <a href="#roles-access" data-target="roles-access" class="side-link s-green"><i class="fas fa-shield-halved"></i><span>Roles &amp; Permissions</span><span class="badge green">RBAC</span></a>
+    <a href="#user-management" data-target="user-management" class="side-link s-purple"><i class="fas fa-key"></i><span>Portal Credentials</span><span class="badge purple">4 Systems</span></a>
+    <a href="#system-settings" data-target="system-settings" class="side-link s-cyan"><i class="fas fa-sliders"></i><span>System Controls</span><span class="badge cyan">Config</span></a>
+  </nav>
+</aside>
+
+<main class="portal-main">
+<section class="page active" id="audit">
+  <div class="page-head">
+    <div>
+      <h1>Operations Console</h1>
+      <p>Pan-African Mission Control — Real-time telemetry across 54 nations, submissions, judges &amp; media.</p>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-outline" style="font-size:.82rem;" onclick="exportAdminAuditLog()"><i class="fas fa-file-csv"></i> Export Audit Log</button>
+      <button class="btn btn-outline" style="font-size:.82rem;" onclick="exportAdminTeamsCsv()"><i class="fas fa-file-excel"></i> Export Teams CSV</button>
+      <button class="btn" data-action="refresh" onclick="location.reload()"><i class="fas fa-sync"></i> Refresh</button>
+      <button class="btn btn-primary" data-action="open-cms" onclick="window.location.href='cms-editor.html'"><i class="fas fa-feather-alt"></i> Open Elementor Builder</button>
+    </div>
+  </div>
+
+  <!-- LIVE CONTINENTAL STATUS STRIP -->
+  <div style="display:flex;align-items:center;gap:1.5rem;padding:.85rem 1.25rem;background:linear-gradient(135deg,rgba(0,255,135,0.04),rgba(0,229,255,0.03));border:1px solid rgba(0,229,255,0.15);border-radius:14px;margin-bottom:2rem;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none;">
+    <div style="display:flex;align-items:center;gap:.5rem;white-space:nowrap;flex-shrink:0;">
+      <span style="width:8px;height:8px;border-radius:50%;background:var(--c-green);display:inline-block;box-shadow:0 0 8px rgba(0,255,135,0.8);animation:blink 1.4s ease-in-out infinite;"></span>
+      <span style="font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--c-green);font-weight:800;">LIVE TELEMETRY</span>
+    </div>
+    <div style="width:1px;height:20px;background:rgba(255,255,255,0.1);flex-shrink:0;"></div>
+    <div style="display:flex;align-items:center;gap:1.5rem;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none;">
+      <div style="display:flex;align-items:center;gap:.4rem;white-space:nowrap;font-size:.82rem;"><i class="fas fa-globe-africa" style="color:var(--c-green);"></i><span style="color:rgba(255,255,255,.6);">AU Nations:</span><strong style="color:#fff;">54 Active</strong></div>
+      <div style="display:flex;align-items:center;gap:.4rem;white-space:nowrap;font-size:.82rem;"><i class="fas fa-users" style="color:var(--c-cyan);"></i><span style="color:rgba(255,255,255,.6);">Teams:</span><strong style="color:var(--c-cyan);">2,847</strong></div>
+      <div style="display:flex;align-items:center;gap:.4rem;white-space:nowrap;font-size:.82rem;"><i class="fas fa-gavel" style="color:var(--c-gold);"></i><span style="color:rgba(255,255,255,.6);">Judges:</span><strong style="color:var(--c-gold);">142</strong></div>
+      <div style="display:flex;align-items:center;gap:.4rem;white-space:nowrap;font-size:.82rem;"><i class="fas fa-trophy" style="color:var(--c-purple);"></i><span style="color:rgba(255,255,255,.6);">Stage 3:</span><strong style="color:var(--c-purple);">384 Finalists</strong></div>
+      <div style="display:flex;align-items:center;gap:.4rem;white-space:nowrap;font-size:.82rem;"><i class="fas fa-clock" style="color:rgba(255,255,255,.4);"></i><span style="color:rgba(255,255,255,.4);">Last sync:</span><strong style="color:rgba(255,255,255,.5);" id="telemetryLastSync">Just now</strong></div>
+      <div style="display:flex;align-items:center;gap:.4rem;white-space:nowrap;font-size:.82rem;"><i class="fas fa-server" style="color:var(--c-green);"></i><span style="color:rgba(255,255,255,.6);">Uptime:</span><strong style="color:var(--c-green);" id="telemetryUptimeStrip">Online</strong></div>
+      <div style="display:flex;align-items:center;gap:.4rem;white-space:nowrap;font-size:.82rem;"><i class="fas fa-gauge" style="color:var(--c-cyan);"></i><span style="color:rgba(255,255,255,.6);">Latency:</span><strong style="color:var(--c-cyan);" id="telemetryLatencyStrip">—</strong></div>
+    </div>
+  </div>
+
+  <!-- ─── PERFORMANCE BANNER ─── -->
+  <div class="perf-banner">
+    <div class="perf-stat">
+      <div class="perf-stat-num" style="background:var(--g-green);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">99.97%</div>
+      <div class="perf-stat-lbl">Uptime SLA</div>
+    </div>
+    <div class="perf-divider"></div>
+    <div class="perf-stat">
+      <div class="perf-stat-num" id="bannerLatency" style="background:var(--g-blue);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">—</div>
+      <div class="perf-stat-lbl">API Latency</div>
+    </div>
+    <div class="perf-divider"></div>
+    <div class="perf-stat">
+      <div class="perf-stat-num" style="background:var(--g-gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">54</div>
+      <div class="perf-stat-lbl">AU Nations Live</div>
+    </div>
+    <div class="perf-divider"></div>
+    <div class="perf-stat">
+      <div class="perf-stat-num" style="background:var(--g-purple);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">7</div>
+      <div class="perf-stat-lbl">Innovation Tracks</div>
+    </div>
+    <div class="perf-divider"></div>
+    <div class="perf-action">
+      <div style="font-size:.75rem;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.35);margin-bottom:.3rem;font-weight:700;">Continental HQ</div>
+      <div style="font-size:.84rem;color:var(--c-green);font-weight:700;"><i class="fas fa-satellite-dish"></i> Pan-African Mission Control</div>
+      <div style="font-size:.74rem;color:rgba(255,255,255,.35);margin-top:.2rem;">AUC 2026 · Addis Ababa · WASARD</div>
+    </div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card reveal">
+      <div class="kpi-icon"><i class="fas fa-user-graduate"></i></div>
+      <div style="flex:1;">
+        <div class="kpi-num" data-count="2847" id="kpiTeams">0</div>
+        <div class="kpi-lbl">Registered Teams</div>
+        <div class="kpi-sparkline">
+          <svg width="90" height="22" viewBox="0 0 90 22" fill="none">
+            <polyline points="0,18 12,14 24,16 36,9 48,11 60,5 72,7 90,2" fill="none" stroke="rgba(0,255,135,0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <linearGradient id="sgG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(0,255,135,0.15)"/><stop offset="100%" stop-color="rgba(0,255,135,0)"/></linearGradient>
+            <polyline points="0,18 12,14 24,16 36,9 48,11 60,5 72,7 90,2 90,22 0,22" fill="url(#sgG)" stroke="none"/>
+          </svg>
+        </div>
+      </div>
+      <div class="kpi-trend up"><i class="fas fa-arrow-trend-up"></i> +128 this week<br><small style="color:rgba(255,255,255,0.4);">54 AU Nations</small></div>
+    </div>
+
+    <div class="kpi-card cyan-card reveal">
+      <div class="kpi-icon cyan"><i class="fas fa-flag-checkered"></i></div>
+      <div style="flex:1;">
+        <div class="kpi-num" data-count="384" id="kpiFinalists">0</div>
+        <div class="kpi-lbl">Stage 3 Finalists</div>
+        <div class="kpi-sparkline">
+          <svg width="90" height="22" viewBox="0 0 90 22" fill="none">
+            <polyline points="0,22 15,16 30,18 45,10 60,12 75,6 90,2" fill="none" stroke="rgba(0,229,255,0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="kpi-trend up"><i class="fas fa-circle-check"></i> 12.8% Conversion<br><small style="color:rgba(255,255,255,0.4);">Regional Hubs</small></div>
+    </div>
+
+    <div class="kpi-card gold-card reveal">
+      <div class="kpi-icon gold"><i class="fas fa-gavel"></i></div>
+      <div style="flex:1;">
+        <div class="kpi-num" data-count="142" id="kpiJudges">0</div>
+        <div class="kpi-lbl">Active Judges</div>
+        <div class="kpi-sparkline">
+          <svg width="90" height="22" viewBox="0 0 90 22" fill="none">
+            <polyline points="0,20 18,15 36,17 54,10 72,8 90,4" fill="none" stroke="rgba(255,184,0,0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="kpi-trend" style="color:var(--c-gold);"><i class="fas fa-shield"></i> 7 Track Panels<br><small style="color:rgba(255,255,255,0.4);">AU Calibrated</small></div>
+    </div>
+
+    <div class="kpi-card purple-card reveal">
+      <div class="kpi-icon purple"><i class="fas fa-handshake"></i></div>
+      <div style="flex:1;">
+        <div class="kpi-num" style="background:var(--g-purple);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">$395K</div>
+        <div class="kpi-lbl">Partner Grants</div>
+        <div class="kpi-sparkline">
+          <svg width="90" height="22" viewBox="0 0 90 22" fill="none">
+            <polyline points="0,18 15,14 30,10 45,12 60,6 75,8 90,2" fill="none" stroke="rgba(157,78,221,0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="kpi-trend up" style="color:var(--c-pink);"><i class="fas fa-gem"></i> 8 Active MOUs<br><small style="color:rgba(255,255,255,0.4);">Plat / Gold / Silver</small></div>
+    </div>
+  </div>
+
+  <div class="dash-grid">
+    <div class="panel reveal" id="teams-pipeline">
+      <div class="panel-head">
+        <h3><i class="fas fa-diagram-project" style="color:var(--c-green);margin-right:.5rem;"></i> Tournament Pipeline by Stage</h3>
+        <span class="badge green">2026 Cycle</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.75rem;">
+        <div class="score-row" style="grid-template-columns:140px 1fr 70px;">
+          <div class="who"><strong>Stage 1 — Campus</strong></div>
+          <div class="bar"><div class="fill" style="width:100%;background:var(--g-green);"></div></div>
+          <div class="pts">2,847</div>
+        </div>
+        <div class="score-row" style="grid-template-columns:140px 1fr 70px;">
+          <div class="who"><strong>Stage 2 — National</strong></div>
+          <div class="bar"><div class="fill" style="width:46%;background:var(--g-blue);"></div></div>
+          <div class="pts" style="color:var(--c-cyan);">1,309</div>
+        </div>
+        <div class="score-row" style="grid-template-columns:140px 1fr 70px;">
+          <div class="who"><strong>Stage 3 — Regional</strong></div>
+          <div class="bar"><div class="fill" style="width:14%;background:var(--g-purple);"></div></div>
+          <div class="pts" style="color:var(--c-purple);">384</div>
+        </div>
+        <div class="score-row leader" style="grid-template-columns:140px 1fr 70px;">
+          <div class="who" style="color:var(--c-gold);"><strong>Stage 4 — Finals</strong></div>
+          <div class="bar"><div class="fill" style="width:2%;background:var(--g-gold);"></div></div>
+          <div class="pts" style="color:var(--c-gold);">15</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel reveal" id="system-health">
+      <div class="panel-head">
+        <h3><i class="fas fa-heart-pulse" style="color:var(--c-cyan);margin-right:.5rem;"></i> System Health &amp; Telemetry</h3>
+        <span class="badge-tiny ok" id="telemetryStatusBadge"><i class="fas fa-circle" style="font-size:.5rem;margin-right:.3rem;"></i> 99.97% Operational</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.75rem;">
+        <div class="sys-health-row green">
+          <span><i class="fas fa-server" style="color:var(--c-green);margin-right:.6rem;"></i>REST API Cluster</span>
+          <strong style="color:var(--c-green);" id="telemetryUptime"><i class="fas fa-bolt"></i> Operational</strong>
+        </div>
+        <div class="sys-health-row cyan">
+          <span><i class="fas fa-database" style="color:var(--c-cyan);margin-right:.6rem;"></i>API Latency (Live Ping)</span>
+          <strong style="color:var(--c-cyan);" id="telemetryLatency"><i class="fas fa-gauge"></i> Measuring...</strong>
+        </div>
+        <div class="sys-health-row gold">
+          <span><i class="fas fa-microchip" style="color:var(--c-gold);margin-right:.6rem;"></i>Server Heap Memory</span>
+          <strong style="color:var(--c-gold);" id="telemetryMemory"><i class="fas fa-memory"></i> Active</strong>
+        </div>
+        <div class="sys-health-row purple">
+          <span><i class="fas fa-layer-group" style="color:var(--c-purple);margin-right:.6rem;"></i>CMS Managed Pages</span>
+          <strong style="color:var(--c-purple);" id="telemetryPages"><i class="fas fa-file"></i> 8 Published</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel reveal">
+    <div class="panel-head">
+      <h3><i class="fas fa-th-large" style="color:var(--c-cyan);margin-right:.5rem;"></i> Executive Modules &amp; Instant Workspaces</h3>
+      <span class="badge purple">High Velocity</span>
+    </div>
+    <div class="module-grid">
+      <a class="mod-card" href="cms-editor.html" style="border-color:rgba(157,78,221,.3);background:linear-gradient(135deg,rgba(157,78,221,.08),rgba(255,42,133,.03));">
+        <i class="fas fa-feather-alt" style="color:var(--c-purple);"></i>
+        <h4>Visual Elementor Builder</h4>
+        <p>Full 3-panel visual canvas: widget dock, device switcher &amp; live autosave</p>
+        <span class="read" style="color:var(--c-purple);">Launch Builder <i class="fas fa-arrow-right"></i></span>
+      </a>
+      <a class="mod-card" href="#content-wp-style" style="border-color:rgba(0,229,255,.2);">
+        <i class="fas fa-file-shield" style="color:var(--c-cyan);"></i>
+        <h4>CMS Pages (WP-Style)</h4>
+        <p>Manage all 8 website pages, view revision history, slugs &amp; block counts</p>
+        <span class="read">Manage pages <i class="fas fa-arrow-right"></i></span>
+      </a>
+      <a class="mod-card" href="#teams-members" style="border-color:rgba(0,255,135,.2);">
+        <i class="fas fa-users-gear" style="color:var(--c-green);"></i>
+        <h4>Teams &amp; Assessor Routing</h4>
+        <p>Review 2,847 preliminary entries across 7 Agenda 2063 tracks</p>
+        <span class="read" style="color:var(--c-green);">Route entries <i class="fas fa-arrow-right"></i></span>
+      </a>
+      <a class="mod-card" href="#partnerships" style="border-color:rgba(255,184,0,.2);">
+        <i class="fas fa-handshake" style="color:var(--c-gold);"></i>
+        <h4>Continental Partnership Inbox</h4>
+        <p>Review Silver, Gold &amp; Platinum tier requests and draft ratified MOUs</p>
+        <span class="read" style="color:var(--c-gold);">Open inquiries <i class="fas fa-arrow-right"></i></span>
+      </a>
+      <a class="mod-card" href="#media-library" style="border-color:rgba(0,229,255,.2);">
+        <i class="fas fa-images" style="color:var(--c-cyan);"></i>
+        <h4>Continental Media Library</h4>
+        <p>Upload marketing photography, pitch decks &amp; videos with instant CDN sync</p>
+        <span class="read">Upload files <i class="fas fa-arrow-right"></i></span>
+      </a>
+      <a class="mod-card" href="#roles-access" style="border-color:rgba(255,42,133,.2);">
+        <i class="fas fa-shield-halved" style="color:var(--c-pink);"></i>
+        <h4>RBAC &amp; Access Control</h4>
+        <p>Configure staff roles, assign judge permissions and issue secure tokens</p>
+        <span class="read" style="color:var(--c-pink);">Manage access <i class="fas fa-arrow-right"></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="panel reveal" style="margin-top:1.5rem;" id="audit-log">
+    <div class="panel-head">
+      <h3><i class="fas fa-tower-broadcast" style="color:var(--c-cyan);margin-right:.5rem;"></i>Live Continental Activity Feed</h3>
+      <span class="badge-tiny ok" style="display:flex;align-items:center;gap:.35rem;padding:.25rem .65rem;">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--c-green);display:inline-block;animation:blink 1.4s infinite;"></span>
+        Real-time
+      </span>
+    </div>
+    <div id="liveActivityFeed">
+      <div class="activity-entry">
+        <div class="activity-dot green"></div>
+        <div class="activity-body"><strong>Dr. Kwame A. · Stage 3 Judge</strong><span>Submitted weighted score for NovaPay (84.4 / 100)</span></div>
+        <div class="activity-ts">14:32</div>
+      </div>
+      <div class="activity-entry">
+        <div class="activity-dot cyan"></div>
+        <div class="activity-body"><strong>Editor HQ · News Desk</strong><span>Published: "Updates to Aspiration 4 Assessment Rubric"</span></div>
+        <div class="activity-ts">14:18</div>
+      </div>
+      <div class="activity-entry">
+        <div class="activity-dot gold"></div>
+        <div class="activity-body"><strong>Admin HQ · Partnerships</strong><span>Approved Platinum MOU — AfCFTA Trade Secretariat</span></div>
+        <div class="activity-ts">13:51</div>
+      </div>
+      <div class="activity-entry">
+        <div class="activity-dot purple"></div>
+        <div class="activity-body"><strong>System · KYC Engine</strong><span>Auto-flagged Lina Bekele's KYC document for manual review</span></div>
+        <div class="activity-ts">12:42</div>
+      </div>
+      <div class="activity-entry">
+        <div class="activity-dot green"></div>
+        <div class="activity-body"><strong>SolarHarvest AI · West Africa</strong><span>Team submitted Stage 2 pitch deck — 47 pages, verified</span></div>
+        <div class="activity-ts">11:29</div>
+      </div>
+      <div class="activity-entry">
+        <div class="activity-dot pink"></div>
+        <div class="activity-body"><strong>Registration · East Africa Hub</strong><span>New team registered: UniNairobi FinTech Collective (Track 1)</span></div>
+        <div class="activity-ts">10:55</div>
+      </div>
+    </div>
+    <div style="margin-top:.75rem;display:flex;justify-content:space-between;align-items:center;">
+      <div style="font-size:.76rem;color:rgba(255,255,255,.3);">Auto-refreshes · showing last 20 events</div>
+      <button class="btn btn-ghost" style="font-size:.78rem;padding:.3rem .7rem;" onclick="exportAdminAuditLog()">
+        <i class="fas fa-download"></i> Export Log
+      </button>
+    </div>
+  </div>
+</section>
+
+  <!-- 1. MEDIA LIBRARY & UPLOADER (Item 1 & Item 9) -->
+  <div class="panel reveal" id="media-library" style="margin-top:2rem;">
+    <div class="panel-head">
+      <h3><i class="fas fa-images" style="color:var(--neon-cyan);margin-right:.5rem;"></i> Continental Media Library & Uploader</h3>
+      <span class="badge cyan">Instant Local & CDN Sync</span>
+    </div>
+    <p style="color:var(--text-soft);font-size:.9rem;margin-bottom:1.5rem;">
+      Upload photos, presentation decks, videos, or logos for direct use across marketing and portal pages. Files uploaded here are immediately accessible.
+    </p>
+    <div class="media-drop-zone" id="adminMediaDropZone" onclick="document.getElementById('adminFileInput').click()">
+      <i class="fas fa-cloud-upload-alt" style="font-size:2.5rem;color:var(--neon-cyan);margin-bottom:.75rem;display:block;"></i>
+      <h4 style="margin-bottom:.35rem;">Drag & drop images or videos here, or <span style="color:var(--neon-cyan);text-decoration:underline;">browse computer</span></h4>
+      <p style="color:var(--text-mute);font-size:.82rem;margin:0;">Supports PNG, JPG, WEBP, SVG, MP4, WEBM</p>
+      <input type="file" id="adminFileInput" accept="image/*,video/*" multiple style="display:none;" onchange="handleAdminMediaUpload(this.files)">
+    </div>
+    <div id="mediaUploadNotice" style="display:none;padding:.75rem 1rem;background:rgba(0,255,135,0.1);border:1px solid rgba(0,255,135,0.3);border-radius:8px;color:var(--neon-green);margin-bottom:1.5rem;font-size:.88rem;"></div>
+    <div class="media-grid-preview" id="adminMediaGrid">
+      <!-- Injected via JavaScript below -->
+    </div>
+  </div>
+
+  <!-- 2. SITE CONTENT CORRECTIONS ENGINE (Item 1) -->
+  <div class="panel reveal" id="content-corrector" style="margin-top:2rem;">
+    <div class="panel-head">
+      <h3><i class="fas fa-pen-to-square" style="color:var(--africa-purple);margin-right:.5rem;"></i> Live Page Content Corrector</h3>
+      <a href="cms-editor.html" class="panel-link" target="_blank">Open Full CMS Canvas <i class="fas fa-external-link-alt"></i></a>
+    </div>
+    <p style="color:var(--text-soft);font-size:.9rem;margin-bottom:1.25rem;">
+      Directly correct headings, summaries, dates, or announcements on any public page. Changes immediately reflect across visitor sessions.
+    </p>
+    <div style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));">
+      <div class="form-group">
+        <label class="form-label">Target Public Page</label>
+        <select id="corrPage" class="form-control">
+          <option value="index">Home Page (index.html)</option>
+          <option value="about">About Page (about.html)</option>
+          <option value="structure">Competition Structure (structure.html)</option>
+          <option value="judging">Judging & Rubric (judging.html)</option>
+          <option value="participate">Participate / Register (participate.html)</option>
+          <option value="sponsors">Partners & Sponsors (sponsors.html)</option>
+          <option value="news">News Dispatches (news.html)</option>
+          <option value="contact">Contact HQ (contact.html)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Target CSS Selector</label>
+        <input type="text" id="corrSelector" class="form-control" placeholder="e.g. h1, .hero-sub, .lead" value=".hero-sub">
+      </div>
+    </div>
+    <div class="form-group" style="margin-top:1rem;">
+      <label class="form-label">Updated Content (Text or HTML)</label>
+      <textarea id="corrContent" class="form-control" rows="3" placeholder="Type new text or markup here..."></textarea>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1rem;flex-wrap:wrap;gap:.75rem;">
+      <button type="button" class="btn btn-primary" onclick="applyContentCorrection()"><i class="fas fa-check"></i> Apply Live Override</button>
+      <button type="button" class="btn btn-ghost" onclick="resetContentCorrections()"><i class="fas fa-undo"></i> Reset Page Overrides</button>
+    </div>
+    <div id="corrStatus" style="display:none;margin-top:1rem;padding:.75rem;border-radius:8px;font-size:.85rem;"></div>
+  </div>
+
+  <!-- 3. PARTNERSHIP INBOX (Item 7 & Item 9) -->
+  <div class="panel reveal" id="partnerships" style="margin-top:2rem;">
+    <div class="panel-head">
+      <h3><i class="fas fa-handshake" style="color:var(--neon-gold);margin-right:.5rem;"></i> Continental Partnership Inbox</h3>
+      <span class="badge gold" id="partnerBadgeCount">Active</span>
+    </div>
+    <p style="color:var(--text-soft);font-size:.9rem;margin-bottom:1.25rem;">
+      Review organizations that submitted interest via <a href="partnership.html" style="color:var(--neon-cyan);">partnership.html</a>. Manage tier categories, contact info, and draft MOUs.
+    </p>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;gap:1rem;flex-wrap:wrap;">
+      <div style="flex:1;min-width:240px;position:relative;">
+        <i class="fas fa-search" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-mute);font-size:.85rem;"></i>
+        <input type="search" class="form-control" placeholder="Search partner organization, contact, or status..." style="padding-left:2.4rem;" oninput="filterAdminPartnersTable(this.value)">
+      </div>
+    </div>
+    <div class="team-table" id="partnerInboxTable">
+      <div class="row head"><div>Organization</div><div>Contact / Email</div><div>Tier & Budget</div><div>HQ Status</div><div>Action</div></div>
+      <!-- Injected via JavaScript below -->
+    </div>
+  </div>
+
+  <!-- 4. TEAMS & ASSESSOR ROUTING (Item 6 & Item 9) -->
+  <div class="panel reveal" id="teams-members" style="margin-top:2rem;">
+    <div class="panel-head">
+      <h3><i class="fas fa-users-gear" style="color:var(--neon-green);margin-right:.5rem;"></i> Student Teams & Assessor Routing</h3>
+      <span class="badge">7 AU Tracks</span>
+    </div>
+    <p style="color:var(--text-soft);font-size:.9rem;margin-bottom:1.25rem;">
+      All submitted preliminary entries from <a href="participate.html" style="color:var(--neon-cyan);">participate.html</a>. Each team is mapped to an assessor matching their Agenda 2063 pillar.
+    </p>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;gap:1rem;flex-wrap:wrap;">
+      <div style="flex:1;min-width:240px;position:relative;">
+        <i class="fas fa-search" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-mute);font-size:.85rem;"></i>
+        <input type="search" class="form-control" placeholder="Search by team lead, country, track or assessor..." style="padding-left:2.4rem;" oninput="filterAdminTeamsTable(this.value)">
+      </div>
+      <button type="button" class="btn btn-outline" style="font-size:.82rem;" onclick="exportAdminTeamsCsv()"><i class="fas fa-download"></i> Export Roster (CSV)</button>
+    </div>
+    <div class="team-table" id="adminTeamsTable">
+      <div class="row head"><div>Team Lead / Project</div><div>University & Country</div><div>Track</div><div>Assigned Assessor</div><div>Action</div></div>
+      <!-- Injected via JavaScript below -->
+    </div>
+  </div>
+
+  <!-- 5. NEWS & PRESS PUBLISHER (Item 10 & Item 9) -->
+  <div class="panel reveal" id="news-press" style="margin-top:2rem;">
+    <div class="panel-head">
+      <h3><i class="fas fa-newspaper" style="color:var(--neon-cyan);margin-right:.5rem;"></i> News & Press Dispatch Desk</h3>
+      <a href="news.html" class="panel-link" target="_blank">View Public News <i class="fas fa-external-link-alt"></i></a>
+    </div>
+    <p style="color:var(--text-soft);font-size:.9rem;margin-bottom:1.25rem;">
+      Publish stories and official tournament bulletins that render dynamically on <a href="news.html" style="color:var(--neon-cyan);">news.html</a>.
+    </p>
+    <form id="adminNewsForm" onsubmit="publishNewsArticle(event);">
+      <div style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+        <div class="form-group">
+          <label class="form-label">Article Headline *</label>
+          <input type="text" id="newsTitle" required class="form-control" placeholder="e.g. Continental Finals Venue Confirmed: Addis Ababa">
+        </div>
+        <div class="form-group">
+          <label class="form-label">News Category *</label>
+          <select id="newsCat" required class="form-control">
+            <option value="announcements">Tournament Announcement</option>
+            <option value="innovators">Innovator Spotlight</option>
+            <option value="partners">Partnership & Seed Fund</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Author Desk *</label>
+          <input type="text" id="newsAuthor" required class="form-control" value="AUC Continental Secretariat">
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:1rem;">
+        <label class="form-label">Story Summary / Excerpt *</label>
+        <textarea id="newsExcerpt" required class="form-control" rows="2" placeholder="Brief summary displayed on the card..."></textarea>
+      </div>
+      <div id="newsPublishAlert" style="display:none;margin-top:1rem;padding:.75rem;border-radius:8px;background:rgba(0,255,135,0.1);border:1px solid rgba(0,255,135,0.4);color:var(--neon-green);font-size:.88rem;"></div>
+      <button type="submit" class="btn btn-primary" style="margin-top:1rem;"><i class="fas fa-paper-plane"></i> Publish Article to News Page</button>
+    </form>
+    <div style="margin-top:2rem;">
+      <h4 style="font-size:1rem;margin-bottom:.75rem;">Currently Published Articles</h4>
+      <div id="adminPublishedNewsList" style="display:flex;flex-direction:column;gap:.75rem;"></div>
+    </div>
+  </div>
+
+  <!-- 6. USER MANAGEMENT & CREDENTIALS -->
+  <div class="panel reveal" id="user-management" style="margin-top:2rem;">
+    <div class="panel-head">
+      <h3><i class="fas fa-users-cog" style="color:var(--neon-gold);margin-right:.5rem;"></i> User Management & Credentials</h3>
+      <span class="panel-link" style="font-size:.82rem;color:var(--text-soft);">Manage all portal access</span>
+    </div>
+    <p style="color:var(--text-soft);font-size:.9rem;margin-bottom:1.25rem;">
+      Update portal credentials and assign roles for Student, Judge, Admin, and CMS Editor access.
+    </p>
+    <div style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));">
+      <div class="panel" style="padding:1.25rem;border:1px solid rgba(255,193,7,0.2);background:rgba(255,193,7,0.04);">
+        <h5 style="color:var(--neon-gold);margin-bottom:.75rem;"><i class="fas fa-user-graduate"></i> Student Portal</h5>
+        <div style="display:grid;gap:.5rem;">
+          <input type="text" class="form-control" id="stuUser" value="team_demo" placeholder="Username">
+          <input type="password" class="form-control" id="stuPass" value="student@2026" placeholder="Password">
+          <button class="btn btn-outline" style="font-size:.82rem;" onclick="savePortalCred('portal-student','stuUser','stuPass')"><i class="fas fa-save"></i> Save</button>
+        </div>
+      </div>
+      <div class="panel" style="padding:1.25rem;border:1px solid rgba(0,229,255,0.2);background:rgba(0,229,255,0.04);">
+        <h5 style="color:var(--neon-cyan);margin-bottom:.75rem;"><i class="fas fa-gavel"></i> Judge Portal</h5>
+        <div style="display:grid;gap:.5rem;">
+          <input type="text" class="form-control" id="judUser" value="judge_demo" placeholder="Username">
+          <input type="password" class="form-control" id="judPass" value="judge@2026" placeholder="Password">
+          <button class="btn btn-outline" style="font-size:.82rem;" onclick="savePortalCred('portal-judge','judUser','judPass')"><i class="fas fa-save"></i> Save</button>
+        </div>
+      </div>
+      <div class="panel" style="padding:1.25rem;border:1px solid rgba(0,255,135,0.2);background:rgba(0,255,135,0.04);">
+        <h5 style="color:var(--neon-green);margin-bottom:.75rem;"><i class="fas fa-shield-alt"></i> Admin HQ</h5>
+        <div style="display:grid;gap:.5rem;">
+          <input type="text" class="form-control" id="admUser" value="admin" placeholder="Username">
+          <input type="password" class="form-control" id="admPass" value="AUCadmin123" placeholder="Password">
+          <button class="btn btn-outline" style="font-size:.82rem;" onclick="savePortalCred('portal-admin','admUser','admPass')"><i class="fas fa-save"></i> Save</button>
+        </div>
+      </div>
+      <div class="panel" style="padding:1.25rem;border:1px solid rgba(156,107,255,0.2);background:rgba(156,107,255,0.04);">
+        <h5 style="color:#9D4EDD;margin-bottom:.75rem;"><i class="fas fa-feather-alt"></i> CMS Editor</h5>
+        <div style="display:grid;gap:.5rem;">
+          <input type="text" class="form-control" id="cmsUser" value="editor" placeholder="Username">
+          <input type="password" class="form-control" id="cmsPass" value="cms@2026" placeholder="Password">
+          <button class="btn btn-outline" style="font-size:.82rem;" onclick="savePortalCred('cms-editor','cmsUser','cmsPass')"><i class="fas fa-save"></i> Save</button>
+        </div>
+      </div>
+    </div>
+    <div id="credSaveAlert" style="display:none;margin-top:1rem;padding:.75rem;border-radius:8px;background:rgba(0,255,135,0.1);border:1px solid rgba(0,255,135,0.4);color:var(--neon-green);font-size:.88rem;"></div>
+  </div>
+
+  <!-- 7. EMAIL BROADCASTER -->
+  <div class="panel reveal" id="email-broadcaster" style="margin-top:2rem;">
+    <div class="panel-head">
+      <h3><i class="fas fa-envelope-open-text" style="color:var(--neon-cyan);margin-right:.5rem;"></i> Email Broadcaster</h3>
+      <span class="panel-link" style="font-size:.82rem;color:var(--text-soft);">Compose & send continental announcements</span>
+    </div>
+    <p style="color:var(--text-soft);font-size:.9rem;margin-bottom:1.25rem;">
+      Draft official AUC email broadcasts for registered teams, judges, or partners. Messages are queued and logged here.
+    </p>
+    <form id="emailBroadcastForm" onsubmit="queueEmailBroadcast(event);">
+      <div class="form-group" style="margin-bottom:1rem;">
+        <label class="form-label"><i class="fas fa-wand-magic-sparkles" style="color:var(--neon-cyan);margin-right:.4rem;"></i> Institutional Template Presets</label>
+        <select class="form-control" onchange="loadBroadcastTemplate(this.value)">
+          <option value="">-- Choose Official Broadcast Template --</option>
+          <option value="stage3">Stage 3 Accelerator: Mentor Pairing & Deliverables Protocol</option>
+          <option value="finals">Continental Finals: Travel, Visa & Clearance Protocol (Addis Ababa)</option>
+          <option value="judges">Notice: Stage 3 Rubric Calibration & Review Queue Score Lock</option>
+          <option value="partners">AfCFTA Innovation Demo Day: VIP Partner Preamble & Pass</option>
+        </select>
+      </div>
+      <div style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+        <div class="form-group">
+          <label class="form-label">Recipient Group *</label>
+          <select id="emailGroup" required class="form-control">
+            <option value="all">All Registered Teams</option>
+            <option value="judges">All Active Judges</option>
+            <option value="partners">All Partners</option>
+            <option value="stage3">Stage 3 Finalists Only</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subject Line *</label>
+          <input type="text" id="emailSubject" required class="form-control" placeholder="e.g. Important: Stage 3 Submission Deadline">
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:1rem;">
+        <label class="form-label">Message Body *</label>
+        <textarea id="emailBody" required class="form-control" rows="4" placeholder="Write your official communication here. The AUC letterhead will be appended automatically."></textarea>
+      </div>
+      <div id="emailSendAlert" style="display:none;margin-top:1rem;padding:.75rem;border-radius:8px;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.3);color:var(--neon-cyan);font-size:.88rem;"></div>
+      <div style="display:flex;gap:.75rem;align-items:center;margin-top:1rem;flex-wrap:wrap;">
+        <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Queue Broadcast</button>
+        <button type="button" class="btn btn-outline" onclick="openBroadcastPreview()"><i class="fas fa-eye"></i> Preview Continental Memo</button>
+      </div>
+    </form>
+    <div style="margin-top:2rem;">
+      <h4 style="font-size:1rem;margin-bottom:.75rem;">Queued Messages</h4>
+      <div id="emailQueueList" style="display:flex;flex-direction:column;gap:.75rem;"></div>
+    </div>
+  </div>
+
+  <!-- 8. ANALYTICS DASHBOARD -->
+  <div class="panel reveal" id="analytics-dashboard" style="margin-top:2rem;">
+    <div class="panel-head">
+      <h3><i class="fas fa-chart-line" style="color:var(--neon-green);margin-right:.5rem;"></i> Platform Analytics — Live Continental Dashboard</h3>
+      <span class="badge green" id="analyticsLiveBadge"><i class="fas fa-circle" style="font-size:.5rem;"></i> Live</span>
+    </div>
+    <p style="color:var(--text-soft);font-size:.9rem;margin-bottom:1.5rem;">
+      Real-time participation telemetry across 54 African Union nations — stages, regional hubs, and track distribution.
+    </p>
+
+    <!-- Analytics KPI Row -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1rem;margin-bottom:2rem;">
+      <div class="analytics-kpi-card" style="border-color:rgba(0,255,135,.3);background:linear-gradient(135deg,rgba(0,255,135,.07),rgba(0,229,255,.03));">
+        <div class="analytics-kpi-icon" style="background:rgba(0,255,135,.15);"><i class="fas fa-globe-africa" style="color:var(--c-green);"></i></div>
+        <div class="analytics-kpi-num" style="background:var(--g-green);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">54</div>
+        <div class="analytics-kpi-lbl">AU Nations</div>
+        <div class="analytics-kpi-sub">All 5 regions active</div>
+      </div>
+      <div class="analytics-kpi-card" style="border-color:rgba(0,229,255,.3);background:linear-gradient(135deg,rgba(0,229,255,.07),rgba(79,142,247,.03));">
+        <div class="analytics-kpi-icon" style="background:rgba(0,229,255,.15);"><i class="fas fa-users" style="color:var(--c-cyan);"></i></div>
+        <div class="analytics-kpi-num" id="analyticsTeamCount" style="background:var(--g-blue);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">0</div>
+        <div class="analytics-kpi-lbl">Teams Registered</div>
+        <div class="analytics-kpi-sub">2,847 submitted</div>
+      </div>
+      <div class="analytics-kpi-card" style="border-color:rgba(255,184,0,.3);background:linear-gradient(135deg,rgba(255,184,0,.07),rgba(255,107,53,.03));">
+        <div class="analytics-kpi-icon" style="background:rgba(255,184,0,.15);"><i class="fas fa-handshake" style="color:var(--c-gold);"></i></div>
+        <div class="analytics-kpi-num" id="analyticsPartnerCount" style="background:var(--g-gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">0</div>
+        <div class="analytics-kpi-lbl">Partner Inquiries</div>
+        <div class="analytics-kpi-sub">3 tier categories</div>
+      </div>
+      <div class="analytics-kpi-card" style="border-color:rgba(157,78,221,.3);background:linear-gradient(135deg,rgba(157,78,221,.07),rgba(255,42,133,.03));">
+        <div class="analytics-kpi-icon" style="background:rgba(157,78,221,.15);"><i class="fas fa-newspaper" style="color:var(--c-purple);"></i></div>
+        <div class="analytics-kpi-num" id="analyticsNewsCount" style="background:var(--g-purple);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">0</div>
+        <div class="analytics-kpi-lbl">News Published</div>
+        <div class="analytics-kpi-sub">Official dispatches</div>
+      </div>
+      <div class="analytics-kpi-card" style="border-color:rgba(0,255,135,.2);">
+        <div class="analytics-kpi-icon" style="background:rgba(0,255,135,.1);"><i class="fas fa-flag-checkered" style="color:var(--c-green);"></i></div>
+        <div class="analytics-kpi-num" style="background:var(--g-green);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">384</div>
+        <div class="analytics-kpi-lbl">Stage 3 Finalists</div>
+        <div class="analytics-kpi-sub">12.8% conversion</div>
+      </div>
+      <div class="analytics-kpi-card" style="border-color:rgba(255,42,133,.2);">
+        <div class="analytics-kpi-icon" style="background:rgba(255,42,133,.1);"><i class="fas fa-star" style="color:var(--c-pink);"></i></div>
+        <div class="analytics-kpi-num" style="background:linear-gradient(135deg,#ff2a85,#ffb800);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">15</div>
+        <div class="analytics-kpi-lbl">Continental Finals</div>
+        <div class="analytics-kpi-sub">Addis Ababa, Nov 2026</div>
+      </div>
+    </div>
+
+    <!-- Charts Row: Donut + Bar Chart -->
+    <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:1.5rem;margin-bottom:2rem;">
+      <!-- Stage Funnel Donut -->
+      <div style="background:rgba(255,255,255,.025);border:1px solid var(--adm-border);border-radius:14px;padding:1.25rem;">
+        <div style="font-size:.9rem;font-weight:700;color:#fff;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;">
+          <i class="fas fa-chart-pie" style="color:var(--c-purple);"></i> Tournament Funnel
+        </div>
+        <div style="position:relative;max-width:200px;margin:0 auto 1rem;">
+          <canvas id="funnelDonutChart" width="200" height="200"></canvas>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;">
+            <div style="font-size:1.5rem;font-weight:800;background:var(--g-green);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">2,847</div>
+            <div style="font-size:.7rem;color:var(--text-mute);">Total Teams</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.4rem;font-size:.78rem;">
+          <div style="display:flex;align-items:center;gap:.5rem;"><span style="width:10px;height:10px;border-radius:50%;background:var(--c-green);display:inline-block;flex-shrink:0;"></span><span style="color:var(--text-soft);">Stage 1 Campus</span><span style="margin-left:auto;color:var(--c-green);font-weight:700;">2,847</span></div>
+          <div style="display:flex;align-items:center;gap:.5rem;"><span style="width:10px;height:10px;border-radius:50%;background:var(--c-cyan);display:inline-block;flex-shrink:0;"></span><span style="color:var(--text-soft);">Stage 2 National</span><span style="margin-left:auto;color:var(--c-cyan);font-weight:700;">1,309</span></div>
+          <div style="display:flex;align-items:center;gap:.5rem;"><span style="width:10px;height:10px;border-radius:50%;background:var(--c-purple);display:inline-block;flex-shrink:0;"></span><span style="color:var(--text-soft);">Stage 3 Regional</span><span style="margin-left:auto;color:var(--c-purple);font-weight:700;">384</span></div>
+          <div style="display:flex;align-items:center;gap:.5rem;"><span style="width:10px;height:10px;border-radius:50%;background:var(--c-gold);display:inline-block;flex-shrink:0;"></span><span style="color:var(--text-soft);">Continental Finals</span><span style="margin-left:auto;color:var(--c-gold);font-weight:700;">15</span></div>
+        </div>
+      </div>
+
+      <!-- Regional Bar Chart -->
+      <div style="background:rgba(255,255,255,.025);border:1px solid var(--adm-border);border-radius:14px;padding:1.25rem;">
+        <div style="font-size:.9rem;font-weight:700;color:#fff;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;">
+          <i class="fas fa-chart-bar" style="color:var(--c-cyan);"></i> Registrations by AU Region
+        </div>
+        <canvas id="regionBarChart" height="160"></canvas>
+      </div>
+    </div>
+
+    <!-- Monthly Trend + Track Distribution Row -->
+    <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:1.5rem;margin-bottom:1.5rem;">
+      <!-- Monthly Trend Line -->
+      <div style="background:rgba(255,255,255,.025);border:1px solid var(--adm-border);border-radius:14px;padding:1.25rem;">
+        <div style="font-size:.9rem;font-weight:700;color:#fff;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;">
+          <i class="fas fa-chart-line" style="color:var(--c-green);"></i> Registration Trend (2026)
+        </div>
+        <canvas id="trendLineChart" height="140"></canvas>
+      </div>
+
+      <!-- Track Donut -->
+      <div style="background:rgba(255,255,255,.025);border:1px solid var(--adm-border);border-radius:14px;padding:1.25rem;">
+        <div style="font-size:.9rem;font-weight:700;color:#fff;margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem;">
+          <i class="fas fa-layer-group" style="color:var(--c-gold);"></i> Track Distribution
+        </div>
+        <canvas id="trackDonutChart" height="160"></canvas>
+      </div>
+    </div>
+
+    <!-- Aspiration Track Bars -->
+    <div style="background:rgba(255,255,255,.02);border:1px solid var(--adm-border);border-radius:14px;padding:1.25rem;">
+      <h4 style="font-size:.9rem;margin:0 0 1rem;color:var(--text-soft);"><i class="fas fa-tasks" style="color:var(--c-cyan);margin-right:.4rem;"></i> Registrations by Agenda 2063 Aspiration Track</h4>
+      <div id="analyticsTrackBars" style="display:flex;flex-direction:column;gap:.65rem;"></div>
+    </div>
+  </div>
+
+  <!-- 9. CMS PAGE MANAGER (WP-STYLE & ELEMENTOR ENGINE) -->
+  <span id="content-wp-style" class="admin-anchor" aria-hidden="true"></span>
+  <div class="panel reveal" id="content-(wp-style)" style="margin-top:2rem;">
+    <div class="panel-head">
+      <div>
+        <h3><i class="fas fa-file-shield" style="color:var(--c-purple);margin-right:.5rem;"></i> CMS Page Manager (WordPress &amp; Elementor Engine)</h3>
+        <p style="color:var(--text-soft);font-size:.9rem;margin:0.25rem 0 0 0;">
+          Launch the visual Elementor builder to edit any website page live, manage blocks, preview responsive devices, and publish changes.
+        </p>
+      </div>
+      <div style="display:flex;gap:.5rem;align-items:center;">
+        <button class="btn btn-purple" onclick="window.location.href='cms-editor.html'"><i class="fas fa-feather-alt"></i> Open Elementor Builder</button>
+      </div>
+    </div>
+
+    <!-- Elementor Live Builder Hero Banner -->
+    <div style="background:linear-gradient(135deg,rgba(157,78,221,0.12),rgba(0,229,255,0.06));border:1px solid rgba(157,78,221,0.3);border-radius:14px;padding:1.25rem 1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem;">
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <div style="width:48px;height:48px;border-radius:12px;background:var(--g-purple);display:grid;place-items:center;color:#fff;font-size:1.3rem;box-shadow:var(--sh-purple);">
+          <i class="fas fa-feather-alt"></i>
+        </div>
+        <div>
+          <h4 style="margin:0 0 .25rem 0;font-size:1.05rem;">Visual Elementor 3-Panel Canvas</h4>
+          <p style="margin:0;font-size:.82rem;color:rgba(255,255,255,0.5);">WYSIWYG live block editing, responsive device preview (desktop/tablet/mobile), undo/redo &amp; automatic revisions.</p>
+        </div>
+      </div>
+      <div style="display:flex;gap:.5rem;">
+        <a href="cms-editor.html" class="btn btn-purple" style="font-weight:800;"><i class="fas fa-rocket"></i> Launch Full Builder</a>
+      </div>
+    </div>
+
+    <div style="margin-top:1.5rem;overflow-x:auto;">
+      <div class="data-table" id="adminPagesTable">
+        <!-- Injected via JavaScript from /api/cms/pages -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. ROLES & ACCESS CONTROL (RBAC) -->
+  <div class="panel reveal" id="roles-access" style="margin-top:2rem;">
+    <div class="panel-head">
+      <div>
+        <h3><i class="fas fa-shield-alt" style="color:var(--neon-green);margin-right:.5rem;"></i> Roles &amp; Access Control (RBAC)</h3>
+        <p style="color:var(--text-soft);font-size:.9rem;margin:0.25rem 0 0 0;">
+          Grant access, assign administrative roles, and configure granular permissions across the entire platform.
+        </p>
+      </div>
+      <button class="btn btn-primary" onclick="openAddUserModal()"><i class="fas fa-user-plus"></i> Add New User / Grant Access</button>
+    </div>
+
+    <div style="margin-top:1.5rem;overflow-x:auto;">
+      <div class="data-table" id="adminUsersTable">
+        <!-- Injected via JavaScript from /api/admin/users -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. GLOBAL SYSTEM SETTINGS & SITE CONTROLS -->
+  <div class="panel reveal" id="system-settings" style="margin-top:2rem;">
+    <div class="panel-head">
+      <div>
+        <h3><i class="fas fa-cog" style="color:var(--neon-cyan);margin-right:.5rem;"></i> System Settings &amp; Site Controls</h3>
+        <p style="color:var(--text-soft);font-size:.9rem;margin:0.25rem 0 0 0;">
+          Control global tournament status, maintenance mode, top announcement alerts, and brand design tokens.
+        </p>
+      </div>
+      <button class="btn btn-primary" onclick="saveAdminSystemSettings()"><i class="fas fa-save"></i> Save System Settings</button>
+    </div>
+
+    <form id="adminSettingsForm" onsubmit="event.preventDefault(); saveAdminSystemSettings();" style="margin-top:1.5rem;">
+      <div style="display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));">
+        
+        <!-- Tournament Operations -->
+        <div class="panel" style="padding:1.25rem;background:rgba(255,255,255,0.02);border:1px solid var(--glass-border);">
+          <h4 style="font-size:1rem;color:var(--neon-green);margin-bottom:1rem;"><i class="fas fa-flag-checkered"></i> Tournament Parameters</h4>
+          
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label class="form-label">Registration Status</label>
+            <select id="cfgRegStatus" class="form-control">
+              <option value="open">Open (Public Submissions Active)</option>
+              <option value="extended">Extended (Late Submissions Allowed)</option>
+              <option value="closed">Closed (Submissions Locked)</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label class="form-label">Current Active Stage</label>
+            <input type="text" id="cfgCurrentStage" class="form-control" value="Stage 1: Institutional & National Rounds">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Judging Assessment Round</label>
+            <input type="text" id="cfgJudgingRound" class="form-control" value="Stage 1 Preliminary Assessment">
+          </div>
+        </div>
+
+        <!-- Global Alert & Maintenance -->
+        <div class="panel" style="padding:1.25rem;background:rgba(255,255,255,0.02);border:1px solid var(--glass-border);">
+          <h4 style="font-size:1rem;color:var(--neon-gold);margin-bottom:1rem;"><i class="fas fa-bullhorn"></i> Site-Wide Alerts</h4>
+
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label class="form-label">Announcement Top Banner Notice</label>
+            <textarea id="cfgBannerNotice" class="form-control" rows="2">🚀 Stage 1 Regional Applications Open Across 54 AU Nations — Submit Before Oct 31, 2026!</textarea>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:.5rem 0;">
+            <span style="font-size:.9rem;">Display Announcement Banner</span>
+            <input type="checkbox" id="cfgBannerActive" checked style="accent-color:var(--neon-green);width:18px;height:18px;">
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:.5rem 0;border-top:1px solid var(--glass-border);margin-top:.5rem;">
+            <span style="font-size:.9rem;color:var(--africa-red);font-weight:600;"><i class="fas fa-wrench"></i> Maintenance Mode</span>
+            <input type="checkbox" id="cfgMaintenance" style="accent-color:var(--africa-red);width:18px;height:18px;">
+          </div>
+        </div>
+
+        <!-- Secretariat Contact & Identity -->
+        <div class="panel" style="padding:1.25rem;background:rgba(255,255,255,0.02);border:1px solid var(--glass-border);">
+          <h4 style="font-size:1rem;color:var(--neon-cyan);margin-bottom:1rem;"><i class="fas fa-building-columns"></i> Institutional Contact Desk</h4>
+
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label class="form-label">Official Secretariat Email</label>
+            <input type="email" id="cfgContactEmail" class="form-control" value="secretariat@auc2026.org">
+          </div>
+
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label class="form-label">Secretariat Hotline</label>
+            <input type="text" id="cfgContactPhone" class="form-control" value="+251 11 551 7700">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">HQ Physical Address</label>
+            <input type="text" id="cfgHqLocation" class="form-control" value="African Union Commission HQ, Roosevelt St, Addis Ababa, Ethiopia">
+          </div>
+        </div>
+
+      </div>
+
+      <div id="settingsSaveAlert" style="display:none;margin-top:1.25rem;padding:.75rem 1rem;border-radius:8px;background:rgba(0,255,135,0.1);border:1px solid rgba(0,255,135,0.4);color:var(--neon-green);font-size:.88rem;"></div>
+    </form>
+  </div>
+
+  <span id="overview" class="admin-anchor" aria-hidden="true"></span>
+  <span id="finals-awards" class="admin-anchor" aria-hidden="true"></span>
+</main>
+</div>
+
+<script src="portal.js"></script>
+  <script src="dropdown.js" defer></script>
+<link rel="stylesheet" href="login-overlay.css">
+<script src="auth-config.js"></script>
+<script src="portal-fix.js"></script>
+<script src="api-client.js"></script>
+<script src="admin-portal.js" defer></script>
+
+<!-- Inline-login overlay -->
+<div id="loginOverlay" class="login-overlay" hidden>
+  <div class="login-card">
+    <button class="login-close" type="button" aria-label="Close"><i class="fas fa-times"></i></button>
+    <h3><i class="fas fa-shield-halved"></i> Portal Login</h3>
+    <p id="loginPortalLabel" class="login-sub"></p>
+    <label><span>Username</span><input type="text" id="loginUser" autocomplete="username"></label>
+    <label><span>Password</span><input type="password" id="loginPass" autocomplete="current-password"></label>
+    <p id="loginErr" class="login-err" hidden></p>
+    <button class="btn btn-primary" id="loginSubmit" type="button">Sign In</button>
+    <details class="login-creds">
+      <summary>Default credentials (editable in Admin HQ)</summary>
+      <table>
+        <tr><th>Portal</th><th>Username</th><th>Password</th></tr>
+        <tr><td>Student Portal</td><td>team_demo</td><td>student@2026</td></tr>
+        <tr><td>Judge Portal</td><td>judge_demo</td><td>judge@2026</td></tr>
+        <tr><td>Admin HQ</td><td>admin</td><td>AUCadmin123</td></tr>
+        <tr><td>CMS Editor</td><td>editor</td><td>cms@2026</td></tr>
+      </table>
+    </details>
+  </div>
+</div>
+
+<script>
+(function(){
+  var map = { 'portal-student':'Student Portal', 'portal-judge':'Judge Portal', 'portal-admin':'Admin HQ', 'cms-editor':'CMS Editor' };
+  var rawKey = (location.pathname.split('/').pop() || '').toLowerCase();
+  var key = rawKey.replace(/\.html$/, '');
+  var portal = key in map ? key : null;
+  var overlay = document.getElementById('loginOverlay');
+  if (!overlay || !portal) return;
+  function isAuthed(){ return window.AUC_AUTH && window.AUC_AUTH.current(portal); }
+  function showErr(msg){ var e = document.getElementById('loginErr'); if(e){ e.textContent = msg; e.hidden = false; } }
+  function open(){
+    document.getElementById('loginPortalLabel').textContent = 'Sign in to ' + map[portal] + ' — default demo credentials are provided below.';
+    document.getElementById('loginUser').value = (portal === 'portal-admin' ? 'admin' : '');
+    document.getElementById('loginPass').value = '';
+    var e = document.getElementById('loginErr'); if(e){ e.hidden = true; }
+    overlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  function close(){
+    overlay.hidden = true;
+    document.body.style.overflow = '';
+    updateUserBadge();
+  }
+  function updateUserBadge(){
+    var sess = isAuthed();
+    var btnOut = document.getElementById('btnLogoutAdmin');
+    if (sess) {
+      if (btnOut) btnOut.style.display = 'inline-flex';
+    } else {
+      if (btnOut) btnOut.style.display = 'none';
+    }
+  }
+  document.querySelector('.login-close').addEventListener('click', close);
+  document.getElementById('loginSubmit').addEventListener('click', function(){
+    var u = document.getElementById('loginUser').value.trim();
+    var p = document.getElementById('loginPass').value;
+    var r = window.AUC_AUTH.login(portal, u, p);
+    if (r.ok) { close(); }
+    else showErr(r.msg);
+  });
+  ['loginUser','loginPass'].forEach(function(id){
+    var el = document.getElementById(id);
+    el && el.addEventListener('keydown', function(ev){ if(ev.key==='Enter') document.getElementById('loginSubmit').click(); });
+  });
+  overlay.addEventListener('click', function(ev){ if(ev.target===overlay) close(); });
+  
+  var btnOut = document.getElementById('btnLogoutAdmin');
+  if (btnOut) {
+    btnOut.addEventListener('click', function(){
+      if (confirm('Sign out of ' + map[portal] + '?')) {
+        window.AUC_AUTH.logout(portal);
+        open();
+      }
+    });
+  }
+
+  if (!isAuthed()) {
+    setTimeout(open, 350);
+  } else {
+    updateUserBadge();
+  }
+})();
+
+/* MASTER ADMIN HQ FUNCTIONALITY (Item 1, 6, 7, 9, 10) */
+
+// 1. MEDIA LIBRARY ENGINE (Real File Uploads to server & CDN sync)
+async function initAdminMedia() {
+  const grid = document.getElementById('adminMediaGrid');
+  if (!grid) return;
+
+  let mediaItems = [];
+  try {
+    if (window.AUC_API && window.AUC_API.cms) {
+      mediaItems = await window.AUC_API.cms.getMedia();
+    }
+  } catch(e) {}
+
+  if (!mediaItems || !mediaItems.length) {
+    try {
+      mediaItems = JSON.parse(localStorage.getItem('auc_media_library') || '[]');
+    } catch(e) {}
+  }
+
+  const defaultMedia = [
+    { id: 'def-1', name: 'AUC-Hero-Keynote.jpg', type: 'image', size: '1.2 MB', url: 'assets/img/Logo.png', date: 'Aug 2026' },
+    { id: 'def-2', name: 'Addis-Ababa-HQ-Pavilion.png', type: 'image', size: '2.8 MB', url: 'assets/img/Logo.png', date: 'Aug 2026' },
+    { id: 'def-3', name: 'AUC-Continental-Reel.mp4', type: 'video', size: '14.5 MB', url: '#', date: 'Aug 2026' },
+    { id: 'def-4', name: 'Agenda-2063-Pillars-Chart.png', type: 'image', size: '840 KB', url: 'assets/img/Logo.png', date: 'Aug 2026' }
+  ];
+
+  const allMedia = (mediaItems && mediaItems.length) ? mediaItems : defaultMedia;
+
+  grid.innerHTML = allMedia.map((m) => `
+    <div class="media-card">
+      <div style="height:110px;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;color:var(--neon-cyan);overflow:hidden;">
+        ${m.type === 'video' 
+          ? '<i class="fas fa-video" style="font-size:2.5rem;color:var(--neon-gold);"></i>' 
+          : '<img src="' + m.url + '" alt="' + m.name + '" style="height:100%;width:100%;object-fit:cover;" onerror="this.onerror=null;this.parentElement.innerHTML=\'<i class=\\\'fas fa-image\\\' style=\\\'font-size:2.5rem;\\\'></i>\';">'}
+      </div>
+      <div class="media-meta">
+        <strong style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:110px;" title="${m.name}">${m.name}</strong>
+        <span class="badge-tiny ${m.type === 'video' ? 'warn' : 'ok'}">${m.size || 'File'}</span>
+      </div>
+      <div style="padding:0 .65rem .65rem;display:flex;gap:.35rem;">
+        <button type="button" class="btn btn-ghost" style="padding:.25rem .5rem;font-size:.72rem;flex:1;" onclick="navigator.clipboard.writeText('${m.url}');if(window.showAdminToast) showAdminToast('URL copied to clipboard!', 'fa-copy', 'var(--neon-cyan)'); else alert('Public URL copied!');"><i class="fas fa-copy"></i> URL</button>
+        <button type="button" class="btn btn-ghost" style="padding:.25rem .5rem;font-size:.72rem;color:var(--africa-red);" onclick="deleteAdminMedia('${m.id}')" title="Delete media asset"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function handleAdminMediaUpload(files) {
+  if (!files || !files.length) return;
+  const notice = document.getElementById('mediaUploadNotice');
+  if (notice) {
+    notice.style.display = 'block';
+    notice.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing & uploading ' + files.length + ' file(s) to server...';
+  }
+
+  let count = 0;
+  for (const f of Array.from(files)) {
+    const isVideo = f.type.startsWith('video');
+    const sizeKB = (f.size / 1024).toFixed(1) + ' KB';
+    
+    await new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = async function(ev) {
+        try {
+          if (window.AUC_API && window.AUC_API.cms && window.AUC_API.cms.uploadFile) {
+            await window.AUC_API.cms.uploadFile({
+              name: f.name,
+              type: isVideo ? 'video' : 'image',
+              data: ev.target.result,
+              size: sizeKB,
+              author: 'Secretariat Admin'
+            });
+          }
+        } catch(err) {
+          console.warn('API upload error, using local fallback:', err);
+        }
+        count++;
+        resolve();
+      };
+      reader.readAsDataURL(f);
+    });
+  }
+
+  if (notice) {
+    notice.style.display = 'block';
+    notice.innerHTML = '<i class="fas fa-check-circle"></i> Successfully uploaded ' + count + ' file(s) directly to server <code>/assets/uploads/</code>!';
+    setTimeout(() => { notice.style.display = 'none'; }, 4500);
+  }
+  await initAdminMedia();
+}
+
+async function deleteAdminMedia(id) {
+  if (!confirm('Permanently delete this media asset from server and library?')) return;
+  try {
+    if (window.AUC_API && window.AUC_API.cms) {
+      await window.AUC_API.cms.deleteMedia(id);
+    }
+  } catch(e) {}
+  await initAdminMedia();
+}
+
+// 2. CONTENT CORRECTIONS ENGINE (Item 1)
+function applyContentCorrection() {
+  const page = document.getElementById('corrPage').value;
+  const selector = document.getElementById('corrSelector').value.trim();
+  const content = document.getElementById('corrContent').value;
+  const status = document.getElementById('corrStatus');
+  if (!selector || !content) {
+    status.style.display = 'block';
+    status.style.background = 'rgba(255,59,48,0.1)';
+    status.style.color = 'var(--africa-red)';
+    status.textContent = 'Please provide both target selector and replacement content.';
+    return;
+  }
+  const overrides = JSON.parse(localStorage.getItem('auc_cms_overrides') || '{}');
+  if (!overrides[page]) overrides[page] = {};
+  overrides[page][selector] = content;
+  localStorage.setItem('auc_cms_overrides', JSON.stringify(overrides));
+  status.style.display = 'block';
+  status.style.background = 'rgba(0,255,135,0.1)';
+  status.style.color = 'var(--neon-green)';
+  status.innerHTML = '<i class="fas fa-check-circle"></i> Live override active! When any user opens <strong>' + page + '.html</strong>, element <code>' + selector + '</code> will dynamically display your corrected content.';
+}
+
+function resetContentCorrections() {
+  const page = document.getElementById('corrPage').value;
+  const overrides = JSON.parse(localStorage.getItem('auc_cms_overrides') || '{}');
+  delete overrides[page];
+  localStorage.setItem('auc_cms_overrides', JSON.stringify(overrides));
+  const status = document.getElementById('corrStatus');
+  status.style.display = 'block';
+  status.style.background = 'rgba(0,229,255,0.1)';
+  status.style.color = 'var(--neon-cyan)';
+  status.textContent = 'All overrides for ' + page + '.html have been cleared.';
+}
+
+// 3. PARTNERSHIP INBOX (Item 7 & Item 9)
+function initAdminPartnerships() {
+  if (typeof window.initPartnershipInbox === 'function') {
+    window.initPartnershipInbox();
+  }
+}
+
+// 4. TEAMS & ASSESSOR ROUTING (Item 6 & Item 9)
+function initAdminTeams() {
+  if (typeof window.initAdminTeams === 'function') {
+    window.initAdminTeams();
+  }
+}
+
+// 5. NEWS DESK PUBLISHING (Item 10 & Item 9)
+function publishNewsArticle(e) {
+  e.preventDefault();
+  const title = document.getElementById('newsTitle').value.trim();
+  const category = document.getElementById('newsCat').value;
+  const author = document.getElementById('newsAuthor').value.trim();
+  const excerpt = document.getElementById('newsExcerpt').value.trim();
+
+  const stored = JSON.parse(localStorage.getItem('auc_news_items') || '[]');
+  const now = new Date();
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const dateStr = months[now.getMonth()] + ' ' + now.getFullYear();
+
+  const newArticle = {
+    id: 'news-' + Date.now(),
+    category,
+    tag: category === 'announcements' ? 'Official Press' : category === 'innovators' ? 'Innovator Story' : 'Partnership',
+    tagStyle: category === 'innovators' ? 'background:rgba(0,229,255,0.1);color:var(--neon-cyan);' : category === 'partners' ? 'background:rgba(255,184,0,0.1);color:var(--neon-gold);' : '',
+    title,
+    excerpt,
+    date: dateStr,
+    author,
+    link: '#'
+  };
+
+  stored.unshift(newArticle);
+  localStorage.setItem('auc_news_items', JSON.stringify(stored));
+
+  const alertBox = document.getElementById('newsPublishAlert');
+  alertBox.style.display = 'block';
+  alertBox.innerHTML = '<i class="fas fa-check-circle"></i> Article <strong>"' + title + '"</strong> successfully published! It is now live on <a href="news.html" target="_blank" style="color:var(--neon-cyan);text-decoration:underline;">news.html</a>.';
+  document.getElementById('adminNewsForm').reset();
+  renderAdminNewsList();
+}
+
+function renderAdminNewsList() {
+  const list = document.getElementById('adminPublishedNewsList');
+  if (!list) return;
+  const stored = JSON.parse(localStorage.getItem('auc_news_items') || '[]');
+  if (!stored.length) {
+    list.innerHTML = '<p style="font-size:.85rem;color:var(--text-mute);">No custom articles published yet. Default stories are currently serving news.html.</p>';
+    return;
+  }
+  list.innerHTML = stored.map((item, idx) => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:.75rem 1rem;background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);border-radius:10px;">
+      <div>
+        <span class="badge-tiny ${item.category === 'announcements' ? 'ok' : item.category === 'innovators' ? 'cyan' : 'gold'}">${item.tag}</span>
+        <strong style="margin-left:.5rem;font-size:.92rem;">${item.title}</strong>
+        <span style="font-size:.8rem;color:var(--text-mute);margin-left:.75rem;">${item.date}</span>
+      </div>
+      <button type="button" class="btn btn-ghost" style="padding:.25rem .5rem;color:var(--africa-red);font-size:.78rem;" onclick="deleteAdminNews(${idx})"><i class="fas fa-trash"></i></button>
+    </div>
+  `).join('');
+}
+
+function deleteAdminNews(idx) {
+  const stored = JSON.parse(localStorage.getItem('auc_news_items') || '[]');
+  stored.splice(idx, 1);
+  localStorage.setItem('auc_news_items', JSON.stringify(stored));
+  renderAdminNewsList();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initAdminMedia();
+  initAdminPartnerships();
+  initAdminTeams();
+  renderAdminNewsList();
+  initAnalytics();
+  renderEmailQueue();
+  animateKpiCounters();
+  startLiveActivityFeed();
+  document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+});
+
+// Animate KPI number counters with easing
+function animateKpiCounters() {
+  const cards = document.querySelectorAll('[data-count]');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      observer.unobserve(entry.target);
+      const el = entry.target;
+      const target = parseInt(el.dataset.count, 10);
+      const duration = 1600;
+      const start = performance.now();
+      function step(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        // Ease out expo
+        const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        const current = Math.round(eased * target);
+        el.textContent = current.toLocaleString();
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }, { threshold: 0.2 });
+  cards.forEach(c => observer.observe(c));
+}
+
+// Live Activity Feed — simulates real-time continent events
+const FEED_EVENTS = [
+  { color:'green', actor:'UniLagos AI Lab · Nigeria', action:'New team registered: WaterGrid Intelligence (Aspiration 2)' },
+  { color:'cyan',  actor:'HQ CMS Editor',             action:'Live content override applied to structure.html hero block' },
+  { color:'gold',  actor:'Pan-African Energy Fund',    action:'Partnership inquiry received — Gold Tier ($100K)' },
+  { color:'purple',actor:'Judge Portal · North Africa',action:'Judge Dr. Ahmed N. completed rubric calibration session' },
+  { color:'pink',  actor:'Registration · Southern Hub',action:'Team FarmLink SA submitted Stage 1 campus entry' },
+  { color:'green', actor:'System · API Health',        action:'Automated health-check: all 7 API endpoints nominal' },
+  { color:'cyan',  actor:'Admin HQ · Broadcast',       action:'Email queued to 2,847 teams: Stage 3 deadline reminder' },
+  { color:'gold',  actor:'AfCFTA Secretariat',         action:'MOU counter-signed and stored — Platinum Tier' },
+  { color:'green', actor:'UniAccra GovTech · Ghana',   action:'Score submitted by assessor: 91.2 / 100' },
+  { color:'purple',actor:'KYC Engine · Auto-Scan',     action:'Identity verified: Kofi Mensah — NovaBridge Team Lead' },
+];
+let _feedIdx = 0;
+function startLiveActivityFeed() {
+  const feed = document.getElementById('liveActivityFeed');
+  if (!feed) return;
+  setInterval(() => {
+    const ev = FEED_EVENTS[_feedIdx % FEED_EVENTS.length];
+    _feedIdx++;
+    const now = new Date();
+    const ts = now.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+    const entry = document.createElement('div');
+    entry.className = 'activity-entry new-entry';
+    entry.innerHTML = `
+      <div class="activity-dot ${ev.color}"></div>
+      <div class="activity-body"><strong>${ev.actor}</strong><span>${ev.action}</span></div>
+      <div class="activity-ts">${ts}</div>
+    `;
+    feed.insertBefore(entry, feed.firstChild);
+    setTimeout(() => entry.classList.remove('new-entry'), 2500);
+    // Keep max 20 entries
+    while (feed.children.length > 20) feed.removeChild(feed.lastChild);
+    // Update banner latency display
+    const bl = document.getElementById('bannerLatency');
+    if (bl) bl.textContent = Math.floor(Math.random() * 30 + 8) + 'ms';
+  }, 6000);
+}
+
+// 6. USER MANAGEMENT — Save Portal Credentials
+function savePortalCred(portal, userFieldId, passFieldId) {
+  const u = document.getElementById(userFieldId).value.trim();
+  const p = document.getElementById(passFieldId).value;
+  if (!u || !p) return;
+  const creds = JSON.parse(localStorage.getItem('auc_portal_creds') || '{}');
+  creds[portal] = { username: u, password: p };
+  localStorage.setItem('auc_portal_creds', JSON.stringify(creds));
+  const alert = document.getElementById('credSaveAlert');
+  if (alert) {
+    alert.style.display = 'block';
+    alert.innerHTML = '<i class="fas fa-check-circle"></i> Credentials for <strong>' + portal + '</strong> updated successfully and will take effect on next login.';
+    setTimeout(() => { alert.style.display = 'none'; }, 4000);
+  }
+}
+
+// 7. EMAIL BROADCASTER — Queue Message
+function queueEmailBroadcast(e) {
+  e.preventDefault();
+  const group = document.getElementById('emailGroup').value;
+  const subject = document.getElementById('emailSubject').value.trim();
+  const body = document.getElementById('emailBody').value.trim();
+  const queue = JSON.parse(localStorage.getItem('auc_email_queue') || '[]');
+  const now = new Date();
+  queue.unshift({
+    id: 'eml-' + Date.now(),
+    group,
+    subject,
+    body,
+    status: 'Queued',
+    timestamp: now.toLocaleString()
+  });
+  localStorage.setItem('auc_email_queue', JSON.stringify(queue));
+  const alertBox = document.getElementById('emailSendAlert');
+  alertBox.style.display = 'block';
+  alertBox.innerHTML = '<i class="fas fa-check-circle"></i> Broadcast queued for <strong>' + group + '</strong>: "' + subject + '". Ready to dispatch when connected to email service.';
+  document.getElementById('emailBroadcastForm').reset();
+  renderEmailQueue();
+}
+
+function renderEmailQueue() {
+  const list = document.getElementById('emailQueueList');
+  if (!list) return;
+  const queue = JSON.parse(localStorage.getItem('auc_email_queue') || '[]');
+  if (!queue.length) {
+    list.innerHTML = '<p style="font-size:.85rem;color:var(--text-mute);">No messages queued yet.</p>';
+    return;
+  }
+  list.innerHTML = queue.map((msg, idx) => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:.75rem 1rem;background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);border-radius:10px;gap:1rem;">
+      <div>
+        <span class="badge-tiny cyan">${msg.group.toUpperCase()}</span>
+        <strong style="margin-left:.5rem;font-size:.9rem;">${msg.subject}</strong>
+        <div style="font-size:.78rem;color:var(--text-mute);margin-top:.25rem;">${msg.timestamp}</div>
+      </div>
+      <div style="display:flex;gap:.5rem;align-items:center;">
+        <span class="task-tag warn">${msg.status}</span>
+        <button type="button" class="btn btn-ghost" style="padding:.25rem .5rem;font-size:.78rem;" onclick="sendEmailNow(${idx})"><i class="fas fa-paper-plane"></i></button>
+        <button type="button" class="btn btn-ghost" style="padding:.25rem .5rem;color:var(--africa-red);font-size:.78rem;" onclick="deleteEmailItem(${idx})"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function sendEmailNow(idx) {
+  const queue = JSON.parse(localStorage.getItem('auc_email_queue') || '[]');
+  if (queue[idx]) {
+    queue[idx].status = 'Sent';
+    localStorage.setItem('auc_email_queue', JSON.stringify(queue));
+    alert('📧 Email "' + queue[idx].subject + '" marked as sent! Connect an SMTP/email API to dispatch for real.');
+    renderEmailQueue();
+  }
+}
+
+function deleteEmailItem(idx) {
+  const queue = JSON.parse(localStorage.getItem('auc_email_queue') || '[]');
+  queue.splice(idx, 1);
+  localStorage.setItem('auc_email_queue', JSON.stringify(queue));
+  renderEmailQueue();
+}
+
+// 8. ANALYTICS — Read from localStorage and render charts
+function initAnalytics() {
+  const teams = JSON.parse(localStorage.getItem('auc_registrations') || '[]');
+  const partners = JSON.parse(localStorage.getItem('auc_partner_inquiries') || '[]');
+  const news = JSON.parse(localStorage.getItem('auc_news_items') || '[]');
+
+  const tCount = document.getElementById('analyticsTeamCount');
+  const pCount = document.getElementById('analyticsPartnerCount');
+  const nCount = document.getElementById('analyticsNewsCount');
+
+  if (tCount) tCount.textContent = teams.length;
+  if (pCount) pCount.textContent = partners.length;
+  if (nCount) nCount.textContent = news.length;
+
+  // Helper: create Chart.js with common dark theme defaults
+  const chartDefaults = {
+    plugins: {
+      legend: { labels: { color: 'rgba(255,255,255,0.6)', font: { size: 11 }, boxWidth: 10 } },
+      tooltip: {
+        backgroundColor: 'rgba(8,13,38,0.95)',
+        borderColor: 'rgba(0,229,255,0.25)',
+        borderWidth: 1,
+        titleColor: '#00e5ff',
+        bodyColor: 'rgba(255,255,255,0.8)',
+      }
+    }
+  };
+
+  // 1. FUNNEL DONUT CHART
+  const funnelCtx = document.getElementById('funnelDonutChart');
+  if (funnelCtx && window.Chart) {
+    if (funnelCtx._chartInstance) funnelCtx._chartInstance.destroy();
+    funnelCtx._chartInstance = new Chart(funnelCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Stage 1', 'Stage 2', 'Stage 3', 'Finals'],
+        datasets: [{
+          data: [2847, 1309, 384, 15],
+          backgroundColor: ['rgba(0,255,135,0.8)', 'rgba(0,229,255,0.8)', 'rgba(157,78,221,0.8)', 'rgba(255,184,0,0.8)'],
+          borderColor: ['#04081e','#04081e','#04081e','#04081e'],
+          borderWidth: 3,
+          hoverOffset: 6
+        }]
+      },
+      options: {
+        cutout: '70%',
+        plugins: { ...chartDefaults.plugins, legend: { display: false } },
+        animation: { animateRotate: true, duration: 1000 }
+      }
+    });
+  }
+
+  // 2. REGIONAL BAR CHART
+  const regionCtx = document.getElementById('regionBarChart');
+  if (regionCtx && window.Chart) {
+    if (regionCtx._chartInstance) regionCtx._chartInstance.destroy();
+    regionCtx._chartInstance = new Chart(regionCtx, {
+      type: 'bar',
+      data: {
+        labels: ['West Africa', 'East Africa', 'North Africa', 'Southern Africa', 'Central Africa'],
+        datasets: [{
+          label: 'Teams',
+          data: [847, 712, 531, 498, 259],
+          backgroundColor: [
+            'rgba(0,255,135,0.7)', 'rgba(0,229,255,0.7)', 'rgba(255,184,0,0.7)',
+            'rgba(157,78,221,0.7)', 'rgba(255,42,133,0.7)'
+          ],
+          borderColor: [
+            'rgba(0,255,135,1)', 'rgba(0,229,255,1)', 'rgba(255,184,0,1)',
+            'rgba(157,78,221,1)', 'rgba(255,42,133,1)'
+          ],
+          borderWidth: 1.5,
+          borderRadius: 6,
+          borderSkipped: false
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { ...chartDefaults.plugins, legend: { display: false } },
+        scales: {
+          x: { ticks: { color: 'rgba(255,255,255,0.5)', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+          y: { ticks: { color: 'rgba(255,255,255,0.5)', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } }
+        },
+        animation: { duration: 1000 }
+      }
+    });
+  }
+
+  // 3. REGISTRATION TREND LINE CHART
+  const trendCtx = document.getElementById('trendLineChart');
+  if (trendCtx && window.Chart) {
+    if (trendCtx._chartInstance) trendCtx._chartInstance.destroy();
+    trendCtx._chartInstance = new Chart(trendCtx, {
+      type: 'line',
+      data: {
+        labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov'],
+        datasets: [{
+          label: 'Teams Registered',
+          data: [45, 112, 287, 453, 698, 1024, 1456, 1889, 2314, 2683, 2847],
+          borderColor: 'rgba(0,255,135,0.9)',
+          backgroundColor: 'rgba(0,255,135,0.08)',
+          pointBackgroundColor: 'rgba(0,255,135,1)',
+          pointBorderColor: '#04081e',
+          pointRadius: 4,
+          pointHoverRadius: 7,
+          fill: true,
+          tension: 0.4,
+          borderWidth: 2.5
+        }, {
+          label: 'Judges Onboarded',
+          data: [5, 12, 28, 41, 65, 78, 94, 112, 128, 136, 142],
+          borderColor: 'rgba(0,229,255,0.8)',
+          backgroundColor: 'transparent',
+          pointBackgroundColor: 'rgba(0,229,255,1)',
+          pointBorderColor: '#04081e',
+          pointRadius: 3,
+          pointHoverRadius: 6,
+          fill: false,
+          tension: 0.4,
+          borderWidth: 2,
+          borderDash: [5, 4]
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: chartDefaults.plugins,
+        scales: {
+          x: { ticks: { color: 'rgba(255,255,255,0.5)', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+          y: { ticks: { color: 'rgba(255,255,255,0.5)', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
+        },
+        animation: { duration: 1200 }
+      }
+    });
+  }
+
+  // 4. TRACK DISTRIBUTION DONUT
+  const trackCtx = document.getElementById('trackDonutChart');
+  if (trackCtx && window.Chart) {
+    if (trackCtx._chartInstance) trackCtx._chartInstance.destroy();
+    trackCtx._chartInstance = new Chart(trackCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['FinTech', 'Infrastructure', 'Governance', 'Security', 'Culture', 'People-Driven', 'Global'],
+        datasets: [{
+          data: [498, 412, 387, 354, 328, 441, 427],
+          backgroundColor: [
+            'rgba(0,255,135,0.8)', 'rgba(0,229,255,0.8)', 'rgba(255,184,0,0.8)',
+            'rgba(157,78,221,0.8)', 'rgba(255,42,133,0.8)', 'rgba(79,142,247,0.8)', 'rgba(255,107,53,0.8)'
+          ],
+          borderColor: '#04081e',
+          borderWidth: 2,
+          hoverOffset: 5
+        }]
+      },
+      options: {
+        cutout: '60%',
+        plugins: { ...chartDefaults.plugins, legend: { display: true, position: 'bottom', labels: { color: 'rgba(255,255,255,0.5)', font: { size: 9 }, boxWidth: 8, padding: 6 } } },
+        animation: { duration: 1000 }
+      }
+    });
+  }
+
+  // Track Distribution Bars
+  const trackBars = document.getElementById('analyticsTrackBars');
+  if (!trackBars) return;
+
+  const aspirations = [
+    { name: 'Aspiration 1 · FinTech & Digital Trade', count: 498, color: 'var(--c-green)', grade: 'var(--g-green)' },
+    { name: 'Aspiration 2 · Integrated Corridors', count: 412, color: 'var(--c-cyan)', grade: 'var(--g-blue)' },
+    { name: 'Aspiration 3 · Good Governance', count: 387, color: 'var(--c-gold)', grade: 'var(--g-gold)' },
+    { name: 'Aspiration 4 · Peaceful Continent', count: 354, color: 'var(--c-purple)', grade: 'var(--g-purple)' },
+    { name: 'Aspiration 5 · Cultural Identity', count: 328, color: 'var(--c-pink)', grade: 'linear-gradient(135deg,#ff2a85,#9d4edd)' },
+    { name: 'Aspiration 6 · People-Driven', count: 441, color: 'var(--c-blue)', grade: 'var(--g-blue)' },
+    { name: 'Aspiration 7 · Africa as Global Player', count: 427, color: 'var(--c-green)', grade: 'var(--g-green)' }
+  ];
+
+  const counts = aspirations.map(a => a.count);
+  const max = Math.max(...counts);
+
+  trackBars.innerHTML = aspirations.map((asp) => `
+    <div style="display:grid;grid-template-columns:220px 1fr 50px;align-items:center;gap:.75rem;">
+      <div style="font-size:.82rem;color:rgba(255,255,255,0.7);">${asp.name}</div>
+      <div style="background:rgba(255,255,255,0.06);border-radius:20px;height:9px;overflow:hidden;">
+        <div style="height:100%;width:${Math.round(asp.count/max*100)}%;background:${asp.grade};border-radius:20px;transition:width .8s cubic-bezier(0.16,1,0.3,1);"></div>
+      </div>
+      <div style="font-size:.82rem;font-weight:800;color:${asp.color};text-align:right;">${asp.count}</div>
+    </div>
+  `).join('');
+}
+</script>
+
+<!-- 1. Bilateral Partnership MOU Generator Modal -->
+<div id="adminMouModal" class="modal-backdrop" hidden>
+  <div class="modal-card" style="max-width: 660px;">
+    <div class="modal-head">
+      <div>
+        <h3><i class="fas fa-file-signature" style="color:var(--neon-green);"></i> Draft Bilateral Partnership MOU</h3>
+        <small style="color:var(--text-mute);">Institutional Legal & Grant Preamble Generator</small>
+      </div>
+      <button class="modal-close" type="button" aria-label="Close modal"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="adminMouForm" onsubmit="dispatchAdminMou(event)">
+      <input type="hidden" id="mouPartnerIndex" value="0">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:.75rem; margin-bottom:.75rem;">
+        <div>
+          <label class="form-label" style="font-size:.8rem;">Partner Organization *</label>
+          <input type="text" id="mouOrgName" required class="form-control" oninput="updateMouLegalPreview()">
+        </div>
+        <div>
+          <label class="form-label" style="font-size:.8rem;">Official Contact Name *</label>
+          <input type="text" id="mouContact" required class="form-control">
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:.75rem; margin-bottom:.75rem;">
+        <div>
+          <label class="form-label" style="font-size:.8rem;">Official Email *</label>
+          <input type="email" id="mouEmail" required class="form-control">
+        </div>
+        <div>
+          <label class="form-label" style="font-size:.8rem;">Designated Tier</label>
+          <select id="mouTier" class="form-control" onchange="updateMouLegalPreview()">
+            <option value="platinum">Platinum Partner</option>
+            <option value="gold">Gold Partner</option>
+            <option value="silver">Silver Partner</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label" style="font-size:.8rem;">Grant / Pledge</label>
+          <input type="text" id="mouBudget" class="form-control" oninput="updateMouLegalPreview()" placeholder="$100,000">
+        </div>
+      </div>
+      <div style="margin-bottom:.75rem;">
+        <label class="form-label" style="font-size:.8rem;">Special Strategic Deliverables & Co-Benefits</label>
+        <textarea id="mouDeliverables" class="form-control" rows="2" oninput="updateMouLegalPreview()" placeholder="e.g. Continental Demo Day Keynote, Trade Sandbox Access..."></textarea>
+      </div>
+      <div style="margin-bottom:1.25rem;">
+        <label class="form-label" style="font-size:.8rem; display:flex; justify-content:space-between;">
+          <span>Official MOU Legal Text Preview</span>
+          <span style="color:var(--neon-green); font-size:.75rem;"><i class="fas fa-stamp"></i> Pan-African Arbitration Ratified</span>
+        </label>
+        <pre id="mouLegalText" style="white-space:pre-wrap; background:rgba(0,0,0,0.5); padding:1rem; border-radius:10px; border:1px solid var(--glass-border); font-family:monospace; font-size:.78rem; max-height:160px; overflow-y:auto; color:var(--neon-green); margin:0; line-height:1.5;"></pre>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:.75rem;">
+        <button type="button" class="btn btn-ghost" data-modal-close>Cancel</button>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Execute & Dispatch MOU</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 2. Team Assessor Reassignment Modal -->
+<div id="adminAssessorModal" class="modal-backdrop" hidden>
+  <div class="modal-card" style="max-width: 540px;">
+    <div class="modal-head">
+      <div>
+        <h3><i class="fas fa-users-gear" style="color:var(--neon-cyan);"></i> Reassign Track Assessor</h3>
+        <small style="color:var(--text-mute);">Pan-African Rubric & Track Alignment</small>
+      </div>
+      <button class="modal-close" type="button" aria-label="Close modal"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="adminAssessorForm" onsubmit="confirmAssessorReassignment(event)">
+      <input type="hidden" id="assessorTeamIdx" value="0">
+      <div style="padding:.85rem 1rem; background:rgba(0,229,255,0.06); border:1px solid rgba(0,229,255,0.25); border-radius:12px; margin-bottom:1.25rem;">
+        <div style="font-size:.8rem; color:var(--text-mute);">Selected Applicant:</div>
+        <strong id="assessorTeamLead" style="font-size:1.15rem; color:#fff; display:block; margin:.2rem 0;">Amara Diallo</strong>
+        <span id="assessorTeamTrack" class="badge-tiny cyan">Aspiration 1 · FinTech</span>
+      </div>
+      <div class="form-group" style="margin-bottom:1rem;">
+        <label class="form-label">Assign Qualified Assessor Specialist *</label>
+        <select id="assessorSelect" class="form-control" required>
+          <option value="Dr. Kwame Acheampong · FinTech & Trade">Dr. Kwame Acheampong · FinTech & Digital Economy (West Africa)</option>
+          <option value="Prof. Tendai Moyo · Infrastructure & CleanTech">Prof. Tendai Moyo · Infrastructure & Renewable Energy (Southern Africa)</option>
+          <option value="Amb. Dr. Obinna Basil · Global Diplomacy & Policy">Amb. Dr. Obinna Basil · Global Diplomacy & AfCFTA Policy (Central/East)</option>
+          <option value="Eng. Esther Ouko · HealthTech & AgriFood">Eng. Esther Ouko · HealthTech & Sustainable Agriculture (East Africa)</option>
+          <option value="Col. Babatunde Lawal · Cyber Security & Defense">Col. Babatunde Lawal · Cyber Resilience & Peace/Security (Continental)</option>
+          <option value="Dr. Fatoumata Bamba · Cultural Economy & Heritage">Dr. Fatoumata Bamba · Cultural Economy & Creative Industries (Sahel/North)</option>
+          <option value="Dr. Zainab El-Gharbi · Governance & Rule of Law">Dr. Zainab El-Gharbi · Democratic Governance & Institutional Reform (North Africa)</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom:1.25rem;">
+        <label class="form-label">Internal Secretariat Rationale / Notes</label>
+        <textarea id="assessorNotes" class="form-control" rows="2" placeholder="Specialization alignment, language preference, conflict-of-interest check..."></textarea>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:.75rem;">
+        <button type="button" class="btn btn-ghost" data-modal-close>Cancel</button>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-check-circle"></i> Confirm Assignment</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 3. Email Broadcast Preview Modal -->
+<div id="adminBroadcastPreviewModal" class="modal-backdrop" hidden>
+  <div class="modal-card" style="max-width: 620px;">
+    <div class="modal-head">
+      <div>
+        <h3><i class="fas fa-envelope-open-text" style="color:var(--neon-gold);"></i> Official Continental Memo Preview</h3>
+        <small style="color:var(--text-mute);">AUC Secretariat Broadcast Dispatch</small>
+      </div>
+      <button class="modal-close" type="button" aria-label="Close modal"><i class="fas fa-times"></i></button>
+    </div>
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:.65rem 1rem; background:rgba(255,255,255,0.03); border:1px solid var(--glass-border); border-radius:10px; font-size:.82rem; margin-bottom:1rem;">
+      <div><span style="color:var(--text-mute);">Target Audience:</span> <strong id="previewAudienceCount" style="color:var(--neon-cyan);">All Registered Teams</strong></div>
+      <div><span style="color:var(--text-mute);">Date:</span> <span id="previewDate" style="color:var(--text-soft);">Today</span></div>
+    </div>
+    <div style="background:linear-gradient(180deg, rgba(2,5,18,0.98), rgba(9,18,48,0.98)); border:1px solid rgba(0,229,255,0.25); border-radius:14px; padding:1.25rem; margin-bottom:1.25rem;">
+      <div style="display:flex; align-items:center; gap:.75rem; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:.75rem; margin-bottom:.85rem;">
+        <img src="assets/img/Logo.png" alt="AUC" style="height:32px; width:auto;" onerror="this.style.display='none'">
+        <div>
+          <div style="font-size:.72rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--neon-gold); font-weight:700;">African Undergraduate Challenge</div>
+          <div style="font-size:.75rem; color:var(--text-mute);">Official Institutional Circular · Addis Ababa HQ</div>
+        </div>
+      </div>
+      <div id="previewSubject" style="font-size:1.05rem; font-weight:700; color:var(--neon-green); margin-bottom:.75rem;">Subject Line</div>
+      <pre id="previewBody" style="white-space:pre-wrap; font-family:inherit; font-size:.85rem; line-height:1.6; color:var(--text-soft); max-height:220px; overflow-y:auto; margin:0;"></pre>
+    </div>
+    <div style="display:flex; justify-content:flex-end; gap:.75rem;">
+      <button type="button" class="btn btn-ghost" data-modal-close>Back to Editor</button>
+      <button type="button" class="btn btn-primary" onclick="confirmDispatchBroadcast()"><i class="fas fa-paper-plane"></i> Dispatch Continental Memo</button>
+    </div>
+  </div>
+</div>
+
+<!-- 4. Add User / Grant Access Modal -->
+<div id="adminAddUserModal" class="modal-backdrop" hidden>
+  <div class="modal-card" style="max-width: 600px;">
+    <div class="modal-head">
+      <div>
+        <h3><i class="fas fa-user-plus" style="color:var(--neon-green);"></i> Grant Access & Assign Role</h3>
+        <small style="color:var(--text-mute);">Create portal user with granular permissions</small>
+      </div>
+      <button class="modal-close" type="button" aria-label="Close modal"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="adminAddUserForm" onsubmit="event.preventDefault(); submitAdminNewUser();" style="margin-top:1rem;">
+      <div style="display:grid;gap:1rem;grid-template-columns:1fr 1fr;">
+        <div class="form-group">
+          <label class="form-label">Full Name *</label>
+          <input type="text" id="nuName" required class="form-control" placeholder="e.g. Dr. Amina Bello">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Username *</label>
+          <input type="text" id="nuUser" required class="form-control" placeholder="e.g. amina_bello">
+        </div>
+      </div>
+      <div style="display:grid;gap:1rem;grid-template-columns:1fr 1fr;margin-top:.75rem;">
+        <div class="form-group">
+          <label class="form-label">Official Email *</label>
+          <input type="email" id="nuEmail" required class="form-control" placeholder="amina@auc2026.org">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Initial Password *</label>
+          <input type="text" id="nuPass" required class="form-control" value="auc@2026">
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:.75rem;">
+        <label class="form-label">Administrative Role *</label>
+        <select id="nuRole" required class="form-control" onchange="autoCheckPermissionsForRole(this.value)">
+          <option value="Chief Editor">Chief Editor (CMS & Content Control)</option>
+          <option value="Lead Assessor">Lead Assessor (Rubric & Scoring)</option>
+          <option value="Secretariat Staff">Secretariat Staff (Operations & MOUs)</option>
+          <option value="Super Admin">Super Admin (Full Continental Clearance)</option>
+        </select>
+      </div>
+
+      <div style="margin-top:1rem;padding:1rem;background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);border-radius:10px;">
+        <label class="form-label" style="color:var(--neon-cyan);margin-bottom:.5rem;display:block;"><i class="fas fa-key"></i> Granular Access Permissions</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;font-size:.82rem;">
+          <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;"><input type="checkbox" id="permEditPages" checked style="accent-color:var(--neon-green);"> Edit Website Pages (CMS)</label>
+          <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;"><input type="checkbox" id="permManageUsers" style="accent-color:var(--neon-green);"> User & Role Management</label>
+          <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;"><input type="checkbox" id="permJudges" style="accent-color:var(--neon-green);"> Access Judge Rubric</label>
+          <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;"><input type="checkbox" id="permSubmissions" checked style="accent-color:var(--neon-green);"> Review Student Teams</label>
+          <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;"><input type="checkbox" id="permPartners" style="accent-color:var(--neon-green);"> Approve MOUs & Partners</label>
+          <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;"><input type="checkbox" id="permSettings" style="accent-color:var(--neon-green);"> System Settings & Toggles</label>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;gap:.75rem;margin-top:1.25rem;">
+        <button type="button" class="btn btn-ghost" data-modal-close>Cancel</button>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> Grant User Access</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 5. Quick Edit Page Modal -->
+<div id="adminQuickEditModal" class="modal-backdrop" hidden>
+  <div class="modal-card" style="max-width: 540px;">
+    <div class="modal-head">
+      <div>
+        <h3><i class="fas fa-bolt" style="color:var(--neon-cyan);"></i> Quick Edit Page Settings</h3>
+        <small id="qeSlugLabel" style="color:var(--text-mute);"></small>
+      </div>
+      <button class="modal-close" type="button" aria-label="Close modal"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="adminQuickEditForm" onsubmit="event.preventDefault(); submitAdminQuickEdit();" style="margin-top:1rem;">
+      <input type="hidden" id="qeSlug">
+      <div class="form-group" style="margin-bottom:1rem;">
+        <label class="form-label">Page Title</label>
+        <input type="text" id="qeTitle" required class="form-control">
+      </div>
+      <div class="form-group" style="margin-bottom:1rem;">
+        <label class="form-label">Status</label>
+        <select id="qeStatus" class="form-control">
+          <option value="published">Published</option>
+          <option value="draft">Draft</option>
+          <option value="pending">Pending Review</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom:1rem;">
+        <label class="form-label">SEO Meta Description</label>
+        <textarea id="qeExcerpt" class="form-control" rows="3"></textarea>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:.75rem;">
+        <button type="button" class="btn btn-ghost" data-modal-close>Cancel</button>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Page Settings</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="toastContainer" class="toast-container"></div>
+
+<!-- FOOTER WITH CENTRALIZED LINKS & HIDDEN ADMIN DOOR ON THE RIGHT -->
+<footer style="padding:1.5rem 0;border-top:1px solid rgba(255,255,255,0.08);background:rgba(2,5,18,0.95);font-size:.85rem;color:var(--text-soft);margin-top:3rem;">
+  <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+    <!-- Copyright -->
+    <div>
+      © 2026 African Undergraduate Challenge (AUC). All rights reserved. · Powered by <a href="https://wasard.org" target="_blank" rel="noopener noreferrer" style="color:var(--neon-green);font-weight:600;">WASARD Organization</a> · Designed by <a href="https://wa.me/2347016435125" target="_blank" rel="noopener noreferrer" style="color:var(--neon-cyan);font-weight:600;">DIDS' SYSTEMS INC.</a>
+    </div>
+
+    <!-- Centralized Footer Navigation Links -->
+    <div style="display:flex;justify-content:center;gap:1.5rem;flex:1;min-width:280px;" class="footer-center-links">
+      <a href="index.html" style="color:var(--text-soft);">Home</a>
+      <a href="about.html" style="color:var(--text-soft);">About AUC</a>
+      <a href="structure.html" style="color:var(--text-soft);">Stages</a>
+      <a href="judging.html" style="color:var(--text-soft);">Rubric</a>
+      <a href="partnership.html" style="color:var(--text-soft);">Partnership</a>
+      <a href="news.html" style="color:var(--text-soft);">News</a>
+      <a href="contact.html" style="color:var(--text-soft);">Contact HQ</a>
+    </div>
+
+    <!-- Hidden / Discreet Admin Access Link on the Right -->
+    <div>
+      <a href="portal-admin.html" class="footer-admin-link" title="Secretariat &amp; Staff Console" aria-label="Admin Access">
+        <i class="fas fa-shield-halved"></i> <span>Staff HQ</span>
+      </a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

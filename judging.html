@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Judging & Scoring — African Undergraduate Challenge</title>
+<meta name="description" content="AUC evaluation protocol, 5-pillar scoring rubric, and academic integrity framework for the African Undergraduate Challenge.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dropdown.css">
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo"><img src="assets/img/Logo.png" alt="AUC" onerror="this.style.display='none'"><span class="logo-text">AUC</span></a>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="structure.html">Structure</a></li>
+      <li><a href="judging.html" class="active">Judging</a></li>
+      <li><a href="participate.html">Participate</a></li>
+      <li><a href="sponsors.html">Partners</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    <li class="nav-dropdown">
+      <a href="javascript:void(0)" class="dropbtn" data-dropdown-trigger role="button" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-satellite-dish"></i> <span>Portals</span> <i class="fas fa-chevron-down chev"></i>
+      </a>
+      <div class="dropdown-content" role="menu" aria-label="AUC Portals">
+        <div class="dropdown-header">
+          <h5><i class="fas fa-shield-halved"></i> AUC Portals</h5>
+          <small>3 secure systems + CMS</small>
+        </div>
+        <div class="dropdown-grid">
+          <a href="portal-student.html" class="dropdown-item" role="menuitem">
+            <div class="di-icon"><i class="fas fa-user-graduate"></i></div>
+            <div class="di-body"><strong>Student Portal</strong><small>Team dashboard · submissions · live scoreboard</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="portal-judge.html" class="dropdown-item cyan" role="menuitem">
+            <div class="di-icon"><i class="fas fa-gavel"></i></div>
+            <div class="di-body"><strong>Judge Portal</strong><small>Review queue · weighted rubric · COI reports</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="portal-admin.html" class="dropdown-item gold" role="menuitem">
+            <div class="di-icon"><i class="fas fa-shield-halved"></i></div>
+            <div class="di-body"><strong>Admin HQ <span class="di-badge">STAFF</span></strong><small>Operations · partnership inbox · audit log</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="cms-editor.html" class="dropdown-item purple" role="menuitem">
+            <div class="di-icon"><i class="fas fa-feather-alt"></i></div>
+            <div class="di-body"><strong>CMS Editor <span class="di-badge purple">EDIT</span></strong><small>Inline edit pages · autosave · schedule publish</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="partnership.html" class="dropdown-item partner" role="menuitem">
+            <div class="di-icon"><i class="fas fa-handshake"></i></div>
+            <div class="di-body"><strong>Become a Partner</strong><small>Public inquiry form · Silver / Gold / Platinum</small></div>
+            <i class="fas fa-arrow-right di-arrow"></i>
+          </a>
+        </div>
+        <div class="dropdown-footer"><small><i class="fas fa-lock"></i> Session-encrypted · JWT auth</small></div>
+      </div>
+    </li>
+    </ul>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Open navigation menu" aria-expanded="false"><i class="fas fa-bars"></i></button>
+    <div class="nav-cta">
+      <button class="theme-toggle" id="themeToggle"></button>
+      <a href="participate.html" class="btn btn-primary">Register 2026</a>
+    </div>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow gold"><i class="fas fa-chart-pie"></i> Weighted Rubric</span>
+    <h1>How Projects Are <span class="text-gradient">Evaluated</span></h1>
+    <p class="lead">Every submission is reviewed blindly by at least three independent evaluators across 5 core criteria.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="region-grid">
+      <div class="criteria reveal" style="border-left-color:var(--neon-green);">
+        <div class="criteria-head">
+          <span class="track-pill">25% Weight</span>
+          <i class="fas fa-lightbulb" style="font-size:1.5rem;color:var(--neon-green);"></i>
+        </div>
+        <h3 style="font-size:1.35rem;margin-bottom:.75rem;">Innovation & Novelty</h3>
+        <p style="font-size:.92rem;color:var(--text-soft);">Degree of technological or business model originality. Does the solution offer a uniquely African, leapfrog approach?</p>
+      </div>
+      <div class="criteria reveal" style="border-left-color:var(--neon-cyan);">
+        <div class="criteria-head">
+          <span class="track-pill" style="background:rgba(0,229,255,0.1);color:var(--neon-cyan);border-color:rgba(0,229,255,0.3);">25% Weight</span>
+          <i class="fas fa-globe-africa" style="font-size:1.5rem;color:var(--neon-cyan);"></i>
+        </div>
+        <h3 style="font-size:1.35rem;margin-bottom:.75rem;">Agenda 2063 Impact</h3>
+        <p style="font-size:.92rem;color:var(--text-soft);">Measurable socio-economic or environmental potential aligned with specific AU Agenda 2063 flagship projects and SDGs.</p>
+      </div>
+      <div class="criteria reveal" style="border-left-color:var(--neon-gold);">
+        <div class="criteria-head">
+          <span class="track-pill" style="background:rgba(255,184,0,0.1);color:var(--neon-gold);border-color:rgba(255,184,0,0.3);">20% Weight</span>
+          <i class="fas fa-cogs" style="font-size:1.5rem;color:var(--neon-gold);"></i>
+        </div>
+        <h3 style="font-size:1.35rem;margin-bottom:.75rem;">Technical Feasibility</h3>
+        <p style="font-size:.92rem;color:var(--text-soft);">Soundness of engineering, architecture, prototype demo, and technological viability under real-world African infrastructure constraints.</p>
+      </div>
+      <div class="criteria reveal" style="border-left-color:#00FF87;">
+        <div class="criteria-head">
+          <span class="track-pill">15% Weight</span>
+          <i class="fas fa-chart-line" style="font-size:1.5rem;color:#00FF87;"></i>
+        </div>
+        <h3 style="font-size:1.35rem;margin-bottom:.75rem;">Market Scalability</h3>
+        <p style="font-size:.92rem;color:var(--text-soft);">Clear path to unit economics, AfCFTA regulatory compliance, and potential to expand beyond the home country into pan-African markets.</p>
+      </div>
+      <div class="criteria reveal" style="border-left-color:#00E5FF;">
+        <div class="criteria-head">
+          <span class="track-pill" style="background:rgba(0,229,255,0.1);color:var(--neon-cyan);border-color:rgba(0,229,255,0.3);">15% Weight</span>
+          <i class="fas fa-users" style="font-size:1.5rem;color:#00E5FF;"></i>
+        </div>
+        <h3 style="font-size:1.35rem;margin-bottom:.75rem;">Team & Execution</h3>
+        <p style="font-size:.92rem;color:var(--text-soft);">Complementary multidisciplinary skillsets, gender diversity, and clarity demonstrated during live pitches and Q&A.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: rgba(7,23,58,0.5);">
+  <div class="container">
+    <div class="glass reveal" style="border-color:rgba(0,255,135,0.3);">
+      <div style="display:grid; gap:2.5rem; align-items:center; grid-template-columns:repeat(auto-fit, minmax(300px,1fr));">
+        <div>
+          <span class="eyebrow"><i class="fas fa-shield-alt"></i> Transparency Pledge</span>
+          <h2 style="font-size:2rem;margin:.75rem 0 1rem 0;">Academic Integrity & IP Ownership</h2>
+          <p style="color:var(--text-soft);line-height:1.7;">AUC is dedicated to protecting undergraduate student intellectual property. All team IP remains 100% owned by the student inventors. All evaluators and mentors sign strict NDAs prior to reviewing submissions.</p>
+        </div>
+        <div style="background: rgba(255,255,255,0.03); border:1px solid var(--glass-border); border-radius: 16px; padding:2rem;">
+          <h4 style="color:var(--neon-green);margin-bottom:1rem;"><i class="fas fa-check-double"></i> Automated Verification Protocols</h4>
+          <ul style="display:flex; flex-direction:column; gap:.75rem; font-size:.92rem; color:var(--text-soft); list-style:none; padding:0;">
+            <li><i class="fas fa-check" style="color:var(--neon-green);margin-right:.5rem;"></i> Double-blind peer reviews in preliminary stages</li>
+            <li><i class="fas fa-check" style="color:var(--neon-green);margin-right:.5rem;"></i> Automated code and literature originality verification</li>
+            <li><i class="fas fa-check" style="color:var(--neon-green);margin-right:.5rem;"></i> Live technical code walkthroughs for all 15 finalists</li>
+            <li><i class="fas fa-check" style="color:var(--neon-green);margin-right:.5rem;"></i> Independent audit committee overseen by AU Advisory Board</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="text-align:center;">
+  <div class="container">
+    <div class="glass" style="text-align:center; padding:4rem 2rem; border-color:rgba(0,255,135,0.3);">
+      <span class="eyebrow"><i class="fas fa-bolt"></i> Be Part of the Movement</span>
+      <h2 class="h-section" style="margin:1.25rem 0 1.25rem;">Ready to Shape the Africa We Want?</h2>
+      <div style="display:flex; gap:1.25rem; justify-content:center; flex-wrap:wrap;">
+        <a href="participate.html" class="btn btn-primary"><i class="fas fa-rocket"></i> Register Your Team</a>
+        <a href="sponsors.html" class="btn btn-outline"><i class="fas fa-handshake"></i> Become a Partner</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="logo" style="margin-bottom:1rem; display:flex;"><img src="assets/img/Logo.png" alt="AUC" style="height:42px;" onerror="this.style.display='none'"><span class="logo-text">AUC</span></a>
+        <p style="color:var(--text-soft); margin-top:1rem; font-size:.92rem;">The African Undergraduate Challenge (AUC) is Africa's premier pan-continental innovation accelerator fully aligned with African Union Agenda 2063.</p>
+        <div class="social-row">
+          <a href="#"><i class="fab fa-x-twitter"></i></a><a href="#"><i class="fab fa-linkedin-in"></i></a><a href="#"><i class="fab fa-youtube"></i></a><a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Explore</h4><a href="index.html">Home</a><a href="about.html">About</a><a href="structure.html">Stages</a><a href="judging.html">Judging</a><a href="news.html">News</a></div>
+      <div class="footer-col"><h4>Portals</h4><a href="participate.html">Eligibility</a><a href="portal-student.html">Student Portal</a><a href="portal-judge.html">Judge Portal</a><a href="partnership.html">Partnership</a><a href="sponsors.html">Tiers</a></div>
+      <div class="footer-col"><h4>Newsletter</h4><p style="font-size:.88rem;color:var(--text-soft);margin-bottom:1rem;">Get monthly updates.</p><form onsubmit="event.preventDefault();alert('Subscribed!');"><input type="email" required placeholder="your@email.com" class="form-control"><button class="btn btn-primary" style="margin-top:.5rem; justify-content:center;">Subscribe</button></form></div>
+    </div>
+
+    <!-- Centralized Quick Navigation Bar -->
+    <div class="footer-nav-centered">
+      <a href="index.html"><i class="fas fa-home"></i> Home</a>
+      <a href="about.html"><i class="fas fa-info-circle"></i> About AUC</a>
+      <a href="structure.html"><i class="fas fa-stream"></i> Competition Stages</a>
+      <a href="judging.html"><i class="fas fa-gavel"></i> Evaluation Rubric</a>
+      <a href="participate.html"><i class="fas fa-user-check"></i> Eligibility</a>
+      <a href="partnership.html"><i class="fas fa-handshake"></i> Partnerships</a>
+      <a href="news.html"><i class="fas fa-newspaper"></i> News &amp; Insights</a>
+      <a href="contact.html"><i class="fas fa-envelope"></i> Contact HQ</a>
+    </div>
+
+    <div class="footer-bottom-centered">
+      <div class="copy-left">
+        © 2026 African Undergraduate Challenge (AUC). All rights reserved. · Powered by <a href="https://wasard.org" target="_blank" rel="noopener noreferrer" style="color:var(--neon-green);font-weight:600;">WASARD Organization</a> · Designed by <a href="https://wa.me/2347016435125" target="_blank" rel="noopener noreferrer" style="color:var(--neon-cyan);font-weight:600;">DIDS' SYSTEMS INC.</a>
+      </div>
+      <div class="links-center">
+        <a href="contact.html">Contact HQ</a>
+        <a href="structure.html">Governance</a>
+        <a href="judging.html">Ethics</a>
+        <a href="cms-editor.html" style="color:var(--neon-green);font-weight:600;"><i class="fas fa-feather-alt"></i> CMS Editor</a>
+      </div>
+      <!-- Hidden Admin Link on the Right -->
+      <div class="admin-right">
+        <a href="portal-admin.html" class="footer-admin-link" title="Secretariat &amp; Staff Console" aria-label="Admin Access">
+          <i class="fas fa-shield-halved"></i> <span>Staff HQ</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+  <script src="dropdown.js" defer></script>
+
+<!-- Floating CMS Quick-Edit Button (Item 1) -->
+<a href="cms-editor.html" class="cms-fab" title="Edit Page Content" aria-label="Open CMS Editor">
+  <i class="fas fa-feather-alt"></i>
+  <span class="cms-fab-tooltip">Edit Page Content</span>
+</a>
+</body>
+</html>
+

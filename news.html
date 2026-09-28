@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUC News & Press — African Undergraduate Challenge</title>
+<meta name="description" content="Latest news, announcements, and innovator spotlights from the African Undergraduate Challenge.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dropdown.css">
+  <link rel="stylesheet" href="login-overlay.css">
+  <script src="api-client.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo"><img src="assets/img/Logo.png" alt="AUC" onerror="this.style.display='none'"><span class="logo-text">AUC</span></a>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="structure.html">Structure</a></li>
+      <li><a href="judging.html">Judging</a></li>
+      <li><a href="participate.html">Participate</a></li>
+      <li><a href="sponsors.html">Partners</a></li>
+      <li><a href="news.html" class="active">News</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    <li class="nav-dropdown">
+      <a href="javascript:void(0)" class="dropbtn" data-dropdown-trigger role="button" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-satellite-dish"></i> <span>Portals</span> <i class="fas fa-chevron-down chev"></i>
+      </a>
+      <div class="dropdown-content" role="menu" aria-label="AUC Portals">
+        <div class="dropdown-header">
+          <h5><i class="fas fa-shield-halved"></i> AUC Portals</h5>
+          <small>3 secure systems + CMS</small>
+        </div>
+        <div class="dropdown-grid">
+          <a href="portal-student.html" class="dropdown-item" role="menuitem">
+            <div class="di-icon"><i class="fas fa-user-graduate"></i></div>
+            <div class="di-body"><strong>Student Portal</strong><small>Team dashboard · submissions · live scoreboard</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="portal-judge.html" class="dropdown-item cyan" role="menuitem">
+            <div class="di-icon"><i class="fas fa-gavel"></i></div>
+            <div class="di-body"><strong>Judge Portal</strong><small>Review queue · weighted rubric · COI reports</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="portal-admin.html" class="dropdown-item gold" role="menuitem">
+            <div class="di-icon"><i class="fas fa-shield-halved"></i></div>
+            <div class="di-body"><strong>Admin HQ <span class="di-badge">STAFF</span></strong><small>Operations · partnership inbox · audit log</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="cms-editor.html" class="dropdown-item purple" role="menuitem">
+            <div class="di-icon"><i class="fas fa-feather-alt"></i></div>
+            <div class="di-body"><strong>CMS Editor <span class="di-badge purple">EDIT</span></strong><small>Inline edit pages · autosave · schedule publish</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="partnership.html" class="dropdown-item partner" role="menuitem">
+            <div class="di-icon"><i class="fas fa-handshake"></i></div>
+            <div class="di-body"><strong>Become a Partner</strong><small>Public inquiry form · Silver / Gold / Platinum</small></div>
+            <i class="fas fa-arrow-right di-arrow"></i>
+          </a>
+        </div>
+        <div class="dropdown-footer"><small><i class="fas fa-lock"></i> Session-encrypted · JWT auth</small></div>
+      </div>
+    </li>
+    </ul>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Open navigation menu" aria-expanded="false"><i class="fas fa-bars"></i></button>
+    <div class="nav-cta">
+      <button class="theme-toggle" id="themeToggle"></button>
+      <a href="participate.html" class="btn btn-primary">Register 2026</a>
+    </div>
+  </div>
+</header>
+
+<!-- CONTINENTAL REAL-TIME NEWS WIRE (Item 2) -->
+<div class="news-ticker-wrap">
+  <div class="container news-ticker-inner">
+    <div class="ticker-badge"><span class="pulse-dot"></span> LIVE WIRE</div>
+    <div class="ticker-marquee">
+      <div class="ticker-content" id="newsTickerTrack">
+        <span class="ticker-item"><strong>Finals Venue:</strong> African Union HQ Addis Ababa confirmed for Oct 2026 Continental Gala <span class="sep">✦</span></span>
+        <span class="ticker-item"><strong>AfCFTA Trade Corridor:</strong> 12 Regional trade sandboxes cleared for student fintech pilots <span class="sep">✦</span></span>
+        <span class="ticker-item"><strong>10,000+ Enrolled:</strong> Undergraduates actively building across 54 AU nations <span class="sep">✦</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow"><i class="fas fa-newspaper"></i> Press &amp; Insights</span>
+    <h1>AUC Continental <span class="text-gradient">Dispatches</span></h1>
+    <p class="lead">Stay informed on tournament announcements, regional finalist stories, and youth-led breakthrough innovations across Africa.</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="container">
+
+    <!-- FEATURED STORY SPOTLIGHT -->
+    <div class="featured-story-card reveal in" id="featuredStoryCard">
+      <div>
+        <span class="track-pill" id="featuredTag" style="background:rgba(0,255,135,0.15);color:var(--neon-green);border-color:rgba(0,255,135,0.3);margin-bottom:1rem;display:inline-block;">Top Headline</span>
+        <h2 id="featuredTitle" style="font-size:1.85rem;line-height:1.25;margin:0.5rem 0 1rem 0;">AUC Confirms African Union Headquarters Addis Ababa as Finals Host</h2>
+        <p id="featuredExcerpt" style="color:var(--text-soft);font-size:1.02rem;line-height:1.7;margin-bottom:1.5rem;">
+          The Secretariat announces that top 15 continental finalist teams will be fully sponsored to fly to Addis Ababa for 48 hours of high-stakes pitching before ministers, venture partners, and AU leadership.
+        </p>
+        <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;">
+          <span style="font-size:.88rem;color:var(--text-mute);"><i class="far fa-calendar"></i> <span id="featuredDate">Sep 2026</span> · <strong id="featuredAuthor" style="color:var(--neon-cyan);">AUC Continental Secretariat</strong></span>
+          <button type="button" class="btn btn-primary" id="featuredReadBtn" style="padding:.5rem 1.25rem;"><i class="fas fa-book-open"></i> Read Full Dispatch</button>
+        </div>
+      </div>
+      <div style="height:260px;border-radius:14px;overflow:hidden;border:1px solid rgba(0,229,255,0.2);position:relative;">
+        <img id="featuredImg" src="assets/img/Logo.png" alt="Featured Story" style="width:100%;height:100%;object-fit:cover;background:rgba(2,5,18,0.6);" onerror="this.onerror=null;this.src='assets/img/Logo.png';">
+      </div>
+    </div>
+
+    <!-- CATEGORY FILTER TABS -->
+    <div class="filter-row">
+      <button class="filter-btn active" data-filter-tab="all">All Stories</button>
+      <button class="filter-btn" data-filter-tab="announcements">Announcements</button>
+      <button class="filter-btn" data-filter-tab="innovators">Innovator Spotlights</button>
+      <button class="filter-btn" data-filter-tab="partners">Partnerships</button>
+    </div>
+    
+    <!-- DYNAMIC STORIES GRID -->
+    <div class="news-grid" id="newsGrid">
+      <!-- Loaded dynamically via news engine below -->
+    </div>
+  </div>
+</section>
+
+<!-- ARTICLE READER MODAL -->
+<div id="newsReaderModal" class="login-overlay" hidden>
+  <div class="login-card" style="max-width:680px;max-height:85vh;overflow-y:auto;background:linear-gradient(165deg,rgba(7,23,58,.99),rgba(4,9,31,.99));">
+    <button class="login-close" type="button" aria-label="Close" onclick="document.getElementById('newsReaderModal').hidden=true"><i class="fas fa-times"></i></button>
+    <span class="track-pill" id="modalPostTag" style="margin-bottom:.75rem;display:inline-block;">Official Dispatch</span>
+    <h3 id="modalPostTitle" style="font-size:1.45rem;line-height:1.35;margin-bottom:.75rem;color:#fff;"></h3>
+    <div style="font-size:.85rem;color:var(--text-mute);margin-bottom:1.25rem;display:flex;gap:1.25rem;flex-wrap:wrap;">
+      <span><i class="far fa-calendar"></i> <span id="modalPostDate"></span></span>
+      <span><i class="fas fa-user-pen"></i> <span id="modalPostAuthor" style="color:var(--neon-cyan);"></span></span>
+    </div>
+    <div id="modalPostContent" style="color:#d8e2f8;line-height:1.8;font-size:1rem;margin-bottom:1.5rem;border-top:1px solid rgba(255,255,255,0.08);padding-top:1rem;"></div>
+    <div style="display:flex;justify-content:flex-end;">
+      <button type="button" class="btn btn-outline" onclick="document.getElementById('newsReaderModal').hidden=true">Close Dispatch</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(async function() {
+  const defaultNews = [
+    {
+      id: 'news-1',
+      category: 'announcements',
+      tag: 'Official Press',
+      tagStyle: '',
+      title: 'Continental Finals Venue Confirmed: African Union Headquarters, Addis Ababa',
+      excerpt: 'Top 15 continental finalist teams will be fully sponsored to fly to Addis Ababa for 48 hours of high-stakes pitching before ministers and venture partners.',
+      date: 'Sep 2026',
+      author: 'AUC Continental Secretariat',
+      featuredImage: 'assets/img/Logo.png'
+    },
+    {
+      id: 'news-2',
+      category: 'partners',
+      tag: 'Strategic Partner',
+      tagStyle: 'background:rgba(255,184,0,0.1);color:var(--neon-gold);border-color:rgba(255,184,0,0.3);',
+      title: 'AfCFTA Partnership Expands Student Sandbox Across 12 Regional Trade Corridors',
+      excerpt: 'Undergraduates competing in Aspiration 2 will receive direct clearance to trial cross-border payments and zero-tariff shipping pilots.',
+      date: 'Aug 2026',
+      author: 'Mamadou Diallo',
+      featuredImage: 'assets/img/Logo.png'
+    },
+    {
+      id: 'news-3',
+      category: 'innovators',
+      tag: 'Innovator Story',
+      tagStyle: 'background:rgba(0,229,255,0.1);color:var(--neon-cyan);border-color:rgba(0,229,255,0.3);',
+      title: 'How AUC Alumni Scaled AI Soil Diagnostics to 40,000 Smallholders',
+      excerpt: 'The undergraduate robotics team from Makerere University won the 2025 Agritech track and secured $250k in seed funding.',
+      date: 'Jul 2026',
+      author: 'Regional Desk East',
+      featuredImage: 'assets/img/Logo.png'
+    },
+    {
+      id: 'news-4',
+      category: 'announcements',
+      tag: 'Campus Tour',
+      tagStyle: '',
+      title: 'AUC Launches 2026 Pan-African Tour Across 500 Universities',
+      excerpt: 'The Secretariat officially flagged off the 2026 continental ideation cycle in partnership with regional innovation ministries.',
+      date: 'Jun 2026',
+      author: 'Secretariat Staff',
+      featuredImage: 'assets/img/Logo.png'
+    }
+  ];
+
+  let apiPosts = [];
+  try {
+    if (window.AUC_API && window.AUC_API.cms) {
+      apiPosts = await window.AUC_API.cms.getPosts();
+    }
+  } catch(e) {}
+
+  let storedNews = [];
+  try {
+    storedNews = JSON.parse(localStorage.getItem('auc_news_items') || '[]');
+  } catch(e) {}
+
+  // Merge unique by id/title
+  const combined = [...(apiPosts || []), ...storedNews, ...defaultNews];
+  const seen = new Set();
+  const allArticles = combined.filter(item => {
+    const key = (item.slug || item.title || item.id);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
+  // 1. Populate Ticker
+  const tickerTrack = document.getElementById('newsTickerTrack');
+  if (tickerTrack && allArticles.length) {
+    tickerTrack.innerHTML = allArticles.map(a => `
+      <span class="ticker-item" onclick="openStoryModal('${a.id}')">
+        <strong>${a.tag || 'News'}:</strong> ${a.title} <span class="sep">✦</span>
+      </span>
+    `).join('') + allArticles.map(a => `
+      <span class="ticker-item" onclick="openStoryModal('${a.id}')">
+        <strong>${a.tag || 'News'}:</strong> ${a.title} <span class="sep">✦</span>
+      </span>
+    `).join('');
+  }
+
+  // 2. Populate Featured Story
+  const topStory = allArticles[0];
+  if (topStory) {
+    const ftTitle = document.getElementById('featuredTitle');
+    const ftExcerpt = document.getElementById('featuredExcerpt');
+    const ftDate = document.getElementById('featuredDate');
+    const ftAuthor = document.getElementById('featuredAuthor');
+    const ftTag = document.getElementById('featuredTag');
+    const ftImg = document.getElementById('featuredImg');
+    const ftBtn = document.getElementById('featuredReadBtn');
+
+    if (ftTitle) ftTitle.textContent = topStory.title;
+    if (ftExcerpt) ftExcerpt.textContent = topStory.excerpt;
+    if (ftDate) ftDate.textContent = topStory.date || 'Recent';
+    if (ftAuthor) ftAuthor.textContent = topStory.author || 'AUC Secretariat';
+    if (ftTag && topStory.tag) ftTag.textContent = topStory.tag;
+    if (ftImg && topStory.featuredImage) ftImg.src = topStory.featuredImage;
+    if (ftBtn) ftBtn.onclick = () => openStoryModal(topStory.id);
+  }
+
+  // 3. Render News Grid
+  window.openStoryModal = function(id) {
+    const story = allArticles.find(a => a.id === id) || topStory;
+    if (!story) return;
+    document.getElementById('modalPostTag').textContent = story.tag || 'Official Press';
+    document.getElementById('modalPostTitle').textContent = story.title;
+    document.getElementById('modalPostDate').textContent = story.date || 'Recent';
+    document.getElementById('modalPostAuthor').textContent = story.author || 'AUC Continental Secretariat';
+    document.getElementById('modalPostContent').innerHTML = `
+      <p style="font-size:1.1rem;font-weight:500;color:#fff;margin-bottom:1.25rem;">${story.excerpt}</p>
+      <p>The African Undergraduate Challenge (AUC) Secretariat continues to coordinate with university vice chancellors, enterprise ministries, and youth innovation hubs across all 54 African Union member states.</p>
+      <p>Undergraduates are encouraged to leverage the student portal to review the Stage 1 to Stage 4 progression criteria, rubric weighting, and intellectual property protection frameworks designed in partnership with the Pan-African Intellectual Property Organization.</p>
+      <p style="margin-top:1.5rem;padding:1rem;background:rgba(0,255,135,0.06);border-left:3px solid var(--neon-green);border-radius:6px;font-size:.9rem;">
+        <i class="fas fa-shield-alt" style="color:var(--neon-green);margin-right:.4rem;"></i> Verified Official Secretariat Release · Continental Tour 2026
+      </p>
+    `;
+    const modal = document.getElementById('newsReaderModal');
+    if (modal) modal.hidden = false;
+  };
+
+  function renderNews(filter = 'all') {
+    const grid = document.getElementById('newsGrid');
+    if (!grid) return;
+    const filtered = filter === 'all' 
+      ? allArticles 
+      : allArticles.filter(item => item.category === filter);
+
+    if (filtered.length === 0) {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-soft);font-size:1.1rem;"><i class="fas fa-inbox" style="font-size:2rem;margin-bottom:1rem;display:block;color:var(--neon-cyan);"></i>No articles found in this category yet. New dispatches will appear here when published by Admin HQ.</div>';
+      return;
+    }
+
+    grid.innerHTML = filtered.map(item => `
+      <div class="news-card reveal active" data-filter-category="${item.category}">
+        <span class="track-pill" style="${item.tagStyle || ''}">${item.tag || 'Update'}</span>
+        <h3 style="font-size:1.3rem;margin:.75rem 0 .5rem 0;line-height:1.35;">${item.title}</h3>
+        <p style="font-size:.9rem;color:var(--text-soft);line-height:1.6;">${item.excerpt}</p>
+        <div class="news-meta">
+          <span><i class="far fa-calendar"></i> ${item.date || 'Recent'} · <small style="color:var(--neon-green);">${item.author || 'Admin HQ'}</small></span>
+          <button type="button" class="btn btn-ghost" style="padding:0;font-size:.85rem;color:var(--neon-cyan);" onclick="openStoryModal('${item.id}')">Read Story <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Filter tab interactions
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cat = btn.getAttribute('data-filter-tab') || 'all';
+      renderNews(cat);
+    });
+  });
+
+  renderNews('all');
+})();
+</script>
+
+<section class="section" style="text-align:center;">
+  <div class="container">
+    <div class="glass" style="text-align:center; padding:4rem 2rem; border-color:rgba(0,255,135,0.3);">
+      <span class="eyebrow"><i class="fas fa-bolt"></i> Be Part of the Movement</span>
+      <h2 class="h-section" style="margin:1.25rem 0 1.25rem;">Ready to Shape the Africa We Want?</h2>
+      <div style="display:flex; gap:1.25rem; justify-content:center; flex-wrap:wrap;">
+        <a href="participate.html" class="btn btn-primary"><i class="fas fa-rocket"></i> Register Your Team</a>
+        <a href="sponsors.html" class="btn btn-outline"><i class="fas fa-handshake"></i> Become a Partner</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="logo" style="margin-bottom:1rem; display:flex;"><img src="assets/img/Logo.png" alt="AUC" style="height:42px;" onerror="this.style.display='none'"><span class="logo-text">AUC</span></a>
+        <p style="color:var(--text-soft); margin-top:1rem; font-size:.92rem;">The African Undergraduate Challenge (AUC) is Africa's premier pan-continental innovation accelerator fully aligned with African Union Agenda 2063.</p>
+        <div class="social-row">
+          <a href="#"><i class="fab fa-x-twitter"></i></a><a href="#"><i class="fab fa-linkedin-in"></i></a><a href="#"><i class="fab fa-youtube"></i></a><a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Explore</h4><a href="index.html">Home</a><a href="about.html">About</a><a href="structure.html">Stages</a><a href="judging.html">Judging</a><a href="news.html">News</a></div>
+      <div class="footer-col"><h4>Portals</h4><a href="participate.html">Eligibility</a><a href="portal-student.html">Student Portal</a><a href="portal-judge.html">Judge Portal</a><a href="partnership.html">Partnership</a><a href="sponsors.html">Tiers</a></div>
+      <div class="footer-col"><h4>Newsletter</h4><p style="font-size:.88rem;color:var(--text-soft);margin-bottom:1rem;">Get monthly updates.</p><form onsubmit="event.preventDefault();alert('Subscribed!');"><input type="email" required placeholder="your@email.com" class="form-control"><button class="btn btn-primary" style="margin-top:.5rem; justify-content:center;">Subscribe</button></form></div>
+    </div>
+
+    <!-- Centralized Quick Navigation Bar -->
+    <div class="footer-nav-centered">
+      <a href="index.html"><i class="fas fa-home"></i> Home</a>
+      <a href="about.html"><i class="fas fa-info-circle"></i> About AUC</a>
+      <a href="structure.html"><i class="fas fa-stream"></i> Competition Stages</a>
+      <a href="judging.html"><i class="fas fa-gavel"></i> Evaluation Rubric</a>
+      <a href="participate.html"><i class="fas fa-user-check"></i> Eligibility</a>
+      <a href="partnership.html"><i class="fas fa-handshake"></i> Partnerships</a>
+      <a href="news.html"><i class="fas fa-newspaper"></i> News &amp; Insights</a>
+      <a href="contact.html"><i class="fas fa-envelope"></i> Contact HQ</a>
+    </div>
+
+    <div class="footer-bottom-centered">
+      <div class="copy-left">
+        © 2026 African Undergraduate Challenge (AUC). All rights reserved. · Powered by <a href="https://wasard.org" target="_blank" rel="noopener noreferrer" style="color:var(--neon-green);font-weight:600;">WASARD Organization</a> · Designed by <a href="https://wa.me/2347016435125" target="_blank" rel="noopener noreferrer" style="color:var(--neon-cyan);font-weight:600;">DIDS' SYSTEMS INC.</a>
+      </div>
+      <div class="links-center">
+        <a href="contact.html">Contact HQ</a>
+        <a href="structure.html">Governance</a>
+        <a href="judging.html">Ethics</a>
+        <a href="cms-editor.html" style="color:var(--neon-green);font-weight:600;"><i class="fas fa-feather-alt"></i> CMS Editor</a>
+      </div>
+      <!-- Hidden Admin Link on the Right -->
+      <div class="admin-right">
+        <a href="portal-admin.html" class="footer-admin-link" title="Secretariat &amp; Staff Console" aria-label="Admin Access">
+          <i class="fas fa-shield-halved"></i> <span>Staff HQ</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+  <script src="dropdown.js" defer></script>
+
+<!-- Floating CMS Quick-Edit Button (Item 1) -->
+<a href="cms-editor.html" class="cms-fab" title="Edit Page Content" aria-label="Open CMS Editor">
+  <i class="fas fa-feather-alt"></i>
+  <span class="cms-fab-tooltip">Edit Page Content</span>
+</a>
+</body>
+</html>
+

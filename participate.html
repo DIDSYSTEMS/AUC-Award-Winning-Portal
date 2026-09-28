@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Participate in AUC 2026 — African Undergraduate Challenge</title>
+<meta name="description" content="Register your undergraduate team for the 2026 African Undergraduate Challenge. Check eligibility and submit your application.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="portal.css">
+<link rel="stylesheet" href="dropdown.css">
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo"><img src="assets/img/Logo.png" alt="AUC" onerror="this.style.display='none'"><span class="logo-text">AUC</span></a>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="structure.html">Structure</a></li>
+      <li><a href="judging.html">Judging</a></li>
+      <li><a href="participate.html" class="active">Participate</a></li>
+      <li><a href="sponsors.html">Partners</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    <li class="nav-dropdown">
+      <a href="javascript:void(0)" class="dropbtn" data-dropdown-trigger role="button" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-satellite-dish"></i> <span>Portals</span> <i class="fas fa-chevron-down chev"></i>
+      </a>
+      <div class="dropdown-content" role="menu" aria-label="AUC Portals">
+        <div class="dropdown-header">
+          <h5><i class="fas fa-shield-halved"></i> AUC Portals</h5>
+          <small>3 secure systems + CMS</small>
+        </div>
+        <div class="dropdown-grid">
+          <a href="portal-student.html" class="dropdown-item" role="menuitem">
+            <div class="di-icon"><i class="fas fa-user-graduate"></i></div>
+            <div class="di-body"><strong>Student Portal</strong><small>Team dashboard · submissions · live scoreboard</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="portal-judge.html" class="dropdown-item cyan" role="menuitem">
+            <div class="di-icon"><i class="fas fa-gavel"></i></div>
+            <div class="di-body"><strong>Judge Portal</strong><small>Review queue · weighted rubric · COI reports</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="portal-admin.html" class="dropdown-item gold" role="menuitem">
+            <div class="di-icon"><i class="fas fa-shield-halved"></i></div>
+            <div class="di-body"><strong>Admin HQ <span class="di-badge">STAFF</span></strong><small>Operations · partnership inbox · audit log</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="cms-editor.html" class="dropdown-item purple" role="menuitem">
+            <div class="di-icon"><i class="fas fa-feather-alt"></i></div>
+            <div class="di-body"><strong>CMS Editor <span class="di-badge purple">EDIT</span></strong><small>Inline edit pages · autosave · schedule publish</small></div>
+            <i class="fas fa-chevron-right di-arrow"></i>
+          </a>
+          <a href="partnership.html" class="dropdown-item partner" role="menuitem">
+            <div class="di-icon"><i class="fas fa-handshake"></i></div>
+            <div class="di-body"><strong>Become a Partner</strong><small>Public inquiry form · Silver / Gold / Platinum</small></div>
+            <i class="fas fa-arrow-right di-arrow"></i>
+          </a>
+        </div>
+        <div class="dropdown-footer"><small><i class="fas fa-lock"></i> Session-encrypted · JWT auth</small></div>
+      </div>
+    </li>
+    </ul>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Open navigation menu" aria-expanded="false"><i class="fas fa-bars"></i></button>
+    <div class="nav-cta">
+      <button class="theme-toggle" id="themeToggle"></button>
+      <a href="participate.html" class="btn btn-primary">Register 2026</a>
+    </div>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow"><i class="fas fa-calculator"></i> Step 1 · Verification</span>
+    <h1>Check Your <span class="text-gradient">Eligibility Instantly</span></h1>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="container">
+    <div class="checker reveal" id="eligibilityChecker">
+      <div class="checker-step">
+        <div class="checker-q"><span class="num">1</span>Are you currently enrolled as an undergraduate student?</div>
+        <div class="checker-options">
+          <button class="checker-btn" data-step="student" data-val="yes">Yes, Undergraduate <i class="fas fa-check"></i></button>
+          <button class="checker-btn" data-step="student" data-val="no">No, Graduate / Other <i class="fas fa-times"></i></button>
+        </div>
+      </div>
+      <div class="checker-step">
+        <div class="checker-q"><span class="num">2</span>Is your university located in an African Union member nation?</div>
+        <div class="checker-options">
+          <button class="checker-btn" data-step="african" data-val="yes">Yes, in Africa <i class="fas fa-check"></i></button>
+          <button class="checker-btn" data-step="african" data-val="no">Outside Africa <i class="fas fa-times"></i></button>
+        </div>
+      </div>
+      <div class="checker-step">
+        <div class="checker-q"><span class="num">3</span>Do you have a multi-disciplinary team of 2–4 members?</div>
+        <div class="checker-options">
+          <button class="checker-btn" data-step="team" data-val="yes">Yes, 2–4 Members <i class="fas fa-check"></i></button>
+          <button class="checker-btn" data-step="team" data-val="solo">Solo / Looking for Team <i class="fas fa-users"></i></button>
+        </div>
+      </div>
+      <div class="checker-step" id="checkerResult" style="display:none; border-bottom:0; padding:1rem 0 0;">
+        <div id="checkerResultText"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="register" style="background: rgba(7,23,58,0.5);">
+  <div class="container">
+    <div class="glass reveal" style="max-width:860px;margin:0 auto; padding:3rem; border-color:rgba(0,255,135,0.3);">
+      <div style="text-align:center; margin-bottom:2.5rem;">
+        <span class="eyebrow cyan"><i class="fas fa-clipboard-check"></i> Direct Application</span>
+        <h2 class="h-section" style="margin:1.25rem 0 1rem;">Register Your Team for AUC 2026</h2>
+        <p style="color:var(--text-soft);">Complete the preliminary entry form. Your team lead will receive portal credentials via email.</p>
+      </div>
+      <form id="teamRegForm" onsubmit="submitRegistration(event);">
+        <div class="form-group">
+          <label class="form-label"><i class="fas fa-rocket" style="color:var(--neon-green);margin-right:.4rem;"></i> Venture / Solution Name *</label>
+          <input type="text" id="regVentureName" required class="form-control" placeholder="e.g. AgriPulse AI, NovaPay, SunGrid Africa">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Team Lead Full Name *</label>
+            <input type="text" id="regLead" required class="form-control" placeholder="e.g. Amara Diallo">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Academic Email Address *</label>
+            <input type="email" id="regEmail" required class="form-control" placeholder="amara@university.edu">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">University / Institution *</label>
+            <input type="text" id="regUni" required class="form-control" placeholder="e.g. Cheikh Anta Diop University / University of Nairobi">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Country *</label>
+            <select id="regCountry" required class="form-control">
+              <option value="">Select Country</option>
+              <option>Nigeria</option><option>Ghana</option><option>Kenya</option><option>South Africa</option><option>Egypt</option><option>Rwanda</option><option>Senegal</option><option>Ethiopia</option><option>Tanzania</option><option>Uganda</option><option>Morocco</option><option>Cameroon</option><option>Algeria</option><option>Zambia</option><option>Zimbabwe</option><option>Other African Country</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Select AU Agenda 2063 Innovation Track *</label>
+          <select id="regTrack" required class="form-control" onchange="onTrackChanged()">
+            <option value="">Select Track</option>
+            <option value="Aspiration 1: Prosperity & Inclusive Growth (FinTech, Agritech)">Aspiration 1: Prosperity & Inclusive Growth (FinTech, Agritech)</option>
+            <option value="Aspiration 2: Integrated Continent (Cross-border Trade, Logistics)">Aspiration 2: Integrated Continent (Cross-border Trade, Logistics)</option>
+            <option value="Aspiration 3: Good Governance (CivicTech, Transparency)">Aspiration 3: Good Governance (CivicTech, Transparency)</option>
+            <option value="Aspiration 4: Peace & Security (Cyber, Resilience)">Aspiration 4: Peace & Security (Cyber, Resilience)</option>
+            <option value="Aspiration 5: Cultural Heritage & Creative Tech">Aspiration 5: Cultural Heritage & Creative Tech</option>
+            <option value="Aspiration 6: Youth & Women Empowerment (EdTech, Health)">Aspiration 6: Youth & Women Empowerment (EdTech, Health)</option>
+            <option value="Aspiration 7: Global Player & Influential Partner (International Diplomacy, Strategic Alliances)">Aspiration 7: Global Player & Influential Partner (International Diplomacy, Strategic Alliances)</option>
+          </select>
+        </div>
+
+        <!-- Dynamic Assessor Preview Banner -->
+        <div id="assessorPreviewCard" style="display:none;margin-bottom:1.5rem;padding:1rem 1.25rem;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.3);border-radius:12px;display:none;align-items:center;gap:1rem;">
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(0,229,255,0.15);display:grid;place-items:center;color:var(--neon-cyan);font-size:1.2rem;flex-shrink:0;">
+            <i class="fas fa-user-check"></i>
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:.78rem;text-transform:uppercase;letter-spacing:1px;color:var(--neon-cyan);font-weight:700;">Designated Continental Assessor</div>
+            <div id="assessorPreviewName" style="font-size:.95rem;font-weight:700;color:#fff;">Dr. Kwame Acheampong</div>
+            <div id="assessorPreviewRole" style="font-size:.82rem;color:var(--text-soft);">Lead Reviewer · FinTech & Agri (West Africa Panel)</div>
+          </div>
+          <span class="badge-tiny ok"><i class="fas fa-shield-alt"></i> Stage 1 Ready</span>
+        </div>
+
+        <!-- Co-Founders & Team Members Section (2-4 required) -->
+        <div style="margin-bottom:1.5rem;padding:1.25rem;background:rgba(255,255,255,0.02);border:1px solid var(--glass-border);border-radius:14px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+            <div>
+              <h4 style="font-size:1rem;color:#fff;margin:0;"><i class="fas fa-users" style="color:var(--neon-green);margin-right:.4rem;"></i> Co-Founders & Multi-Disciplinary Team</h4>
+              <small style="color:var(--text-mute);">2 to 4 undergraduate members required by AU Continental Charter</small>
+            </div>
+            <button type="button" id="addMemberBtn" class="btn btn-outline" style="padding:.35rem .75rem;font-size:.8rem;" onclick="addCoFounderRow()">
+              <i class="fas fa-plus"></i> Add Co-Founder
+            </button>
+          </div>
+
+          <div id="membersContainer" style="display:flex;flex-direction:column;gap:.75rem;">
+            <!-- Member 1: Lead (Pre-filled) -->
+            <div class="member-entry-row" style="display:grid;grid-template-columns:1.5fr 1.5fr 1fr 1fr;gap:.5rem;padding:.75rem;background:rgba(0,255,135,0.04);border:1px solid rgba(0,255,135,0.2);border-radius:10px;align-items:center;">
+              <div><strong style="color:var(--neon-green);font-size:.85rem;">Founder #1 (Lead):</strong> <span id="leadPreviewName" style="color:#fff;">(Entered above)</span></div>
+              <div style="font-size:.82rem;color:var(--text-soft);" id="leadPreviewEmail">(Entered above)</div>
+              <div><span class="badge-tiny ok">Team Lead / Product</span></div>
+              <div style="text-align:right;font-size:.78rem;color:var(--text-mute);">Primary Contact</div>
+            </div>
+
+            <!-- Member 2 (Default Required Co-founder) -->
+            <div class="member-entry-row" id="memberRow_2" style="display:grid;grid-template-columns:1.2fr 1.2fr 1fr 1fr 34px;gap:.5rem;padding:.75rem;background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);border-radius:10px;align-items:center;">
+              <input type="text" class="form-control mem-name" required placeholder="Co-Founder #2 Full Name *" style="font-size:.85rem;padding:.45rem .7rem;">
+              <input type="email" class="form-control mem-email" required placeholder="Academic Email *" style="font-size:.85rem;padding:.45rem .7rem;">
+              <select class="form-control mem-role" required style="font-size:.82rem;padding:.45rem .5rem;">
+                <option value="Tech Lead / Engineering">Tech Lead</option>
+                <option value="Business Dev & Economics">BizDev / Finance</option>
+                <option value="UI/UX & Product Design">UI/UX Design</option>
+                <option value="Domain / Scientific Expert">Domain Expert</option>
+              </select>
+              <input type="text" class="form-control mem-id" placeholder="Student Matric ID" style="font-size:.85rem;padding:.45rem .7rem;">
+              <div style="text-align:center;color:var(--text-mute);"><i class="fas fa-lock" title="Minimum 2 members required"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project Summary with Live Word Counter -->
+        <div class="form-group">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;">
+            <label class="form-label" style="margin:0;">Brief Project Summary (Target: 150 Words) *</label>
+            <span id="summaryWordCount" style="font-size:.82rem;color:var(--text-mute);font-weight:600;">0 / 150 words</span>
+          </div>
+          <textarea id="regSummary" required class="form-control" rows="5" placeholder="Describe the African challenge your team is solving, your proposed tech solution, and expected community impact across the continent..." oninput="updateSummaryWordCount()"></textarea>
+        </div>
+
+        <div class="form-row" style="margin-bottom:1.5rem;">
+          <div class="form-group">
+            <label class="form-label">Prototype Demo Link <small style="color:var(--text-mute);">(Optional for Stage 1)</small></label>
+            <input type="url" id="regDemoUrl" class="form-control" placeholder="https://youtube.com/... or https://prototype.live">
+          </div>
+          <div class="form-group">
+            <label class="form-label">GitHub / Technical Deck <small style="color:var(--text-mute);">(Optional)</small></label>
+            <input type="url" id="regRepoUrl" class="form-control" placeholder="https://github.com/your-team/repo">
+          </div>
+        </div>
+
+        <div id="regAlert" style="display:none;margin-bottom:1.25rem;padding:1.25rem;background:rgba(0,255,135,0.1);border:1px solid rgba(0,255,135,0.4);border-radius:12px;color:var(--neon-green);line-height:1.6;"></div>
+        <button type="submit" id="regBtn" class="btn btn-primary" style="width:100%; font-size:1.05rem; padding:1.1rem;">
+          <i class="fas fa-paper-plane"></i> Submit Preliminary Continental Registration
+        </button>
+      </form>
+
+      <!-- CONTINENTAL REGISTRATION CREDENTIAL DOCKET MODAL -->
+      <div id="regDocketModal" class="modal-backdrop" hidden>
+        <div class="modal-card" style="max-width:680px;border-color:rgba(255,184,0,0.4);background:#07112c;box-shadow:0 25px 80px rgba(0,0,0,0.8);">
+          <div class="modal-head" style="border-bottom:1px solid rgba(255,184,0,0.2);">
+            <div style="display:flex;align-items:center;gap:.75rem;">
+              <img src="assets/img/Logo.png" alt="AUC" style="height:36px;" onerror="this.style.display='none'">
+              <div>
+                <h3 style="color:var(--neon-gold);margin:0;font-size:1.15rem;"><i class="fas fa-certificate"></i> Official Registration Credential Docket</h3>
+                <small style="color:var(--text-mute);">African Undergraduate Challenge · AU Agenda 2063 Secretariat</small>
+              </div>
+            </div>
+            <button class="modal-close" type="button" aria-label="Close modal" onclick="closeDocketModal()"><i class="fas fa-times"></i></button>
+          </div>
+
+          <div style="padding:1rem 0;">
+            <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(255,184,0,0.06);border:1px dashed rgba(255,184,0,0.3);border-radius:12px;padding:.85rem 1.25rem;margin-bottom:1.25rem;">
+              <div>
+                <div style="font-size:.75rem;text-transform:uppercase;color:var(--text-mute);letter-spacing:1px;">Registration Reference ID</div>
+                <div id="docketRefId" style="font-size:1.4rem;font-weight:800;color:var(--neon-gold);font-family:monospace;">AUC-2026-0000</div>
+              </div>
+              <div style="text-align:right;">
+                <span class="badge-tiny ok" style="font-size:.8rem;"><i class="fas fa-check-circle"></i> VERIFIED STAGE 1 CANDIDATE</span>
+                <div id="docketTimestamp" style="font-size:.75rem;color:var(--text-mute);margin-top:.3rem;"></div>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;">
+              <div style="background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);padding:.85rem 1rem;border-radius:10px;">
+                <div style="font-size:.75rem;color:var(--text-mute);">Venture / Project</div>
+                <div id="docketVenture" style="font-size:1rem;font-weight:700;color:#fff;margin-top:.2rem;">—</div>
+                <div id="docketTrack" style="font-size:.8rem;color:var(--neon-cyan);margin-top:.25rem;">—</div>
+              </div>
+              <div style="background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);padding:.85rem 1rem;border-radius:10px;">
+                <div style="font-size:.75rem;color:var(--text-mute);">Institution & Country</div>
+                <div id="docketUni" style="font-size:.92rem;font-weight:600;color:#fff;margin-top:.2rem;">—</div>
+                <div id="docketCountry" style="font-size:.8rem;color:var(--neon-green);margin-top:.25rem;">—</div>
+              </div>
+            </div>
+
+            <div style="background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.25);border-radius:12px;padding:1rem;margin-bottom:1.25rem;">
+              <div style="display:flex;align-items:center;gap:.75rem;">
+                <i class="fas fa-user-shield" style="color:var(--neon-cyan);font-size:1.3rem;"></i>
+                <div>
+                  <div style="font-size:.75rem;color:var(--neon-cyan);text-transform:uppercase;font-weight:700;letter-spacing:1px;">Assigned Continental Assessor</div>
+                  <div id="docketAssessor" style="font-size:.95rem;font-weight:700;color:#fff;">Dr. Kwame Acheampong</div>
+                  <div id="docketAssessorRole" style="font-size:.82rem;color:var(--text-soft);">Lead Reviewer · FinTech & Agri Council</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-bottom:1.25rem;">
+              <div style="font-size:.82rem;font-weight:700;color:#fff;margin-bottom:.5rem;"><i class="fas fa-users" style="color:var(--neon-green);margin-right:.3rem;"></i> Registered Co-Founders & Team:</div>
+              <div id="docketMembersList" style="font-size:.85rem;color:var(--text-soft);line-height:1.6;background:rgba(255,255,255,0.02);border:1px solid var(--glass-border);padding:.75rem 1rem;border-radius:10px;"></div>
+            </div>
+
+            <div style="font-size:.78rem;color:var(--text-mute);display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,0.06);padding-top:.85rem;">
+              <span><i class="fas fa-fingerprint"></i> Security Hash: <code id="docketHash" style="color:var(--neon-cyan);font-size:.75rem;">0x...</code></span>
+              <span>AU Agenda 2063 Seal Verified</span>
+            </div>
+          </div>
+
+          <div style="display:flex;justify-content:flex-end;gap:.75rem;margin-top:.5rem;flex-wrap:wrap;">
+            <button type="button" class="btn btn-outline" onclick="printDocket()"><i class="fas fa-print"></i> Print Docket</button>
+            <button type="button" class="btn btn-primary" onclick="launchStudentWorkspace()"><i class="fas fa-external-link-alt"></i> Launch Student Workspace (Auto-Login)</button>
+          </div>
+        </div>
+      </div>
+
+      <script>
+      // Assessor assignment mapping based on AU Agenda 2063 tracks
+      const ASSESSOR_MAP = {
+        'Aspiration 1': { name: 'Dr. Kwame Acheampong', role: 'Lead Reviewer · FinTech & Agri (West Africa)', email: 'acheampong@auc.org' },
+        'Aspiration 2': { name: 'Prof. Tendai Moyo', role: 'Academic Lead · Infrastructure & Logistics (SADC)', email: 'moyo@auc.org' },
+        'Aspiration 3': { name: 'Dr. Kwame A.', role: 'CivicTech & Continental Governance Panel', email: 'governance@auc.org' },
+        'Aspiration 4': { name: 'Dr. Zahra Hassan', role: 'Security & Cyber Resilience Commissioner (East Africa)', email: 'hassan@auc.org' },
+        'Aspiration 5': { name: 'Amina Ndiaye', role: 'Cultural Heritage & NLP Lead (North/West)', email: 'ndiaye@auc.org' },
+        'Aspiration 6': { name: 'Fatima Oumarou', role: 'Director of Continental Incubation & Health (Central Africa)', email: 'oumarou@auc.org' },
+        'Aspiration 7': { name: 'Dr. Obinna Basil', role: 'STI & Global Alliances Chair (Continental)', email: 'basil@auc.org' }
+      };
+
+      let memberCount = 2; // Initial default co-founder row is #2
+      let activeCreatedReg = null;
+
+      function onTrackChanged() {
+        const track = document.getElementById('regTrack').value;
+        const card = document.getElementById('assessorPreviewCard');
+        if (!track) {
+          card.style.display = 'none';
+          return;
+        }
+        const aspKey = Object.keys(ASSESSOR_MAP).find(k => track.startsWith(k)) || 'Aspiration 1';
+        const assessor = ASSESSOR_MAP[aspKey];
+        document.getElementById('assessorPreviewName').textContent = assessor.name;
+        document.getElementById('assessorPreviewRole').textContent = assessor.role;
+        card.style.display = 'flex';
+      }
+
+      function updateSummaryWordCount() {
+        const text = document.getElementById('regSummary').value.trim();
+        const words = text.length === 0 ? 0 : text.split(/\s+/).length;
+        const badge = document.getElementById('summaryWordCount');
+        badge.textContent = words + ' / 150 words';
+        if (words >= 80 && words <= 160) {
+          badge.style.color = 'var(--neon-green)';
+        } else if (words > 160) {
+          badge.style.color = 'var(--neon-gold)';
+        } else {
+          badge.style.color = 'var(--text-mute)';
+        }
+      }
+
+      // Live update of founder 1 preview
+      document.getElementById('regLead').addEventListener('input', function(e) {
+        document.getElementById('leadPreviewName').textContent = e.target.value.trim() || '(Entered above)';
+      });
+      document.getElementById('regEmail').addEventListener('input', function(e) {
+        document.getElementById('leadPreviewEmail').textContent = e.target.value.trim() || '(Entered above)';
+      });
+
+      function addCoFounderRow() {
+        if (memberCount >= 4) {
+          alert('Maximum 4 team members allowed per team under continental competition guidelines.');
+          return;
+        }
+        memberCount++;
+        const container = document.getElementById('membersContainer');
+        const row = document.createElement('div');
+        row.className = 'member-entry-row';
+        row.id = 'memberRow_' + memberCount;
+        row.style.cssText = 'display:grid;grid-template-columns:1.2fr 1.2fr 1fr 1fr 34px;gap:.5rem;padding:.75rem;background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);border-radius:10px;align-items:center;animation:slideIn .3s ease;';
+        row.innerHTML = `
+          <input type="text" class="form-control mem-name" required placeholder="Co-Founder #${memberCount} Full Name *" style="font-size:.85rem;padding:.45rem .7rem;">
+          <input type="email" class="form-control mem-email" required placeholder="Academic Email *" style="font-size:.85rem;padding:.45rem .7rem;">
+          <select class="form-control mem-role" required style="font-size:.82rem;padding:.45rem .5rem;">
+            <option value="Tech Lead / Engineering">Tech Lead</option>
+            <option value="Business Dev & Economics">BizDev / Finance</option>
+            <option value="UI/UX & Product Design">UI/UX Design</option>
+            <option value="Domain / Scientific Expert">Domain Expert</option>
+          </select>
+          <input type="text" class="form-control mem-id" placeholder="Student Matric ID" style="font-size:.85rem;padding:.45rem .7rem;">
+          <button type="button" class="btn btn-outline" style="padding:0;width:32px;height:32px;display:grid;place-items:center;color:var(--text-mute);" onclick="removeCoFounderRow(${memberCount})">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        `;
+        container.appendChild(row);
+      }
+
+      function removeCoFounderRow(id) {
+        const row = document.getElementById('memberRow_' + id);
+        if (row) {
+          row.remove();
+          memberCount--;
+        }
+      }
+
+      function closeDocketModal() {
+        document.getElementById('regDocketModal').hidden = true;
+      }
+
+      function printDocket() {
+        window.print();
+      }
+
+      function launchStudentWorkspace() {
+        if (activeCreatedReg) {
+          try {
+            localStorage.setItem('auc_active_team', JSON.stringify(activeCreatedReg));
+            localStorage.setItem('auc_student_auth', 'true');
+          } catch(e){}
+        }
+        window.location.href = 'portal-student.html';
+      }
+
+      async function submitRegistration(e) {
+        e.preventDefault();
+        const venture = document.getElementById('regVentureName').value.trim();
+        const lead = document.getElementById('regLead').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const uni = document.getElementById('regUni').value.trim();
+        const country = document.getElementById('regCountry').value;
+        const track = document.getElementById('regTrack').value;
+        const summary = document.getElementById('regSummary').value.trim();
+        const demoUrl = document.getElementById('regDemoUrl').value.trim();
+        const repoUrl = document.getElementById('regRepoUrl').value.trim();
+
+        // Collect co-founders
+        const members = [
+          { name: lead, email: email, role: 'Team Lead / Product Lead', matricId: 'AUC-LEAD-01' }
+        ];
+
+        const memRows = document.querySelectorAll('#membersContainer .member-entry-row');
+        memRows.forEach(r => {
+          const nameInput = r.querySelector('.mem-name');
+          const emailInput = r.querySelector('.mem-email');
+          const roleSelect = r.querySelector('.mem-role');
+          const idInput = r.querySelector('.mem-id');
+          if (nameInput && nameInput.value.trim()) {
+            members.push({
+              name: nameInput.value.trim(),
+              email: emailInput ? emailInput.value.trim() : '',
+              role: roleSelect ? roleSelect.value : 'Co-Founder',
+              matricId: idInput ? idInput.value.trim() : ''
+            });
+          }
+        });
+
+        const aspKey = Object.keys(ASSESSOR_MAP).find(k => track.startsWith(k)) || 'Aspiration 1';
+        const assignedAssessor = ASSESSOR_MAP[aspKey];
+        const regId = 'AUC-2026-' + Math.floor(1000 + Math.random() * 9000);
+        const secHash = '0x' + Array.from({length: 16}, () => Math.floor(Math.random()*16).toString(16)).join('');
+
+        const newReg = {
+          id: regId,
+          venture: venture || lead + ' Innovation',
+          name: venture || lead + ' Innovation',
+          lead: lead,
+          email: email,
+          uni: uni,
+          country: country,
+          track: track,
+          summary: summary,
+          concept: summary,
+          demoUrl: demoUrl || '#',
+          repoUrl: repoUrl || '#',
+          deckUrl: '#',
+          members: members,
+          assignedAssessor: assignedAssessor,
+          status: 'Under Review',
+          securityHash: secHash,
+          submittedAt: new Date().toISOString()
+        };
+
+        activeCreatedReg = newReg;
+
+        // Visual loading state
+        const submitBtn = document.getElementById('regBtn');
+        const origBtnText = submitBtn ? submitBtn.innerHTML : '';
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing with Continental Registry...';
+        }
+
+        // Persist through Central AUC API (dual-mode network + local fallback)
+        try {
+          if (window.AUC_API && window.AUC_API.registrations) {
+            await window.AUC_API.registrations.submit(newReg);
+          } else {
+            const existing = JSON.parse(localStorage.getItem('auc_registrations') || '[]');
+            existing.unshift(newReg);
+            localStorage.setItem('auc_registrations', JSON.stringify(existing));
+            localStorage.setItem('auc_active_team', JSON.stringify(newReg));
+          }
+        } catch(err) {
+          console.warn('[Registration Submit Error]', err);
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = origBtnText;
+          }
+        }
+
+        // Populate and open Docket Modal
+        document.getElementById('docketRefId').textContent = regId;
+        document.getElementById('docketTimestamp').textContent = new Date().toLocaleString();
+        document.getElementById('docketVenture').textContent = newReg.venture;
+        document.getElementById('docketTrack').textContent = track;
+        document.getElementById('docketUni').textContent = uni;
+        document.getElementById('docketCountry').textContent = country;
+        document.getElementById('docketAssessor').textContent = assignedAssessor.name;
+        document.getElementById('docketAssessorRole').textContent = assignedAssessor.role;
+        document.getElementById('docketHash').textContent = secHash;
+
+        document.getElementById('docketMembersList').innerHTML = members.map((m, idx) => 
+          `<div><strong>#${idx+1} ${m.name}</strong> · <span style="color:var(--neon-green);">${m.role}</span> (${m.email || uni})</div>`
+        ).join('');
+
+        const modal = document.getElementById('regDocketModal');
+        modal.hidden = false;
+
+        // Success banner
+        const alertBox = document.getElementById('regAlert');
+        alertBox.style.display = 'block';
+        alertBox.innerHTML = `<strong><i class="fas fa-check-circle"></i> Preliminary Registration Logged & Synced! Ref #${regId}</strong><br>Welcome, <strong>${venture}</strong> led by ${lead} (${uni}). Your official Continental Registration Docket has been generated above and registered in the Continental Database.`;
+      }
+
+      // Check URL query parameters for track pre-selection (e.g. participate.html?track=Aspiration+1)
+      window.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const trackParam = urlParams.get('track');
+        if (trackParam) {
+          const trackSelect = document.getElementById('regTrack');
+          for (let i = 0; i < trackSelect.options.length; i++) {
+            if (trackSelect.options[i].value.toLowerCase().includes(trackParam.toLowerCase())) {
+              trackSelect.selectedIndex = i;
+              onTrackChanged();
+              const regSection = document.getElementById('register');
+              if (regSection) regSection.scrollIntoView({ behavior: 'smooth' });
+              break;
+            }
+          }
+        }
+      });
+      </script>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow gold"><i class="fas fa-question-circle"></i> Got Questions?</span>
+      <h2 class="h-section">Frequently Asked Questions</h2>
+      <p class="lead">Everything you need to know about team eligibility, IP ownership, and competition logistics.</p>
+    </div>
+    <div class="reveal" style="max-width:800px; margin:0 auto;">
+      <div class="faq-item open">
+        <div class="faq-q"><span>Is there an entry fee to participate in AUC?</span><i class="fas fa-chevron-down"></i></div>
+        <div class="faq-a">No. Participation in the African Undergraduate Challenge is 100% free of charge for all eligible undergraduate students across all 54 African countries.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span>Can students from different universities form a single team?</span><i class="fas fa-chevron-down"></i></div>
+        <div class="faq-a">Yes! Inter-university and cross-border teams within Africa are warmly welcomed and highly encouraged, as this fosters true pan-African collaboration.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span>Who owns the intellectual property (IP) developed during the challenge?</span><i class="fas fa-chevron-down"></i></div>
+        <div class="faq-a">100% of all intellectual property, patent rights, code, and venture equity remain entirely with the student inventors. AUC takes zero equity in participant ventures.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span>What stage of prototype is required at the initial campus level?</span><i class="fas fa-chevron-down"></i></div>
+        <div class="faq-a">At the initial campus stage, a clear conceptual framework, architectural design, wireframes, or simulated mockups are sufficient. Working prototypes will be built during the national and regional accelerator stages.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="text-align:center;padding-top:2rem;">
+  <div class="container">
+    <div class="glass" style="text-align:center; padding:4rem 2rem; border-color:rgba(0,255,135,0.3);">
+      <span class="eyebrow"><i class="fas fa-bolt"></i> Be Part of the Movement</span>
+      <h2 class="h-section" style="margin:1.25rem 0 1.25rem;">Ready to Shape the Africa We Want?</h2>
+      <div style="display:flex; gap:1.25rem; justify-content:center; flex-wrap:wrap;">
+        <a href="sponsors.html" class="btn btn-outline"><i class="fas fa-handshake"></i> Become a Partner</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="logo" style="margin-bottom:1rem; display:flex;"><img src="assets/img/Logo.png" alt="AUC" style="height:42px;" onerror="this.style.display='none'"><span class="logo-text">AUC</span></a>
+        <p style="color:var(--text-soft); margin-top:1rem; font-size:.92rem;">The African Undergraduate Challenge (AUC) is Africa's premier pan-continental innovation accelerator fully aligned with African Union Agenda 2063.</p>
+        <div class="social-row">
+          <a href="#"><i class="fab fa-x-twitter"></i></a><a href="#"><i class="fab fa-linkedin-in"></i></a><a href="#"><i class="fab fa-youtube"></i></a><a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Explore</h4><a href="index.html">Home</a><a href="about.html">About</a><a href="structure.html">Stages</a><a href="judging.html">Judging</a><a href="news.html">News</a></div>
+      <div class="footer-col"><h4>Portals</h4><a href="participate.html">Eligibility</a><a href="portal-student.html">Student Portal</a><a href="portal-judge.html">Judge Portal</a><a href="partnership.html">Partnership</a><a href="sponsors.html">Tiers</a></div>
+      <div class="footer-col"><h4>Newsletter</h4><p style="font-size:.88rem;color:var(--text-soft);margin-bottom:1rem;">Get monthly updates.</p><form onsubmit="event.preventDefault();alert('Subscribed!');"><input type="email" required placeholder="your@email.com" class="form-control"><button class="btn btn-primary" style="margin-top:.5rem; justify-content:center;">Subscribe</button></form></div>
+    </div>
+
+    <!-- Centralized Quick Navigation Bar -->
+    <div class="footer-nav-centered">
+      <a href="index.html"><i class="fas fa-home"></i> Home</a>
+      <a href="about.html"><i class="fas fa-info-circle"></i> About AUC</a>
+      <a href="structure.html"><i class="fas fa-stream"></i> Competition Stages</a>
+      <a href="judging.html"><i class="fas fa-gavel"></i> Evaluation Rubric</a>
+      <a href="participate.html"><i class="fas fa-user-check"></i> Eligibility</a>
+      <a href="partnership.html"><i class="fas fa-handshake"></i> Partnerships</a>
+      <a href="news.html"><i class="fas fa-newspaper"></i> News &amp; Insights</a>
+      <a href="contact.html"><i class="fas fa-envelope"></i> Contact HQ</a>
+    </div>
+
+    <div class="footer-bottom-centered">
+      <div class="copy-left">
+        © 2026 African Undergraduate Challenge (AUC). All rights reserved. · Powered by <a href="https://wasard.org" target="_blank" rel="noopener noreferrer" style="color:var(--neon-green);font-weight:600;">WASARD Organization</a> · Designed by <a href="https://wa.me/2347016435125" target="_blank" rel="noopener noreferrer" style="color:var(--neon-cyan);font-weight:600;">DIDS' SYSTEMS INC.</a>
+      </div>
+      <div class="links-center">
+        <a href="contact.html">Contact HQ</a>
+        <a href="structure.html">Governance</a>
+        <a href="judging.html">Ethics</a>
+        <a href="cms-editor.html" style="color:var(--neon-green);font-weight:600;"><i class="fas fa-feather-alt"></i> CMS Editor</a>
+      </div>
+      <!-- Hidden Admin Link on the Right -->
+      <div class="admin-right">
+        <a href="portal-admin.html" class="footer-admin-link" title="Secretariat &amp; Staff Console" aria-label="Admin Access">
+          <i class="fas fa-shield-halved"></i> <span>Staff HQ</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="api-client.js"></script>
+<script src="main.js"></script>
+  <script src="dropdown.js" defer></script>
+
+<!-- Floating CMS Quick-Edit Button (Item 1) -->
+<a href="cms-editor.html" class="cms-fab" title="Edit Page Content" aria-label="Open CMS Editor">
+  <i class="fas fa-feather-alt"></i>
+  <span class="cms-fab-tooltip">Edit Page Content</span>
+</a>
+</body>
+</html>
+
