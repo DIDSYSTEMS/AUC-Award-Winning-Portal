@@ -477,6 +477,7 @@
         const res = await request(`/cms/media/${id}`, { method: 'DELETE' });
         const local = storage.get('auc_media_library', []).filter(m => m.id !== id);
         storage.set('auc_media_library', local);
+        broadcast('auc:cms:media_deleted', { id });
         return res ? res.ok : true;
       },
 
@@ -560,6 +561,33 @@
         storage.set('auc_site_settings', settings);
         broadcast('auc:admin:settings_updated', settings);
         return res ? res.data : settings;
+      },
+
+      async updateLogo(payload) {
+        const res = await request('/admin/logo', {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+        broadcast('auc:admin:logo_updated', res ? res.logoUrl : payload.url);
+        return res;
+      },
+
+      async replaceImage(slot, payload) {
+        const res = await request('/admin/replace-image', {
+          method: 'POST',
+          body: JSON.stringify({ slot, ...payload })
+        });
+        broadcast('auc:admin:image_replaced', { slot, url: res ? res.url : payload.url });
+        return res;
+      },
+
+      async publishSite(author = "DIDS' SYSTEM INC.") {
+        const res = await request('/admin/publish', {
+          method: 'POST',
+          body: JSON.stringify({ author })
+        });
+        broadcast('auc:admin:site_published', res);
+        return res;
       },
 
       async getTelemetry() {

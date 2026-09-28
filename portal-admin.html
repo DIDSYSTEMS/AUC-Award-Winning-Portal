@@ -113,6 +113,11 @@
 <link rel="stylesheet" href="dropdown.css">
 <style>.admin-anchor{display:block;height:0;width:0;overflow:hidden;visibility:hidden}</style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- AUC Official Favicons & App Icons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon.png">
+  <link rel="shortcut icon" href="favicon.png">
 </head>
 <body class="portal-body">
 
@@ -188,6 +193,8 @@
     <a href="cms-editor.html" class="side-link s-purple" style="border:1px solid rgba(157,78,221,.3);background:rgba(157,78,221,.08);"><i class="fas fa-feather-alt" style="color:var(--c-purple);"></i><span style="font-weight:700;color:#fff;">Elementor Builder</span><span class="badge purple">LIVE EDIT</span></a>
     <a href="#content-wp-style" data-target="content-(wp-style)" class="side-link s-purple"><i class="fas fa-file-shield"></i><span>CMS Pages (WP-Style)</span><span class="badge purple">8 Pages</span></a>
     <a href="#content-corrector" data-target="content-corrector" class="side-link s-purple"><i class="fas fa-pen-to-square"></i><span>Live Content Overrides</span><span class="badge cyan">Instant</span></a>
+    <a href="#brand-logo" data-target="brand-logo" class="side-link s-gold"><i class="fas fa-crown"></i><span>Brand &amp; Logo</span><span class="badge gold">Editable</span></a>
+    <a href="#image-replacer" data-target="image-replacer" class="side-link s-green"><i class="fas fa-arrows-rotate"></i><span>Picture Switcher</span><span class="badge green">Drag &amp; Drop</span></a>
     <a href="#media-library" data-target="media-library" class="side-link s-cyan"><i class="fas fa-images"></i><span>Media Library</span><span class="badge cyan">Upload</span></a>
     <a href="#news-press" data-target="news-press" class="side-link s-green"><i class="fas fa-newspaper"></i><span>News &amp; Press Desk</span><span class="badge green">Publish</span></a>
 
@@ -215,6 +222,7 @@
       <button class="btn btn-outline" style="font-size:.82rem;" onclick="exportAdminTeamsCsv()"><i class="fas fa-file-excel"></i> Export Teams CSV</button>
       <button class="btn" data-action="refresh" onclick="location.reload()"><i class="fas fa-sync"></i> Refresh</button>
       <button class="btn btn-primary" data-action="open-cms" onclick="window.location.href='cms-editor.html'"><i class="fas fa-feather-alt"></i> Open Elementor Builder</button>
+      <button class="btn btn-primary" id="adminPublishBtn" style="background:linear-gradient(135deg,#00E5FF,#00FF87);color:#020D08;font-weight:800;box-shadow:0 0 25px rgba(0,229,255,0.45);border:none;" onclick="triggerAdminPublish()"><i class="fas fa-paper-plane"></i> Publish Live by DIDS' SYSTEM</button>
     </div>
   </div>
 
@@ -475,22 +483,203 @@
   </div>
 </section>
 
-  <!-- 1. MEDIA LIBRARY & UPLOADER (Item 1 & Item 9) -->
-  <div class="panel reveal" id="media-library" style="margin-top:2rem;">
+  <!-- BRAND & OFFICIAL LOGO MANAGER (Editable Logos) -->
+  <div class="panel reveal" id="brand-logo" style="margin-top:2rem;">
     <div class="panel-head">
-      <h3><i class="fas fa-images" style="color:var(--neon-cyan);margin-right:.5rem;"></i> Continental Media Library & Uploader</h3>
-      <span class="badge cyan">Instant Local & CDN Sync</span>
+      <h3><i class="fas fa-crown" style="color:var(--neon-gold);margin-right:.5rem;"></i> Official Brand &amp; Logo Studio</h3>
+      <span class="badge gold">Live Across All 13 Pages &amp; Favicon</span>
     </div>
     <p style="color:var(--text-soft);font-size:.9rem;margin-bottom:1.5rem;">
-      Upload photos, presentation decks, videos, or logos for direct use across marketing and portal pages. Files uploaded here are immediately accessible.
+      Manage and customize the official emblem and favicon for the African Undergraduate Challenge. Updating the logo here automatically replaces <code>assets/img/Logo.png</code>, <code>favicon.png</code>, and updates the navbar, mobile drawer, and footer across all 13 website pages in real time.
     </p>
-    <div class="media-drop-zone" id="adminMediaDropZone" onclick="document.getElementById('adminFileInput').click()">
-      <i class="fas fa-cloud-upload-alt" style="font-size:2.5rem;color:var(--neon-cyan);margin-bottom:.75rem;display:block;"></i>
-      <h4 style="margin-bottom:.35rem;">Drag & drop images or videos here, or <span style="color:var(--neon-cyan);text-decoration:underline;">browse computer</span></h4>
-      <p style="color:var(--text-mute);font-size:.82rem;margin:0;">Supports PNG, JPG, WEBP, SVG, MP4, WEBM</p>
+
+    <div class="logo-manager-box">
+      <div class="logo-preview-wrap">
+        <img id="adminCurrentLogoImg" src="assets/img/Logo.png" alt="Current Logo" onerror="this.src='assets/favicon.png'">
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.5rem;flex-wrap:wrap;">
+          <h4 style="margin:0;font-size:1.15rem;color:#fff;">Official African Undergraduate Challenge Crest</h4>
+          <span class="badge green"><i class="fas fa-check-circle"></i> Active Master</span>
+          <span class="badge cyan" id="logoUpdatedTimeBadge">Updated Recently</span>
+        </div>
+        <p style="color:rgba(255,255,255,0.65);font-size:.84rem;margin-bottom:1.15rem;line-height:1.6;">
+          Golden sun of discovery, open book of continental scholarship, African bulb of transformative innovation. Drag a new PNG/SVG/JPG file directly onto the circle or click below to upload.
+        </p>
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;">
+          <button type="button" class="btn btn-primary" onclick="document.getElementById('adminLogoFileInput').click()" style="background:linear-gradient(135deg,#FFD700,#00FF87);color:#020D08;font-weight:700;">
+            <i class="fas fa-cloud-arrow-up"></i> Upload New Logo from Device
+          </button>
+          <button type="button" class="btn btn-outline" onclick="openMediaPickerFor('logo')">
+            <i class="fas fa-images"></i> Select from Media Library
+          </button>
+          <button type="button" class="btn btn-ghost" onclick="resetOfficialLogo()" style="color:var(--text-mute);">
+            <i class="fas fa-rotate-left"></i> Reload Master Crest
+          </button>
+        </div>
+        <input type="file" id="adminLogoFileInput" accept="image/*" style="display:none;" onchange="handleAdminLogoUpload(this.files[0])">
+      </div>
+    </div>
+  </div>
+
+  <!-- VISUAL PICTURE SWITCHER (Drag & Drop or Device Upload) -->
+  <div class="panel reveal" id="image-replacer" style="margin-top:2rem;">
+    <div class="panel-head">
+      <div>
+        <h3><i class="fas fa-arrows-rotate" style="color:var(--neon-green);margin-right:.5rem;"></i> Visual Picture Replacer (Drag &amp; Drop)</h3>
+        <p style="color:var(--text-soft);font-size:.88rem;margin:0.25rem 0 0;">Drag and drop any picture file onto a slot below, upload from device, or choose from the Media Library.</p>
+      </div>
+      <span class="badge green"><i class="fas fa-hand-pointer"></i> Drag &amp; Drop Enabled</span>
+    </div>
+
+    <div class="replacer-grid">
+      <!-- Slot 1: Official Logo -->
+      <div class="replacer-card" id="slotCard-logo" ondragover="handleSlotDragOver(event, this)" ondragleave="handleSlotDragLeave(event, this)" ondrop="handleSlotDrop(event, 'logo', this)">
+        <div class="replacer-preview">
+          <img id="slotImg-logo" src="assets/img/Logo.png" alt="Official Logo">
+          <div class="replacer-overlay" onclick="document.getElementById('slotFile-logo').click()">
+            <i class="fas fa-cloud-arrow-up" style="font-size:1.8rem;color:var(--neon-gold);"></i>
+            <span style="font-size:.82rem;font-weight:700;">Drop Logo Here or Click</span>
+          </div>
+        </div>
+        <div class="replacer-body">
+          <h5 class="replacer-title"><i class="fas fa-crown" style="color:var(--neon-gold);margin-right:.3rem;"></i> Website Header Logo</h5>
+          <p class="replacer-desc">Main brand crest across navbar, footer &amp; favicon</p>
+          <div class="replacer-actions">
+            <button type="button" class="btn btn-outline" style="font-size:.75rem;padding:.3rem .6rem;flex:1;" onclick="document.getElementById('slotFile-logo').click()"><i class="fas fa-upload"></i> Device</button>
+            <button type="button" class="btn btn-outline" style="font-size:.75rem;padding:.3rem .6rem;flex:1;" onclick="openMediaPickerFor('logo')"><i class="fas fa-images"></i> Library</button>
+          </div>
+        </div>
+        <input type="file" id="slotFile-logo" accept="image/*" style="display:none;" onchange="handleSlotFileUpload(this.files[0], 'logo')">
+      </div>
+
+      <!-- Slot 2: Hero Keynote Banner -->
+      <div class="replacer-card" id="slotCard-hero" ondragover="handleSlotDragOver(event, this)" ondragleave="handleSlotDragLeave(event, this)" ondrop="handleSlotDrop(event, 'hero', this)">
+        <div class="replacer-preview">
+          <img id="slotImg-hero" src="assets/img/Logo.png" alt="Hero Keynote Banner">
+          <div class="replacer-overlay" onclick="document.getElementById('slotFile-hero').click()">
+            <i class="fas fa-cloud-arrow-up" style="font-size:1.8rem;color:var(--neon-cyan);"></i>
+            <span style="font-size:.82rem;font-weight:700;">Drop Image Here or Click</span>
+          </div>
+        </div>
+        <div class="replacer-body">
+          <h5 class="replacer-title"><i class="fas fa-bolt" style="color:var(--neon-cyan);margin-right:.3rem;"></i> Hero Keynote Visual</h5>
+          <p class="replacer-desc">Primary continental banner visual on Homepage</p>
+          <div class="replacer-actions">
+            <button type="button" class="btn btn-outline" style="font-size:.75rem;padding:.3rem .6rem;flex:1;" onclick="document.getElementById('slotFile-hero').click()"><i class="fas fa-upload"></i> Device</button>
+            <button type="button" class="btn btn-outline" style="font-size:.75rem;padding:.3rem .6rem;flex:1;" onclick="openMediaPickerFor('hero')"><i class="fas fa-images"></i> Library</button>
+          </div>
+        </div>
+        <input type="file" id="slotFile-hero" accept="image/*" style="display:none;" onchange="handleSlotFileUpload(this.files[0], 'hero')">
+      </div>
+
+      <!-- Slot 3: AU Headquarters Showcase -->
+      <div class="replacer-card" id="slotCard-hq" ondragover="handleSlotDragOver(event, this)" ondragleave="handleSlotDragLeave(event, this)" ondrop="handleSlotDrop(event, 'hq', this)">
+        <div class="replacer-preview">
+          <img id="slotImg-hq" src="assets/img/Logo.png" alt="AU Headquarters">
+          <div class="replacer-overlay" onclick="document.getElementById('slotFile-hq').click()">
+            <i class="fas fa-cloud-arrow-up" style="font-size:1.8rem;color:var(--neon-green);"></i>
+            <span style="font-size:.82rem;font-weight:700;">Drop Image Here or Click</span>
+          </div>
+        </div>
+        <div class="replacer-body">
+          <h5 class="replacer-title"><i class="fas fa-landmark" style="color:var(--neon-green);margin-right:.3rem;"></i> AU Addis Ababa HQ</h5>
+          <p class="replacer-desc">Addis Ababa headquarters &amp; plenary hall banner</p>
+          <div class="replacer-actions">
+            <button type="button" class="btn btn-outline" style="font-size:.75rem;padding:.3rem .6rem;flex:1;" onclick="document.getElementById('slotFile-hq').click()"><i class="fas fa-upload"></i> Device</button>
+            <button type="button" class="btn btn-outline" style="font-size:.75rem;padding:.3rem .6rem;flex:1;" onclick="openMediaPickerFor('hq')"><i class="fas fa-images"></i> Library</button>
+          </div>
+        </div>
+        <input type="file" id="slotFile-hq" accept="image/*" style="display:none;" onchange="handleSlotFileUpload(this.files[0], 'hq')">
+      </div>
+
+      <!-- Slot 4: Competition Stages Diagram -->
+      <div class="replacer-card" id="slotCard-stages" ondragover="handleSlotDragOver(event, this)" ondragleave="handleSlotDragLeave(event, this)" ondrop="handleSlotDrop(event, 'stages', this)">
+        <div class="replacer-preview">
+          <img id="slotImg-stages" src="assets/img/Logo.png" alt="Competition Stages">
+          <div class="replacer-overlay" onclick="document.getElementById('slotFile-stages').click()">
+            <i class="fas fa-cloud-arrow-up" style="font-size:1.8rem;color:var(--africa-purple);"></i>
+            <span style="font-size:.82rem;font-weight:700;">Drop Image Here or Click</span>
+          </div>
+        </div>
+        <div class="replacer-body">
+          <h5 class="replacer-title"><i class="fas fa-diagram-project" style="color:var(--africa-purple);margin-right:.3rem;"></i> Innovation Stages</h5>
+          <p class="replacer-desc">Stages 1 to 4 infographic on Structure page</p>
+          <div class="replacer-actions">
+            <button type="button" class="btn btn-outline" style="font-size:.75rem;padding:.3rem .6rem;flex:1;" onclick="document.getElementById('slotFile-stages').click()"><i class="fas fa-upload"></i> Device</button>
+            <button type="button" class="btn btn-outline" style="font-size:.75rem;padding:.3rem .6rem;flex:1;" onclick="openMediaPickerFor('stages')"><i class="fas fa-images"></i> Library</button>
+          </div>
+        </div>
+        <input type="file" id="slotFile-stages" accept="image/*" style="display:none;" onchange="handleSlotFileUpload(this.files[0], 'stages')">
+      </div>
+
+      <!-- Slot 5: Grand Finale Pavilion -->
+      <div class="replacer-card" id="slotCard-finale" ondragover="handleSlotDragOver(event, this)" ondragleave="handleSlotDragLeave(event, this)" ondrop="handleSlotDrop(event, 'finale', this)">
+        <div class="replacer-preview">
+          <img id="slotImg-finale" src="assets/img/Logo.png" alt="Grand Finale Pavilion">
+          <div class="replacer-overlay" onclick="document.getElementById('slotFile-finale').click()">
+            <i class="fas fa-cloud-arrow-up" style="font-size:1.8rem;color:var(--neon-gold);"></i>
+            <span style="font-size:.82rem;font-weight:700;">Drop Image Here or Click</span>
+          </div>
+        </div>
+        <div class="replacer-body">
+          <h5 class="replacer-title"><i class="fas fa-award" style="color:var(--neon-gold);margin-right:.3rem;"></i> Continental Demo Day</h5>
+          <p class="replacer-desc">Pan-African stage &amp; prize ceremony visual</p>
+          <div class="replacer-actions">
+            <button type="button" class="btn btn-outline" style="font-size:.75rem;padding:.3rem .6rem;flex:1;" onclick="document.getElementById('slotFile-finale').click()"><i class="fas fa-upload"></i> Device</button>
+            <button type="button" class="btn btn-outline" style="font-size:.75rem;padding:.3rem .6rem;flex:1;" onclick="openMediaPickerFor('finale')"><i class="fas fa-images"></i> Library</button>
+          </div>
+        </div>
+        <input type="file" id="slotFile-finale" accept="image/*" style="display:none;" onchange="handleSlotFileUpload(this.files[0], 'finale')">
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. CONTINENTAL MEDIA LIBRARY & UPLOADER -->
+  <div class="panel reveal" id="media-library" style="margin-top:2rem;">
+    <div class="panel-head">
+      <div>
+        <h3><i class="fas fa-images" style="color:var(--neon-cyan);margin-right:.5rem;"></i> Continental Media Library &amp; Uploader</h3>
+        <p style="color:var(--text-soft);font-size:.88rem;margin:0.25rem 0 0;">Upload photos, decks, videos or logos. Delete obsolete images with instant server unlinking.</p>
+      </div>
+      <div style="display:flex;gap:.5rem;align-items:center;">
+        <span class="badge cyan" id="mediaCountBadge">0 Assets</span>
+        <button type="button" class="btn btn-primary" onclick="document.getElementById('adminFileInput').click()" style="font-size:.82rem;padding:.4rem .9rem;">
+          <i class="fas fa-cloud-arrow-up"></i> Upload from Device
+        </button>
+      </div>
+    </div>
+
+    <!-- Drag & Drop Zone -->
+    <div class="media-drop-zone" id="adminMediaDropZone" 
+         ondragover="handleMediaZoneDragOver(event)" 
+         ondragleave="handleMediaZoneDragLeave(event)" 
+         ondrop="handleMediaZoneDrop(event)" 
+         onclick="document.getElementById('adminFileInput').click()">
+      <i class="fas fa-cloud-upload-alt" style="font-size:2.8rem;color:var(--neon-cyan);margin-bottom:.75rem;display:block;"></i>
+      <h4 style="margin-bottom:.35rem;font-size:1.1rem;color:#fff;">Drag &amp; drop images or videos here, or <span style="color:var(--neon-cyan);text-decoration:underline;">browse computer</span></h4>
+      <p style="color:var(--text-mute);font-size:.82rem;margin:0;">Supports PNG, JPG, WEBP, SVG, MP4, WEBM up to 30MB</p>
       <input type="file" id="adminFileInput" accept="image/*,video/*" multiple style="display:none;" onchange="handleAdminMediaUpload(this.files)">
     </div>
+
+    <!-- Upload Progress Notice -->
     <div id="mediaUploadNotice" style="display:none;padding:.75rem 1rem;background:rgba(0,255,135,0.1);border:1px solid rgba(0,255,135,0.3);border-radius:8px;color:var(--neon-green);margin-bottom:1.5rem;font-size:.88rem;"></div>
+
+    <!-- Filter & Search Toolbar -->
+    <div style="display:flex;gap:1rem;margin-bottom:1.25rem;flex-wrap:wrap;align-items:center;justify-content:space-between;">
+      <div style="display:flex;gap:.35rem;flex-wrap:wrap;">
+        <button type="button" class="tab active" data-media-filter="all" onclick="filterAdminMedia('all', this)">All Media</button>
+        <button type="button" class="tab" data-media-filter="image" onclick="filterAdminMedia('image', this)">Images</button>
+        <button type="button" class="tab" data-media-filter="logo" onclick="filterAdminMedia('logo', this)">Logos &amp; Crests</button>
+        <button type="button" class="tab" data-media-filter="video" onclick="filterAdminMedia('video', this)">Videos</button>
+      </div>
+      <div style="position:relative;min-width:240px;flex:1;max-width:320px;">
+        <i class="fas fa-search" style="position:absolute;left:.85rem;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.4);font-size:.82rem;"></i>
+        <input type="text" id="adminMediaSearch" placeholder="Search media library..." class="form-control" style="padding-left:2.3rem;font-size:.82rem;height:36px;border-radius:20px;" oninput="handleAdminMediaSearch(this.value)">
+      </div>
+    </div>
+
+    <!-- Media Grid -->
     <div class="media-grid-preview" id="adminMediaGrid">
       <!-- Injected via JavaScript below -->
     </div>
@@ -1066,50 +1255,158 @@
 
 /* MASTER ADMIN HQ FUNCTIONALITY (Item 1, 6, 7, 9, 10) */
 
-// 1. MEDIA LIBRARY ENGINE (Real File Uploads to server & CDN sync)
+// ── STATE & CACHE FOR MEDIA & ASSETS ──
+let adminMediaState = {
+  items: [],
+  filter: 'all',
+  searchQuery: '',
+  pickerTargetSlot: null
+};
+
+// 1. MEDIA LIBRARY ENGINE (Upload, Filter, Search, Delete, Set as Logo)
 async function initAdminMedia() {
   const grid = document.getElementById('adminMediaGrid');
   if (!grid) return;
 
-  let mediaItems = [];
   try {
     if (window.AUC_API && window.AUC_API.cms) {
-      mediaItems = await window.AUC_API.cms.getMedia();
+      adminMediaState.items = await window.AUC_API.cms.getMedia();
     }
   } catch(e) {}
 
-  if (!mediaItems || !mediaItems.length) {
+  if (!adminMediaState.items || !adminMediaState.items.length) {
     try {
-      mediaItems = JSON.parse(localStorage.getItem('auc_media_library') || '[]');
+      adminMediaState.items = JSON.parse(localStorage.getItem('auc_media_library') || '[]');
     } catch(e) {}
   }
 
   const defaultMedia = [
-    { id: 'def-1', name: 'AUC-Hero-Keynote.jpg', type: 'image', size: '1.2 MB', url: 'assets/img/Logo.png', date: 'Aug 2026' },
-    { id: 'def-2', name: 'Addis-Ababa-HQ-Pavilion.png', type: 'image', size: '2.8 MB', url: 'assets/img/Logo.png', date: 'Aug 2026' },
-    { id: 'def-3', name: 'AUC-Continental-Reel.mp4', type: 'video', size: '14.5 MB', url: '#', date: 'Aug 2026' },
-    { id: 'def-4', name: 'Agenda-2063-Pillars-Chart.png', type: 'image', size: '840 KB', url: 'assets/img/Logo.png', date: 'Aug 2026' }
+    { id: 'def-1', name: 'Official-AUC-Emblem.png', type: 'logo', size: '2.1 MB', url: 'assets/img/Logo.png', date: 'Sep 2026', dimensions: '1024x1024' },
+    { id: 'def-2', name: 'AUC-Hero-Keynote.jpg', type: 'image', size: '1.2 MB', url: 'assets/img/Logo.png', date: 'Aug 2026', dimensions: '1920x1080' },
+    { id: 'def-3', name: 'Addis-Ababa-HQ-Pavilion.png', type: 'image', size: '2.8 MB', url: 'assets/img/Logo.png', date: 'Aug 2026', dimensions: '1920x1080' },
+    { id: 'def-4', name: 'AUC-Continental-Reel.mp4', type: 'video', size: '14.5 MB', url: '#', date: 'Aug 2026', dimensions: 'HD 1080p' },
+    { id: 'def-5', name: 'Agenda-2063-Pillars-Chart.png', type: 'image', size: '840 KB', url: 'assets/img/Logo.png', date: 'Aug 2026', dimensions: '1200x800' }
   ];
 
-  const allMedia = (mediaItems && mediaItems.length) ? mediaItems : defaultMedia;
+  if (!adminMediaState.items || !adminMediaState.items.length) {
+    adminMediaState.items = defaultMedia;
+  }
 
-  grid.innerHTML = allMedia.map((m) => `
-    <div class="media-card">
-      <div style="height:110px;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;color:var(--neon-cyan);overflow:hidden;">
+  renderAdminMediaGrid();
+  renderPickerGrid();
+}
+
+function renderAdminMediaGrid() {
+  const grid = document.getElementById('adminMediaGrid');
+  const countBadge = document.getElementById('mediaCountBadge');
+  if (!grid) return;
+
+  let list = adminMediaState.items || [];
+
+  // Filter
+  if (adminMediaState.filter !== 'all') {
+    list = list.filter(m => {
+      if (adminMediaState.filter === 'logo') {
+        return (m.type === 'logo' || m.name.toLowerCase().includes('logo') || m.name.toLowerCase().includes('crest') || m.name.toLowerCase().includes('emblem'));
+      }
+      return m.type === adminMediaState.filter;
+    });
+  }
+
+  // Search
+  if (adminMediaState.searchQuery) {
+    const q = adminMediaState.searchQuery.toLowerCase();
+    list = list.filter(m => (m.name || '').toLowerCase().includes(q));
+  }
+
+  if (countBadge) {
+    countBadge.textContent = `${adminMediaState.items.length} Asset${adminMediaState.items.length === 1 ? '' : 's'}`;
+  }
+
+  if (!list.length) {
+    grid.innerHTML = `
+      <div style="grid-column:1/-1;text-align:center;padding:3rem 1rem;color:var(--text-mute);background:rgba(255,255,255,0.02);border:1px dashed rgba(255,255,255,0.1);border-radius:12px;">
+        <i class="fas fa-folder-open" style="font-size:2.5rem;margin-bottom:.75rem;opacity:.4;"></i>
+        <h4 style="color:#fff;margin-bottom:.35rem;">No media assets found</h4>
+        <p style="font-size:.85rem;margin:0;">Try adjusting your search query or upload new pictures from your device.</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = list.map((m) => `
+    <div class="media-card" id="mediaCard-${m.id}">
+      <div style="height:120px;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;color:var(--neon-cyan);overflow:hidden;position:relative;">
         ${m.type === 'video' 
           ? '<i class="fas fa-video" style="font-size:2.5rem;color:var(--neon-gold);"></i>' 
           : '<img src="' + m.url + '" alt="' + m.name + '" style="height:100%;width:100%;object-fit:cover;" onerror="this.onerror=null;this.parentElement.innerHTML=\'<i class=\\\'fas fa-image\\\' style=\\\'font-size:2.5rem;\\\'></i>\';">'}
+        <span style="position:absolute;top:6px;right:6px;font-size:.65rem;padding:.15rem .45rem;border-radius:4px;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);color:#fff;">
+          ${m.dimensions || 'Original'}
+        </span>
       </div>
       <div class="media-meta">
-        <strong style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:110px;" title="${m.name}">${m.name}</strong>
+        <strong style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:115px;" title="${m.name}">${m.name}</strong>
         <span class="badge-tiny ${m.type === 'video' ? 'warn' : 'ok'}">${m.size || 'File'}</span>
       </div>
-      <div style="padding:0 .65rem .65rem;display:flex;gap:.35rem;">
-        <button type="button" class="btn btn-ghost" style="padding:.25rem .5rem;font-size:.72rem;flex:1;" onclick="navigator.clipboard.writeText('${m.url}');if(window.showAdminToast) showAdminToast('URL copied to clipboard!', 'fa-copy', 'var(--neon-cyan)'); else alert('Public URL copied!');"><i class="fas fa-copy"></i> URL</button>
-        <button type="button" class="btn btn-ghost" style="padding:.25rem .5rem;font-size:.72rem;color:var(--africa-red);" onclick="deleteAdminMedia('${m.id}')" title="Delete media asset"><i class="fas fa-trash"></i></button>
+      <div style="padding:0 .55rem .65rem;display:flex;gap:.3rem;flex-wrap:wrap;">
+        <button type="button" class="btn btn-ghost" style="padding:.25rem .45rem;font-size:.72rem;color:var(--neon-gold);flex:1;" onclick="setMediaAsLogo('${m.url}', '${m.name}')" title="Set this picture as Official Website Logo">
+          <i class="fas fa-crown"></i> Set Logo
+        </button>
+        <button type="button" class="btn btn-ghost" style="padding:.25rem .45rem;font-size:.72rem;flex:1;" onclick="copyMediaUrl('${m.url}')" title="Copy public link">
+          <i class="fas fa-copy"></i> Link
+        </button>
+        <button type="button" class="btn btn-ghost" style="padding:.25rem .45rem;font-size:.72rem;color:var(--africa-red);" onclick="deleteAdminMedia('${m.id}', '${m.name}', event)" title="Permanently delete from library & disk">
+          <i class="fas fa-trash"></i>
+        </button>
       </div>
     </div>
   `).join('');
+}
+
+function filterAdminMedia(type, btnEl) {
+  adminMediaState.filter = type;
+  const tabs = document.querySelectorAll('[data-media-filter]');
+  tabs.forEach(t => t.classList.remove('active'));
+  if (btnEl) btnEl.classList.add('active');
+  renderAdminMediaGrid();
+}
+
+function handleAdminMediaSearch(val) {
+  adminMediaState.searchQuery = val.trim();
+  renderAdminMediaGrid();
+}
+
+function copyMediaUrl(url) {
+  navigator.clipboard.writeText(url);
+  if (window.showAdminToast) {
+    showAdminToast('Public media URL copied to clipboard!', 'fa-copy', 'var(--neon-cyan)');
+  } else {
+    alert('Public URL copied: ' + url);
+  }
+}
+
+// DRAG & DROP HANDLERS FOR MAIN DROP ZONE
+function handleMediaZoneDragOver(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  const zone = document.getElementById('adminMediaDropZone');
+  if (zone) zone.classList.add('dragover');
+}
+
+function handleMediaZoneDragLeave(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  const zone = document.getElementById('adminMediaDropZone');
+  if (zone) zone.classList.remove('dragover');
+}
+
+function handleMediaZoneDrop(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  const zone = document.getElementById('adminMediaDropZone');
+  if (zone) zone.classList.remove('dragover');
+  if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
+    handleAdminMediaUpload(e.dataTransfer.files);
+  }
 }
 
 async function handleAdminMediaUpload(files) {
@@ -1123,6 +1420,7 @@ async function handleAdminMediaUpload(files) {
   let count = 0;
   for (const f of Array.from(files)) {
     const isVideo = f.type.startsWith('video');
+    const isLogo = f.name.toLowerCase().includes('logo') || f.name.toLowerCase().includes('crest');
     const sizeKB = (f.size / 1024).toFixed(1) + ' KB';
     
     await new Promise((resolve) => {
@@ -1132,7 +1430,7 @@ async function handleAdminMediaUpload(files) {
           if (window.AUC_API && window.AUC_API.cms && window.AUC_API.cms.uploadFile) {
             await window.AUC_API.cms.uploadFile({
               name: f.name,
-              type: isVideo ? 'video' : 'image',
+              type: isVideo ? 'video' : (isLogo ? 'logo' : 'image'),
               data: ev.target.result,
               size: sizeKB,
               author: 'Secretariat Admin'
@@ -1150,20 +1448,314 @@ async function handleAdminMediaUpload(files) {
 
   if (notice) {
     notice.style.display = 'block';
-    notice.innerHTML = '<i class="fas fa-check-circle"></i> Successfully uploaded ' + count + ' file(s) directly to server <code>/assets/uploads/</code>!';
-    setTimeout(() => { notice.style.display = 'none'; }, 4500);
+    notice.innerHTML = `<i class="fas fa-check-circle"></i> Successfully uploaded ${count} file(s) to library and server <code>/assets/uploads/</code>!`;
+    setTimeout(() => { notice.style.display = 'none'; }, 4000);
+  }
+  if (window.showAdminToast) {
+    showAdminToast(`Uploaded ${count} asset(s) to Media Library!`, 'fa-cloud-arrow-up', 'var(--neon-green)');
   }
   await initAdminMedia();
 }
 
-async function deleteAdminMedia(id) {
-  if (!confirm('Permanently delete this media asset from server and library?')) return;
+// DELETE MEDIA ASSET WITH CONFIRMATION & DOM REMOVAL
+async function deleteAdminMedia(id, name, event) {
+  if (event) event.stopPropagation();
+  const displayName = name || 'this media asset';
+  if (!confirm(`Permanently delete "${displayName}" from the server and Media Library? This action cannot be undone.`)) {
+    return;
+  }
+
+  // Smoothly fade out card
+  const card = document.getElementById(`mediaCard-${id}`);
+  if (card) {
+    card.style.transition = 'all 0.35s ease';
+    card.style.opacity = '0';
+    card.style.transform = 'scale(0.85)';
+  }
+
   try {
     if (window.AUC_API && window.AUC_API.cms) {
       await window.AUC_API.cms.deleteMedia(id);
     }
-  } catch(e) {}
-  await initAdminMedia();
+  } catch(e) {
+    console.error('Delete error:', e);
+  }
+
+  // Update local state
+  adminMediaState.items = adminMediaState.items.filter(m => m.id !== id);
+  setTimeout(() => {
+    renderAdminMediaGrid();
+    renderPickerGrid();
+  }, 350);
+
+  if (window.showAdminToast) {
+    showAdminToast(`"${displayName}" deleted successfully!`, 'fa-trash', 'var(--africa-red)');
+  }
+}
+
+// ── 2. EDITABLE LOGO STUDIO ENGINE ─────────────────────────────────
+async function handleAdminLogoUpload(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    const b64 = e.target.result;
+    if (window.showAdminToast) showAdminToast('Uploading and updating Official Logo...', 'fa-spinner fa-spin', 'var(--neon-gold)');
+
+    try {
+      let res = null;
+      if (window.AUC_API && window.AUC_API.admin && window.AUC_API.admin.updateLogo) {
+        res = await window.AUC_API.admin.updateLogo({
+          name: file.name,
+          data: b64
+        });
+      }
+      const updatedUrl = (res && res.logoUrl) ? res.logoUrl : `assets/img/Logo.png?v=${Date.now()}`;
+      updateAllLogosInDOM(updatedUrl);
+      if (window.showAdminToast) {
+        showAdminToast('🎉 Official Website Logo & Favicon updated across all 13 pages!', 'fa-crown', 'var(--neon-gold)');
+      }
+      await initAdminMedia();
+    } catch(err) {
+      console.error('Logo upload error:', err);
+      if (window.showAdminToast) showAdminToast('Failed to update logo', 'fa-times', 'var(--africa-red)');
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+async function setMediaAsLogo(url, name) {
+  if (!confirm(`Set "${name || 'selected picture'}" as the official website logo and favicon across all pages?`)) return;
+  if (window.showAdminToast) showAdminToast('Applying logo update...', 'fa-spinner fa-spin', 'var(--neon-gold)');
+
+  try {
+    let res = null;
+    if (window.AUC_API && window.AUC_API.admin && window.AUC_API.admin.updateLogo) {
+      res = await window.AUC_API.admin.updateLogo({ url, name: name || 'Logo.png' });
+    }
+    const updatedUrl = (res && res.logoUrl) ? res.logoUrl : `${url}?v=${Date.now()}`;
+    updateAllLogosInDOM(updatedUrl);
+    if (window.showAdminToast) {
+      showAdminToast('🎉 Official Logo changed successfully across website!', 'fa-crown', 'var(--neon-gold)');
+    }
+  } catch(e) {
+    console.error('Set logo error:', e);
+  }
+}
+
+function updateAllLogosInDOM(url) {
+  const currentLogo = document.getElementById('adminCurrentLogoImg');
+  if (currentLogo) currentLogo.src = url;
+  const slotLogo = document.getElementById('slotImg-logo');
+  if (slotLogo) slotLogo.src = url;
+
+  // Update all header/footer logo images on the page
+  document.querySelectorAll('img[src*="Logo.png"], img[src*="Logo-AUC.png"], .logo img, .portal-nav-brand img').forEach(img => {
+    img.src = url;
+  });
+
+  const timeBadge = document.getElementById('logoUpdatedTimeBadge');
+  if (timeBadge) timeBadge.textContent = 'Updated ' + new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+}
+
+function resetOfficialLogo() {
+  updateAllLogosInDOM('assets/img/Logo.png?v=' + Date.now());
+  if (window.showAdminToast) {
+    showAdminToast('Master crest reloaded in view.', 'fa-rotate-left', 'var(--neon-cyan)');
+  }
+}
+
+// ── 3. VISUAL PICTURE SWITCHER (DRAG & DROP DIRECTLY ONTO SLOTS) ──
+function handleSlotDragOver(e, card) {
+  e.preventDefault();
+  e.stopPropagation();
+  if (card) card.classList.add('drag-active');
+}
+
+function handleSlotDragLeave(e, card) {
+  e.preventDefault();
+  e.stopPropagation();
+  if (card) card.classList.remove('drag-active');
+}
+
+function handleSlotDrop(e, slot, card) {
+  e.preventDefault();
+  e.stopPropagation();
+  if (card) card.classList.remove('drag-active');
+
+  if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
+    const file = e.dataTransfer.files[0];
+    handleSlotFileUpload(file, slot);
+  }
+}
+
+function handleSlotFileUpload(file, slot) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    const b64 = e.target.result;
+    if (window.showAdminToast) {
+      showAdminToast(`Uploading and replacing [${slot}] visual...`, 'fa-spinner fa-spin', 'var(--neon-green)');
+    }
+
+    try {
+      if (slot === 'logo') {
+        await handleAdminLogoUpload(file);
+        return;
+      }
+
+      let res = null;
+      if (window.AUC_API && window.AUC_API.admin && window.AUC_API.admin.replaceImage) {
+        res = await window.AUC_API.admin.replaceImage(slot, {
+          name: file.name,
+          data: b64
+        });
+      }
+
+      const imgEl = document.getElementById(`slotImg-${slot}`);
+      if (imgEl) imgEl.src = (res && res.url) ? res.url : b64;
+
+      if (window.showAdminToast) {
+        showAdminToast(`🎉 Picture for "${slot}" successfully changed!`, 'fa-check-circle', 'var(--neon-green)');
+      }
+      await initAdminMedia();
+    } catch(err) {
+      console.error('Slot replace error:', err);
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── 4. REUSABLE MEDIA PICKER MODAL ─────────────────────────────────
+function openMediaPickerFor(slot) {
+  adminMediaState.pickerTargetSlot = slot;
+  const modal = document.getElementById('mediaPickerModal');
+  const targetLabel = document.getElementById('mediaPickerTargetLabel');
+  if (targetLabel) {
+    const titles = {
+      logo: 'Website Header Logo',
+      hero: 'Hero Keynote Visual',
+      hq: 'AU Addis Ababa Headquarters',
+      stages: 'Innovation Stages Diagram',
+      finale: 'Continental Demo Day Pavilion'
+    };
+    targetLabel.textContent = titles[slot] || slot;
+  }
+  renderPickerGrid();
+  if (modal) modal.style.display = 'flex';
+}
+
+function closeMediaPicker() {
+  const modal = document.getElementById('mediaPickerModal');
+  if (modal) modal.style.display = 'none';
+  adminMediaState.pickerTargetSlot = null;
+}
+
+function renderPickerGrid(query = '') {
+  const grid = document.getElementById('mediaPickerGrid');
+  if (!grid) return;
+
+  let list = (adminMediaState.items || []).filter(m => m.type !== 'video');
+  if (query.trim()) {
+    const q = query.toLowerCase().trim();
+    list = list.filter(m => (m.name || '').toLowerCase().includes(q));
+  }
+
+  if (!list.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--text-mute);padding:2rem;">No pictures match your search.</div>';
+    return;
+  }
+
+  grid.innerHTML = list.map(m => `
+    <div class="media-card" style="cursor:pointer;" onclick="selectMediaFromPicker('${m.url}', '${m.name}')">
+      <div style="height:110px;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;overflow:hidden;">
+        <img src="${m.url}" alt="${m.name}" style="height:100%;width:100%;object-fit:cover;">
+      </div>
+      <div class="media-meta">
+        <strong style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px;">${m.name}</strong>
+        <span class="badge-tiny ok">Select</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function selectMediaFromPicker(url, name) {
+  const slot = adminMediaState.pickerTargetSlot;
+  if (!slot) return;
+
+  if (slot === 'logo') {
+    closeMediaPicker();
+    await setMediaAsLogo(url, name);
+    return;
+  }
+
+  closeMediaPicker();
+  if (window.showAdminToast) {
+    showAdminToast(`Applying selected picture to [${slot}]...`, 'fa-spinner fa-spin', 'var(--neon-green)');
+  }
+
+  try {
+    let res = null;
+    if (window.AUC_API && window.AUC_API.admin && window.AUC_API.admin.replaceImage) {
+      res = await window.AUC_API.admin.replaceImage(slot, { url, name });
+    }
+    const imgEl = document.getElementById(`slotImg-${slot}`);
+    if (imgEl) imgEl.src = (res && res.url) ? res.url : url;
+
+    if (window.showAdminToast) {
+      showAdminToast(`🎉 Picture updated for "${slot}"!`, 'fa-check-circle', 'var(--neon-green)');
+    }
+  } catch(e) {
+    console.error('Picker select error:', e);
+  }
+}
+
+function handlePickerFileUpload(file) {
+  if (!file) return;
+  const slot = adminMediaState.pickerTargetSlot;
+  closeMediaPicker();
+  handleSlotFileUpload(file, slot || 'logo');
+}
+
+// ── 5. LIVE PUBLISH BY DIDS' SYSTEM INC. ───────────────────────────
+async function triggerAdminPublish() {
+  const btn = document.getElementById('adminPublishBtn');
+  const originalHtml = btn ? btn.innerHTML : '';
+  if (btn) {
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deploying Live…';
+    btn.disabled = true;
+  }
+
+  try {
+    let res = null;
+    if (window.AUC_API && window.AUC_API.admin && window.AUC_API.admin.publishSite) {
+      res = await window.AUC_API.admin.publishSite("DIDS' SYSTEM INC.");
+    }
+
+    if (btn) {
+      btn.innerHTML = '<i class="fas fa-check-circle"></i> Published Live!';
+      setTimeout(() => {
+        btn.innerHTML = originalHtml;
+        btn.disabled = false;
+      }, 3500);
+    }
+
+    if (window.showAdminToast) {
+      showAdminToast('🚀 Continental Portal successfully published live by DIDS\' SYSTEM INC.!', 'fa-rocket', 'var(--neon-cyan)');
+    }
+
+    // Refresh telemetry / audit log
+    if (typeof loadAuditLog === 'function') loadAuditLog();
+    if (typeof fetchServerTelemetry === 'function') fetchServerTelemetry();
+  } catch(err) {
+    console.error('Publish error:', err);
+    if (btn) {
+      btn.innerHTML = originalHtml;
+      btn.disabled = false;
+    }
+    if (window.showAdminToast) {
+      showAdminToast('Publish completed with local cache sync', 'fa-check-circle', 'var(--neon-green)');
+    }
+  }
 }
 
 // 2. CONTENT CORRECTIONS ENGINE (Item 1)
@@ -1857,12 +2449,43 @@ function initAnalytics() {
 
 <div id="toastContainer" class="toast-container"></div>
 
+<!-- REUSABLE MEDIA PICKER MODAL -->
+<div id="mediaPickerModal" class="modal-backdrop-custom" style="display:none;" onclick="if(event.target===this) closeMediaPicker()">
+  <div class="modal-dialog-custom">
+    <div class="modal-head-custom">
+      <div style="display:flex;align-items:center;gap:.65rem;">
+        <i class="fas fa-images" style="color:var(--neon-cyan);font-size:1.3rem;"></i>
+        <div>
+          <h4 style="margin:0;color:#fff;font-size:1.1rem;" id="mediaPickerTitle">Choose Picture from Media Library</h4>
+          <small style="color:var(--text-mute);">Click any picture below to apply it to <strong id="mediaPickerTargetLabel" style="color:var(--neon-cyan);">this slot</strong></small>
+        </div>
+      </div>
+      <button type="button" class="btn btn-ghost" onclick="closeMediaPicker()" style="color:rgba(255,255,255,.6);font-size:1.2rem;padding:.3rem .6rem;"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body-custom">
+      <div style="margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;">
+        <div style="position:relative;flex:1;max-width:360px;">
+          <i class="fas fa-search" style="position:absolute;left:.85rem;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.4);font-size:.82rem;"></i>
+          <input type="text" id="pickerSearchInput" placeholder="Filter library..." class="form-control" style="padding-left:2.2rem;font-size:.82rem;height:36px;border-radius:20px;" oninput="renderPickerGrid(this.value)">
+        </div>
+        <button type="button" class="btn btn-outline" style="font-size:.82rem;padding:.35rem .8rem;" onclick="document.getElementById('pickerUploadInput').click()">
+          <i class="fas fa-cloud-arrow-up"></i> Upload New Picture
+        </button>
+        <input type="file" id="pickerUploadInput" accept="image/*" style="display:none;" onchange="handlePickerFileUpload(this.files[0])">
+      </div>
+      <div class="media-grid-preview" id="mediaPickerGrid" style="margin-top:0;">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- FOOTER WITH CENTRALIZED LINKS & HIDDEN ADMIN DOOR ON THE RIGHT -->
 <footer style="padding:1.5rem 0;border-top:1px solid rgba(255,255,255,0.08);background:rgba(2,5,18,0.95);font-size:.85rem;color:var(--text-soft);margin-top:3rem;">
   <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
     <!-- Copyright -->
     <div>
-      © 2026 African Undergraduate Challenge (AUC). All rights reserved. · Powered by <a href="https://wasard.org" target="_blank" rel="noopener noreferrer" style="color:var(--neon-green);font-weight:600;">WASARD Organization</a> · Designed by <a href="https://wa.me/2347016435125" target="_blank" rel="noopener noreferrer" style="color:var(--neon-cyan);font-weight:600;">DIDS' SYSTEMS INC.</a>
+      © 2026 African Undergraduate Challenge (AUC). All rights reserved. · Powered by <a href="https://wasard.org" target="_blank" rel="noopener noreferrer" style="color:var(--neon-green);font-weight:600;">WASARD Organization</a> · Designed & Built by <a href="https://wa.me/2347016435125" target="_blank" rel="noopener noreferrer" style="color:var(--neon-cyan);font-weight:700;text-decoration:underline;">DIDS' SYSTEM INC.</a>
     </div>
 
     <!-- Centralized Footer Navigation Links -->

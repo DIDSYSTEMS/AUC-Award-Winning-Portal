@@ -568,9 +568,35 @@ const server = http.createServer(async (req, res) => {
         const media = readJson('media.json', []);
         const idx = media.findIndex(m => m.id === id);
         if (idx !== -1) {
+          const item = media[idx];
+          // Delete physical file on disk if it was an uploaded file
+          if (item.url && item.url.startsWith('assets/uploads/')) {
+            const diskPath = path.join(__dirname, item.url.replace(/\//g, path.sep));
+            if (fs.existsSync(diskPath)) {
+              try {
+                fs.unlinkSync(diskPath);
+              } catch (err) {
+                console.error('Failed to unlink deleted media file:', err);
+              }
+            }
+          }
+          const deletedName = item.name || id;
           media.splice(idx, 1);
           writeJson('media.json', media);
-          return sendJson(res, 200, { ok: true, message: 'Media asset deleted' });
+
+          // Audit trail
+          const auditList = readJson('audit.json', DEFAULT_AUDIT);
+          auditList.unshift({
+            actor: 'Admin HQ',
+            action: `Permanently deleted media asset: ${deletedName}`,
+            status: 'deleted',
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            timestamp: new Date().toISOString()
+          });
+          if (auditList.length > 200) auditList.length = 200;
+          writeJson('audit.json', auditList);
+
+          return sendJson(res, 200, { ok: true, message: `Media asset "${deletedName}" deleted` });
         }
         return sendJson(res, 404, { ok: false, error: 'Media not found' });
       }
@@ -631,6 +657,183 @@ const server = http.createServer(async (req, res) => {
         writeJson('audit.json', auditList);
 
         return sendJson(res, 201, { ok: true, data: mediaItem });
+      }
+
+      // 12.2 Editable Logo Management (/api/admin/logo)
+      if (pathname === '/api/admin/logo' && req.method === 'POST') {
+        const body = await parseBody(req);
+        let buffer = null;
+
+        if (body.data) {
+          // Base64 upload
+          let b64 = body.data;
+          if (b64.includes(';base64,')) b64 = b64.split(';base64,')[1];
+          buffer = Buffer.from(b64, 'base64');
+        } else if (body.url) {
+          // Existing media URL or file path
+          let localPath = path.join(__dirname, body.url.replace(/\//g, path.sep));
+          if (fs.existsSync(localPath)) {
+            buffer = fs.readFileSync(localPath);
+          }
+        }
+
+        if (!buffer) {
+          return sendJson(res, 400, { ok: false, error: 'Valid image data or media URL required' });
+        }
+
+        // Write directly to core logo locations
+        const logoImgPath = path.join(__dirname, 'assets', 'img', 'Logo.png');
+        const logoDirImgPath = path.join(__dirname, 'Logo', 'Logo-AUC.png');
+        const faviconAssetsPath = path.join(__dirname, 'assets', 'favicon.png');
+        const faviconRootPath = path.join(__dirname, 'favicon.png');
+        const faviconIcoPath = path.join(__dirname, 'favicon.ico');
+
+        fs.writeFileSync(logoImgPath, buffer);
+        fs.writeFileSync(logoDirImgPath, buffer);
+        fs.writeFileSync(faviconAssetsPath, buffer);
+        fs.writeFileSync(faviconRootPath, buffer);
+        fs.writeFileSync(faviconIcoPath, buffer);
+
+        // Save timestamp in settings
+        const settings = readJson('settings.json', {});
+        settings.siteLogo = `assets/img/Logo.png?v=${Date.now()}`;
+        settings.logoLastModified = new Date().toISOString();
+        writeJson('settings.json', settings);
+
+        // Also add to media library if it's not already there
+        const media = readJson('media.json', []);
+        const logoName = body.name || `Logo-Updated-${Date.now()}.png`;
+        const existsInMedia = media.some(m => m.name === logoName);
+        if (!existsInMedia && body.data) {
+          const uploadsDir = path.join(__dirname, 'assets', 'uploads');
+          if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+          const uploadFileName = `logo-${Date.now()}.png`;
+          fs.writeFileSync(path.join(uploadsDir, uploadFileName), buffer);
+          media.unshift({
+            id: 'med-logo-' + Date.now(),
+            name: logoName,
+            type: 'image',
+            size: (buffer.length / 1024).toFixed(1) + ' KB',
+            url: `assets/uploads/${uploadFileName}`,
+            date: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+            dimensions: 'Brand Logo'
+          });
+          writeJson('media.json', media);
+        }
+
+        // Audit log
+        const auditList = readJson('audit.json', DEFAULT_AUDIT);
+        auditList.unshift({
+          actor: 'Admin HQ',
+          action: 'Updated Official Continental Logo & Favicon across website',
+          status: 'published',
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          timestamp: new Date().toISOString()
+        });
+        if (auditList.length > 200) auditList.length = 200;
+        writeJson('audit.json', auditList);
+
+        return sendJson(res, 200, {
+          ok: true,
+          logoUrl: settings.siteLogo,
+          message: 'Website logo & favicon updated successfully across all pages!'
+        });
+      }
+
+      // 12.3 Quick Picture Replacer (/api/admin/replace-image)
+      if (pathname === '/api/admin/replace-image' && req.method === 'POST') {
+        const body = await parseBody(req);
+        const { slot, url: mediaUrl, data: b64Data, name } = body;
+
+        if (!slot) {
+          return sendJson(res, 400, { ok: false, error: 'Target slot is required' });
+        }
+
+        const settings = readJson('settings.json', {});
+        if (!settings.pageAssets) settings.pageAssets = {};
+
+        let finalUrl = mediaUrl;
+
+        // If uploading base64 data for the slot
+        if (b64Data) {
+          const uploadsDir = path.join(__dirname, 'assets', 'uploads');
+          if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+
+          let cleanData = b64Data.includes(';base64,') ? b64Data.split(';base64,')[1] : b64Data;
+          const buffer = Buffer.from(cleanData, 'base64');
+          const cleanName = (name || slot).replace(/[^a-zA-Z0-9.-]/g, '_');
+          const fileName = `${slot}-${Date.now()}-${cleanName}`;
+          fs.writeFileSync(path.join(uploadsDir, fileName), buffer);
+          finalUrl = `assets/uploads/${fileName}`;
+
+          // Also register in media library
+          const media = readJson('media.json', []);
+          media.unshift({
+            id: 'med-' + Date.now(),
+            name: name || `${slot} visual replacement`,
+            type: 'image',
+            size: (buffer.length / 1024).toFixed(1) + ' KB',
+            url: finalUrl,
+            date: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+            dimensions: 'Site Asset'
+          });
+          writeJson('media.json', media);
+        }
+
+        settings.pageAssets[slot] = finalUrl;
+        settings.lastUpdated = new Date().toISOString();
+        writeJson('settings.json', settings);
+
+        // Audit log
+        const auditList = readJson('audit.json', DEFAULT_AUDIT);
+        auditList.unshift({
+          actor: 'Admin HQ',
+          action: `Replaced website visual asset for [${slot}] -> ${finalUrl}`,
+          status: 'published',
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          timestamp: new Date().toISOString()
+        });
+        if (auditList.length > 200) auditList.length = 200;
+        writeJson('audit.json', auditList);
+
+        return sendJson(res, 200, {
+          ok: true,
+          slot,
+          url: finalUrl,
+          message: `Visual asset for "${slot}" successfully updated!`
+        });
+      }
+
+      // 12.4 Live Publish by DIDS' SYSTEM INC. (/api/admin/publish)
+      if (pathname === '/api/admin/publish' && req.method === 'POST') {
+        const body = await parseBody(req);
+        const settings = readJson('settings.json', {});
+        const now = new Date().toISOString();
+
+        settings.lastPublishedAt = now;
+        settings.publishedBy = body.author || "DIDS' SYSTEM INC.";
+        settings.publishVersion = (settings.publishVersion || 1) + 1;
+        writeJson('settings.json', settings);
+
+        // Audit log
+        const auditList = readJson('audit.json', DEFAULT_AUDIT);
+        auditList.unshift({
+          actor: "DIDS' SYSTEM INC. Engine",
+          action: `🚀 Continental Live Site Published (v${settings.publishVersion}) — All changes deployed live`,
+          status: 'published',
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          timestamp: now
+        });
+        if (auditList.length > 200) auditList.length = 200;
+        writeJson('audit.json', auditList);
+
+        return sendJson(res, 200, {
+          ok: true,
+          publishedAt: now,
+          publishedBy: settings.publishedBy,
+          version: settings.publishVersion,
+          message: "🎉 Site successfully published live by DIDS' SYSTEM INC.!"
+        });
       }
 
       // 13. Posts & News Articles (/api/cms/posts)

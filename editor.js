@@ -944,6 +944,7 @@
 
     const payload = collectCanvasPayload();
     payload.status = 'published';
+    payload.author = "DIDS' SYSTEM INC.";
 
     try {
       const res = await fetch(`/api/cms/pages/${state.currentSlug}`, {
@@ -953,7 +954,7 @@
       });
       const data = await res.json();
       if (data.ok) {
-        showToast(`🎉 Page "${payload.title}" successfully published live!`);
+        showToast(`🎉 Page "${payload.title}" published live by DIDS' SYSTEM INC.!`);
         updateAutosaveTimestamp();
       }
     } catch (e) {
