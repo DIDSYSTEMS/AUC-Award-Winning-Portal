@@ -1,6 +1,6 @@
-.login-overlay{position:fixed;inset:0;background:rgba(2,5,18,.78);backdrop-filter:blur(10px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:2rem}
+.login-overlay{position:fixed;inset:0;background:rgba(2,5,18,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:2rem}
 .login-overlay[hidden]{display:none!important}
-.login-card{position:relative;max-width:480px;width:100%;background:linear-gradient(165deg,rgba(7,23,58,.98),rgba(4,9,31,.98));border:1px solid rgba(34,194,255,.18);border-radius:18px;padding:2rem;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.login-card{position:relative;max-width:480px;width:100%;background:linear-gradient(165deg,rgba(7,23,58,.98),rgba(4,9,31,.98));border:1px solid rgba(34,194,255,.24);border-radius:18px;padding:2rem;box-shadow:0 30px 80px rgba(0,0,0,.75)}
 .login-card h3{margin:0 0 .35rem;font-size:1.25rem;color:#fff;display:flex;align-items:center;gap:.6rem}
 .login-card h3 i{color:var(--neon-cyan)}
 .login-sub{color:var(--text-mute,#9aa6c4);font-size:.86rem;margin-bottom:1.25rem}
@@ -9,13 +9,16 @@
 .login-card input:focus{outline:none;border-color:var(--neon-cyan,#22c2ff);box-shadow:0 0 0 3px rgba(34,194,255,.18)}
 .login-card .btn-primary{width:100%;margin-top:1rem}
 .login-err{color:#FF6A3D;background:rgba(255,106,61,.08);border:1px solid rgba(255,106,61,.3);border-radius:8px;padding:.6rem .8rem;font-size:.83rem;margin-top:.5rem}
-.login-close{position:absolute;top:.6rem;right:.6rem;background:transparent;border:0;color:#9aa6c4;font-size:1rem;cursor:pointer;width:34px;height:34px;border-radius:8px}
-.login-close:hover{background:rgba(255,255,255,.06);color:#fff}
-.login-creds{margin-top:1.25rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.07)}
-.login-creds summary{color:var(--text-mute,#9aa6c4);font-size:.78rem;cursor:pointer;user-select:none}
-.login-creds table{width:100%;margin-top:.6rem;border-collapse:collapse;font-size:.76rem;color:#cdd5e8}
-.login-creds th,.login-creds td{padding:.35rem .5rem;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
-.login-creds th{color:var(--neon-cyan)}
+.login-close{position:absolute;top:.75rem;right:.75rem;background:transparent;border:0;color:#9aa6c4;font-size:1.1rem;cursor:pointer;width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:background .2s,color .2s}
+.login-close:hover{background:rgba(255,255,255,.08);color:#fff}
+
+/* Hard Portal Lock - blurs and blocks interaction on page contents when modal is active */
+body.portal-locked{overflow:hidden!important}
+body.portal-locked > *:not(#loginOverlay):not(script):not(style){filter:blur(14px) brightness(0.35)!important;pointer-events:none!important;user-select:none!important;transition:filter .3s ease}
+
+/* Card shake animation on unauthorized dismissal attempt or invalid credentials */
+@keyframes cardShake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.card-shake{animation:cardShake .4s cubic-bezier(.36,.07,.19,.97) both}
 
 /* ── sticky editor rail ── */
 .editor-side{position:sticky;top:1rem;align-self:flex-start;display:flex;flex-direction:column;gap:.6rem;width:300px;max-width:30vw;flex-shrink:0}

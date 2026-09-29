@@ -252,45 +252,11 @@ document.head.appendChild(css);
     <label><span>Password</span><input type="password" id="loginPass" autocomplete="current-password"></label>
     <p id="loginErr" class="login-err" hidden></p>
     <button class="btn btn-primary" id="loginSubmit" type="button">Sign In</button>
-    <details class="login-creds">
-      <summary>Default credentials (editable in Admin HQ)</summary>
-      <table>
-        <tr><th>Portal</th><th>Username</th><th>Password</th></tr>
-        <tr><td>Student Portal</td><td>team_demo</td><td>student@2026</td></tr>
-        <tr><td>Judge Portal</td><td>judge_demo</td><td>judge@2026</td></tr>
-        <tr><td>Admin HQ</td><td>admin</td><td>AUCadmin123</td></tr>
-        <tr><td>CMS Editor</td><td>editor</td><td>cms@2026</td></tr>
-      </table>
-    </details>
+    
   </div>
 </div>
-<script>
-(function(){
-  var map = { 'portal-student':'Student Portal', 'portal-judge':'Judge Portal', 'portal-admin':'Admin HQ', 'cms-editor':'CMS Editor' };
-  var rawKey = (location.pathname.split('/').pop() || '').toLowerCase();
-  var key = rawKey.replace(/\.html$/, '');
-  var portal = key in map ? key : null;
-  var overlay = document.getElementById('loginOverlay');
-  if (!overlay || !portal) return;
-  function isAuthed(){ return window.AUC_AUTH && window.AUC_AUTH.current(portal); }
-  function showErr(msg){ var e = document.getElementById('loginErr'); if(e){ e.textContent = msg; e.hidden = false; } }
-  function open(){ document.getElementById('loginPortalLabel').textContent = 'Sign in to ' + map[portal] + ' — default demo credentials are filled in below.'; document.getElementById('loginUser').value=''; document.getElementById('loginPass').value=''; var e=document.getElementById('loginErr'); if(e){ e.hidden=true; } overlay.hidden = false; document.body.style.overflow='hidden'; }
-  function close(){ overlay.hidden = true; document.body.style.overflow=''; }
-  document.querySelector('.login-close').addEventListener('click', close);
-  document.getElementById('loginSubmit').addEventListener('click', function(){
-    var u = document.getElementById('loginUser').value.trim();
-    var p = document.getElementById('loginPass').value;
-    var r = window.AUC_AUTH.login(portal, u, p);
-    if (r.ok) { close(); }
-    else showErr(r.msg);
-  });
-  ['loginUser','loginPass'].forEach(function(id){ var el=document.getElementById(id); el && el.addEventListener('keydown', function(ev){ if(ev.key==='Enter') document.getElementById('loginSubmit').click(); }); });
-  overlay.addEventListener('click', function(ev){ if(ev.target===overlay) close(); });
-  // Show overlay if no session. Allow demo "Skip" so designers can preview without typing.
-  if (!isAuthed()) setTimeout(open, 400);
-})();
+<script src="portal-auth.js"></script>
 
-</script>
 
 <!-- 1. Conflict-of-Interest & Recusal Declaration Modal -->
 <div id="coiDisclosureModal" class="modal-backdrop" hidden>

@@ -24,7 +24,7 @@ window.AUC_AUTH = (function () {
       try { localStorage.setItem('auc_session_'+k, JSON.stringify({ user:u, ts: Date.now() })); } catch(e){}
       return { ok:true, msg:'Authenticated as '+a[k].label };
     }
-    return { ok:false, msg:'Invalid credentials — check the table: Student / Judge / Admin HQ / CMS Editor' };
+    return { ok:false, msg:'Invalid username or password. Please verify your credentials and try again.' };
   }
   function current(portal) {
     const k = portal === 'portal-student' ? 'student'

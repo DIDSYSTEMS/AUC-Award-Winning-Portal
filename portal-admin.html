@@ -199,6 +199,7 @@
     <a href="#news-press" data-target="news-press" class="side-link s-green"><i class="fas fa-newspaper"></i><span>News &amp; Press Desk</span><span class="badge green">Publish</span></a>
 
     <div class="side-cat">Operations &amp; Teams</div>
+    <a href="#pending-approvals" data-target="pending-approvals" class="side-link s-gold" id="sideApprovals"><i class="fas fa-user-clock"></i><span>Pending Approvals</span><span class="badge gold" id="approvalBadgeCount">0</span></a>
     <a href="#teams-members" data-target="teams-members" class="side-link s-green"><i class="fas fa-users-gear"></i><span>Teams &amp; Assessors</span><span class="badge green">2,847</span></a>
     <a href="#partnerships" data-target="partnerships" class="side-link s-gold"><i class="fas fa-handshake"></i><span>Partnership Inbox</span><span class="badge gold">8 Active</span></a>
     <a href="#email-broadcaster" data-target="email-broadcaster" class="side-link s-cyan"><i class="fas fa-envelope-open-text"></i><span>Email Broadcaster</span><span class="badge cyan">Memos</span></a>
@@ -483,8 +484,90 @@
   </div>
 </section>
 
+<!-- ── PENDING APPROVALS SECTION ── -->
+<section class="page" id="pending-approvals" style="display:none;">
+  <div class="page-head">
+    <div>
+      <h1><i class="fas fa-user-clock" style="color:var(--neon-gold);"></i> Pending Approvals</h1>
+      <p>Review and approve or reject registration requests from Students, Judges, and Partnership organisations.</p>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-outline" style="font-size:.82rem;" onclick="loadPendingApprovals()"><i class="fas fa-sync"></i> Refresh</button>
+      <button class="btn btn-primary" style="font-size:.82rem;" onclick="approveAllPending()"><i class="fas fa-check-double"></i> Approve All</button>
+    </div>
+  </div>
+
+  <!-- Stats row -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem;">
+    <div class="panel" style="text-align:center;padding:1.25rem;">
+      <div style="font-size:2rem;font-weight:800;color:var(--neon-green);" id="approvalStatStudent">0</div>
+      <div style="font-size:.82rem;color:var(--text-mute);margin-top:.3rem;"><i class="fas fa-user-graduate"></i> Students Pending</div>
+    </div>
+    <div class="panel" style="text-align:center;padding:1.25rem;">
+      <div style="font-size:2rem;font-weight:800;color:var(--neon-cyan);" id="approvalStatJudge">0</div>
+      <div style="font-size:.82rem;color:var(--text-mute);margin-top:.3rem;"><i class="fas fa-gavel"></i> Judges Pending</div>
+    </div>
+    <div class="panel" style="text-align:center;padding:1.25rem;">
+      <div style="font-size:2rem;font-weight:800;color:var(--neon-gold);" id="approvalStatPartner">0</div>
+      <div style="font-size:.82rem;color:var(--text-mute);margin-top:.3rem;"><i class="fas fa-handshake"></i> Partners Pending</div>
+    </div>
+  </div>
+
+  <!-- Filter tabs -->
+  <div style="display:flex;gap:.5rem;margin-bottom:1.25rem;flex-wrap:wrap;">
+    <button class="btn approvals-filter-btn active" data-filter="all" onclick="filterApprovals('all',this)">All</button>
+    <button class="btn approvals-filter-btn" data-filter="student" onclick="filterApprovals('student',this)"><i class="fas fa-user-graduate"></i> Students</button>
+    <button class="btn approvals-filter-btn" data-filter="judge" onclick="filterApprovals('judge',this)"><i class="fas fa-gavel"></i> Judges</button>
+    <button class="btn approvals-filter-btn" data-filter="partner" onclick="filterApprovals('partner',this)"><i class="fas fa-handshake"></i> Partners</button>
+    <button class="btn approvals-filter-btn" data-filter="approved" onclick="filterApprovals('approved',this)" style="border-color:rgba(0,255,135,.3);color:var(--neon-green);"><i class="fas fa-check-circle"></i> Approved</button>
+    <button class="btn approvals-filter-btn" data-filter="rejected" onclick="filterApprovals('rejected',this)" style="border-color:rgba(255,80,80,.3);color:#ff8080;"><i class="fas fa-times-circle"></i> Rejected</button>
+  </div>
+
+  <!-- Table -->
+  <div class="panel">
+    <div id="approvalsTableWrapper" style="overflow-x:auto;">
+      <div id="approvalsEmptyState" style="text-align:center;padding:3rem;color:var(--text-mute);display:none;">
+        <i class="fas fa-inbox" style="font-size:2.5rem;display:block;margin-bottom:1rem;opacity:.35;"></i>
+        <p>No pending registrations found.</p>
+        <p style="font-size:.8rem;margin-top:.5rem;">Share the <a href="register.html" target="_blank" style="color:var(--neon-cyan);">registration link</a> with participants.</p>
+      </div>
+      <table id="approvalsTable" style="width:100%;border-collapse:collapse;font-size:.85rem;">
+        <thead>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.08);">
+            <th style="padding:.75rem 1rem;text-align:left;color:var(--text-mute);font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">Applicant</th>
+            <th style="padding:.75rem 1rem;text-align:left;color:var(--text-mute);font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">Role</th>
+            <th style="padding:.75rem 1rem;text-align:left;color:var(--text-mute);font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">Details</th>
+            <th style="padding:.75rem 1rem;text-align:left;color:var(--text-mute);font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">Submitted</th>
+            <th style="padding:.75rem 1rem;text-align:left;color:var(--text-mute);font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">Status</th>
+            <th style="padding:.75rem 1rem;text-align:center;color:var(--text-mute);font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="approvalsTableBody">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Share registration link card -->
+  <div class="panel" style="margin-top:1.5rem;background:rgba(0,229,255,0.04);border-color:rgba(0,229,255,0.2);">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+      <div>
+        <h4 style="margin:0 0 .25rem;"><i class="fas fa-link" style="color:var(--neon-cyan);margin-right:.5rem;"></i> Registration Portal Link</h4>
+        <p style="font-size:.83rem;color:var(--text-mute);margin:0;">Share this URL with Students, Judges, and Partners to register for AUC 2026.</p>
+      </div>
+      <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;">
+        <code style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.45rem .85rem;font-size:.82rem;color:var(--neon-cyan);" id="regLinkDisplay">http://localhost:8080/register.html</code>
+        <button class="btn btn-outline" style="font-size:.82rem;" onclick="copyRegLink()"><i class="fas fa-copy"></i> Copy Link</button>
+        <a href="register.html" target="_blank" class="btn btn-primary" style="font-size:.82rem;"><i class="fas fa-external-link-alt"></i> Open</a>
+      </div>
+    </div>
+  </div>
+</section>
+
   <!-- BRAND & OFFICIAL LOGO MANAGER (Editable Logos) -->
   <div class="panel reveal" id="brand-logo" style="margin-top:2rem;">
+
     <div class="panel-head">
       <h3><i class="fas fa-crown" style="color:var(--neon-gold);margin-right:.5rem;"></i> Official Brand &amp; Logo Studio</h3>
       <span class="badge gold">Live Across All 13 Pages &amp; Favicon</span>
@@ -1161,97 +1244,13 @@
 
 <script src="portal.js"></script>
   <script src="dropdown.js" defer></script>
-<link rel="stylesheet" href="login-overlay.css">
-<script src="auth-config.js"></script>
 <script src="portal-fix.js"></script>
 <script src="api-client.js"></script>
 <script src="admin-portal.js" defer></script>
 
-<!-- Inline-login overlay -->
-<div id="loginOverlay" class="login-overlay" hidden>
-  <div class="login-card">
-    <button class="login-close" type="button" aria-label="Close"><i class="fas fa-times"></i></button>
-    <h3><i class="fas fa-shield-halved"></i> Portal Login</h3>
-    <p id="loginPortalLabel" class="login-sub"></p>
-    <label><span>Username</span><input type="text" id="loginUser" autocomplete="username"></label>
-    <label><span>Password</span><input type="password" id="loginPass" autocomplete="current-password"></label>
-    <p id="loginErr" class="login-err" hidden></p>
-    <button class="btn btn-primary" id="loginSubmit" type="button">Sign In</button>
-    <details class="login-creds">
-      <summary>Default credentials (editable in Admin HQ)</summary>
-      <table>
-        <tr><th>Portal</th><th>Username</th><th>Password</th></tr>
-        <tr><td>Student Portal</td><td>team_demo</td><td>student@2026</td></tr>
-        <tr><td>Judge Portal</td><td>judge_demo</td><td>judge@2026</td></tr>
-        <tr><td>Admin HQ</td><td>admin</td><td>AUCadmin123</td></tr>
-        <tr><td>CMS Editor</td><td>editor</td><td>cms@2026</td></tr>
-      </table>
-    </details>
-  </div>
-</div>
 
 <script>
-(function(){
-  var map = { 'portal-student':'Student Portal', 'portal-judge':'Judge Portal', 'portal-admin':'Admin HQ', 'cms-editor':'CMS Editor' };
-  var rawKey = (location.pathname.split('/').pop() || '').toLowerCase();
-  var key = rawKey.replace(/\.html$/, '');
-  var portal = key in map ? key : null;
-  var overlay = document.getElementById('loginOverlay');
-  if (!overlay || !portal) return;
-  function isAuthed(){ return window.AUC_AUTH && window.AUC_AUTH.current(portal); }
-  function showErr(msg){ var e = document.getElementById('loginErr'); if(e){ e.textContent = msg; e.hidden = false; } }
-  function open(){
-    document.getElementById('loginPortalLabel').textContent = 'Sign in to ' + map[portal] + ' — default demo credentials are provided below.';
-    document.getElementById('loginUser').value = (portal === 'portal-admin' ? 'admin' : '');
-    document.getElementById('loginPass').value = '';
-    var e = document.getElementById('loginErr'); if(e){ e.hidden = true; }
-    overlay.hidden = false;
-    document.body.style.overflow = 'hidden';
-  }
-  function close(){
-    overlay.hidden = true;
-    document.body.style.overflow = '';
-    updateUserBadge();
-  }
-  function updateUserBadge(){
-    var sess = isAuthed();
-    var btnOut = document.getElementById('btnLogoutAdmin');
-    if (sess) {
-      if (btnOut) btnOut.style.display = 'inline-flex';
-    } else {
-      if (btnOut) btnOut.style.display = 'none';
-    }
-  }
-  document.querySelector('.login-close').addEventListener('click', close);
-  document.getElementById('loginSubmit').addEventListener('click', function(){
-    var u = document.getElementById('loginUser').value.trim();
-    var p = document.getElementById('loginPass').value;
-    var r = window.AUC_AUTH.login(portal, u, p);
-    if (r.ok) { close(); }
-    else showErr(r.msg);
-  });
-  ['loginUser','loginPass'].forEach(function(id){
-    var el = document.getElementById(id);
-    el && el.addEventListener('keydown', function(ev){ if(ev.key==='Enter') document.getElementById('loginSubmit').click(); });
-  });
-  overlay.addEventListener('click', function(ev){ if(ev.target===overlay) close(); });
-  
-  var btnOut = document.getElementById('btnLogoutAdmin');
-  if (btnOut) {
-    btnOut.addEventListener('click', function(){
-      if (confirm('Sign out of ' + map[portal] + '?')) {
-        window.AUC_AUTH.logout(portal);
-        open();
-      }
-    });
-  }
 
-  if (!isAuthed()) {
-    setTimeout(open, 350);
-  } else {
-    updateUserBadge();
-  }
-})();
 
 /* MASTER ADMIN HQ FUNCTIONALITY (Item 1, 6, 7, 9, 10) */
 
@@ -2499,7 +2498,7 @@ function initAnalytics() {
       <a href="contact.html" style="color:var(--text-soft);">Contact HQ</a>
     </div>
 
-    <!-- Hidden / Discreet Admin Access Link on the Right -->
+<!-- Hidden / Discreet Admin Access Link on the Right -->
     <div>
       <a href="portal-admin.html" class="footer-admin-link" title="Secretariat &amp; Staff Console" aria-label="Admin Access">
         <i class="fas fa-shield-halved"></i> <span>Staff HQ</span>
@@ -2507,5 +2506,192 @@ function initAnalytics() {
     </div>
   </div>
 </footer>
+
+<!-- ── ADMIN LOGIN OVERLAY ── -->
+<link rel="stylesheet" href="login-overlay.css">
+<div id="loginOverlay" class="login-overlay" hidden>
+  <div class="login-card">
+    <button class="login-close" type="button" aria-label="Back to login"><i class="fas fa-arrow-left"></i></button>
+    <h3><i class="fas fa-shield-halved"></i> Admin HQ — Restricted</h3>
+    <p id="loginPortalLabel" class="login-sub"></p>
+    <label><span>Username</span><input type="text" id="loginUser" autocomplete="username"></label>
+    <label><span>Password</span><input type="password" id="loginPass" autocomplete="current-password"></label>
+    <p id="loginErr" class="login-err" hidden></p>
+    <button class="btn btn-primary" id="loginSubmit" type="button"><i class="fas fa-shield-halved"></i> Access Admin HQ</button>
+    
+  </div>
+</div>
+
+<script src="auth-config.js"></script>
+<script src="portal-auth.js"></script>
+<script>
+
+/* ── PENDING APPROVALS MANAGER ── */
+var _approvals = [];
+var _approvalsFilter = 'all';
+
+function loadPendingApprovals() {
+  // Merge server data + localStorage data
+  var local = [];
+  try { local = JSON.parse(localStorage.getItem('auc_pending_registrations') || '[]'); } catch(e){}
+
+  fetch('/api/registrations').then(function(r){ return r.json(); }).then(function(d){
+    var server = (d && d.data) ? d.data : [];
+    // Merge: server is source of truth, add local ones not in server
+    var ids = server.map(function(r){ return r.id; });
+    local.forEach(function(r){ if (!ids.includes(r.id)) server.push(r); });
+    _approvals = server;
+    renderApprovals();
+    updateApprovalBadge();
+  }).catch(function(){
+    _approvals = local;
+    renderApprovals();
+    updateApprovalBadge();
+  });
+}
+
+function renderApprovals() {
+  var tbody = document.getElementById('approvalsTableBody');
+  var empty = document.getElementById('approvalsEmptyState');
+  var table = document.getElementById('approvalsTable');
+  if (!tbody) return;
+
+  var filtered = _approvals.filter(function(r){
+    if (_approvalsFilter === 'all') return r.status === 'pending' || !r.status || r.status === 'pending';
+    if (_approvalsFilter === 'approved') return r.status === 'approved';
+    if (_approvalsFilter === 'rejected') return r.status === 'rejected';
+    return r.role === _approvalsFilter && (r.status === 'pending' || !r.status);
+  });
+
+  // Update stats
+  var pending = _approvals.filter(function(r){ return !r.status || r.status === 'pending'; });
+  document.getElementById('approvalStatStudent').textContent = pending.filter(function(r){ return r.role === 'student'; }).length;
+  document.getElementById('approvalStatJudge').textContent   = pending.filter(function(r){ return r.role === 'judge'; }).length;
+  document.getElementById('approvalStatPartner').textContent = pending.filter(function(r){ return r.role === 'partner'; }).length;
+
+  if (filtered.length === 0) {
+    empty.style.display = 'block';
+    table.style.display = 'none';
+  } else {
+    empty.style.display = 'none';
+    table.style.display = 'table';
+    tbody.innerHTML = filtered.map(function(r){
+      var roleMap = { student:'<span style="background:rgba(0,255,135,.12);color:var(--neon-green);padding:.2rem .6rem;border-radius:999px;font-size:.75rem;font-weight:700;"><i class="fas fa-user-graduate"></i> Student</span>', judge:'<span style="background:rgba(0,229,255,.12);color:var(--neon-cyan);padding:.2rem .6rem;border-radius:999px;font-size:.75rem;font-weight:700;"><i class="fas fa-gavel"></i> Judge</span>', partner:'<span style="background:rgba(255,215,0,.12);color:var(--neon-gold);padding:.2rem .6rem;border-radius:999px;font-size:.75rem;font-weight:700;"><i class="fas fa-handshake"></i> Partner</span>' };
+      var statusMap = { pending:'<span style="background:rgba(255,165,0,.12);color:#ffa500;padding:.2rem .6rem;border-radius:999px;font-size:.73rem;font-weight:700;"><i class="fas fa-clock"></i> Pending</span>', approved:'<span style="background:rgba(0,255,135,.12);color:var(--neon-green);padding:.2rem .6rem;border-radius:999px;font-size:.73rem;font-weight:700;"><i class="fas fa-check"></i> Approved</span>', rejected:'<span style="background:rgba(255,80,80,.12);color:#ff8080;padding:.2rem .6rem;border-radius:999px;font-size:.73rem;font-weight:700;"><i class="fas fa-times"></i> Rejected</span>' };
+      var detail = r.role === 'student' ? (r.university || r.teamName || '—') : r.role === 'judge' ? (r.judgeTitle || r.judgeOrg || '—') : (r.orgName || '—');
+      var ts = r.submittedAt ? new Date(r.submittedAt).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+      var status = r.status || 'pending';
+      var actions = status === 'pending'
+        ? '<button onclick="approveReg(\''+r.id+'\')" style="background:rgba(0,255,135,.12);color:var(--neon-green);border:1px solid rgba(0,255,135,.3);border-radius:8px;padding:.3rem .7rem;cursor:pointer;font-size:.78rem;margin-right:.4rem;"><i class="fas fa-check"></i> Approve</button><button onclick="rejectReg(\''+r.id+'\')" style="background:rgba(255,80,80,.08);color:#ff8080;border:1px solid rgba(255,80,80,.3);border-radius:8px;padding:.3rem .7rem;cursor:pointer;font-size:.78rem;"><i class="fas fa-times"></i> Reject</button>'
+        : '<span style="font-size:.78rem;color:var(--text-mute);">—</span>';
+      return '<tr style="border-bottom:1px solid rgba(255,255,255,.05);">'
+        +'<td style="padding:.75rem 1rem;"><strong style="color:#fff;">'+r.firstName+' '+r.lastName+'</strong><br><small style="color:var(--text-mute);">'+r.email+'</small></td>'
+        +'<td style="padding:.75rem 1rem;">'+(roleMap[r.role]||r.role)+'</td>'
+        +'<td style="padding:.75rem 1rem;color:var(--text-soft);font-size:.83rem;">'+detail+'</td>'
+        +'<td style="padding:.75rem 1rem;color:var(--text-mute);font-size:.8rem;">'+ts+'</td>'
+        +'<td style="padding:.75rem 1rem;">'+(statusMap[status]||status)+'</td>'
+        +'<td style="padding:.75rem 1rem;text-align:center;">'+actions+'</td>'
+        +'</tr>';
+    }).join('');
+  }
+}
+
+function approveReg(id) {
+  updateRegStatus(id, 'approved');
+}
+function rejectReg(id) {
+  if (confirm('Reject this registration request?')) updateRegStatus(id, 'rejected');
+}
+function approveAllPending() {
+  var pending = _approvals.filter(function(r){ return !r.status || r.status === 'pending'; });
+  if (!pending.length) { alert('No pending registrations to approve.'); return; }
+  if (!confirm('Approve all ' + pending.length + ' pending registrations?')) return;
+  pending.forEach(function(r){ updateRegStatus(r.id, 'approved', true); });
+  renderApprovals(); updateApprovalBadge();
+  showAdminToast('Approved ' + pending.length + ' registrations.', 'success');
+}
+
+function updateRegStatus(id, status, silent) {
+  var idx = _approvals.findIndex(function(r){ return r.id === id; });
+  if (idx !== -1) { _approvals[idx].status = status; }
+
+  // Update server
+  fetch('/api/registrations/' + encodeURIComponent(id), {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status: status })
+  }).catch(function(){});
+
+  // Update localStorage
+  try {
+    var local = JSON.parse(localStorage.getItem('auc_pending_registrations') || '[]');
+    var li = local.findIndex(function(r){ return r.id === id; });
+    if (li !== -1) { local[li].status = status; localStorage.setItem('auc_pending_registrations', JSON.stringify(local)); }
+  } catch(e){}
+
+  if (!silent) { renderApprovals(); updateApprovalBadge(); }
+  if (!silent) showAdminToast(status === 'approved' ? 'Registration approved!' : 'Registration rejected.', status === 'approved' ? 'success' : 'warn');
+}
+
+function updateApprovalBadge() {
+  var pending = _approvals.filter(function(r){ return !r.status || r.status === 'pending'; }).length;
+  var badge = document.getElementById('approvalBadgeCount');
+  if (badge) { badge.textContent = pending; badge.style.background = pending > 0 ? '' : 'rgba(255,255,255,.1)'; }
+}
+
+function filterApprovals(f, btn) {
+  _approvalsFilter = f;
+  document.querySelectorAll('.approvals-filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  renderApprovals();
+}
+
+function copyRegLink() {
+  var link = window.location.origin + '/register.html';
+  navigator.clipboard.writeText(link).then(function(){
+    showAdminToast('Registration link copied!', 'success');
+  }).catch(function(){
+    var el = document.getElementById('regLinkDisplay');
+    if (el) { el.select ? el.select() : null; }
+  });
+}
+
+function showAdminToast(msg, type) {
+  var c = document.getElementById('toastContainer');
+  if (!c) return;
+  var t = document.createElement('div');
+  t.className = 'toast ' + (type === 'success' ? 'toast-green' : type === 'warn' ? 'toast-gold' : 'toast-cyan');
+  t.innerHTML = '<i class="fas fa-' + (type === 'success' ? 'check-circle' : 'exclamation-circle') + '"></i> ' + msg;
+  c.appendChild(t);
+  setTimeout(function(){ t.style.opacity='0'; setTimeout(function(){ t.remove(); }, 400); }, 3000);
+}
+
+// Update registration link display
+document.addEventListener('DOMContentLoaded', function(){
+  var el = document.getElementById('regLinkDisplay');
+  if (el) el.textContent = window.location.origin + '/register.html';
+
+  // Wire sidebar "Pending Approvals" link to show section & load data
+  var sideLink = document.getElementById('sideApprovals');
+  if (sideLink) {
+    sideLink.addEventListener('click', function(ev){
+      ev.preventDefault();
+      // Hide all pages
+      document.querySelectorAll('.page, section.page').forEach(function(p){ p.style.display='none'; p.classList.remove('active'); });
+      // Show approvals section
+      var sec = document.getElementById('pending-approvals');
+      if (sec) { sec.style.display='block'; sec.classList.add('active'); }
+      // Update sidebar active
+      document.querySelectorAll('.side-link').forEach(function(a){ a.classList.remove('active'); });
+      sideLink.classList.add('active');
+      loadPendingApprovals();
+    });
+  }
+
+  // Load badge count on startup
+  loadPendingApprovals();
+});
+</script>
 </body>
 </html>
+

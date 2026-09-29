@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In — AUC 2026 Portal Access</title>
+<meta name="description" content="Sign in to your AUC 2026 portal. Access your Student, Judge, or Partnership dashboard.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon.png">
+<link rel="shortcut icon" href="favicon.png">
+<style>
+  :root {
+    --bg-deep:#020D08;--bg-card:rgba(255,255,255,.03);--border:rgba(255,255,255,.08);
+    --neon-green:#00FF87;--neon-cyan:#00E5FF;--neon-gold:#FFD700;
+    --text:#E2FDED;--text-soft:rgba(226,253,237,.65);--text-mute:rgba(226,253,237,.38);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg-deep);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;position:relative;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 60% at 25% 15%,rgba(0,255,135,.07) 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 75% 80%,rgba(0,229,255,.06) 0%,transparent 60%);pointer-events:none;z-index:0;}
+
+  /* Nav */
+  .login-nav{position:sticky;top:0;z-index:200;background:rgba(2,13,8,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:.85rem 2rem;display:flex;align-items:center;justify-content:space-between;}
+  .login-nav .logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+  .login-nav .logo img{height:34px;}
+  .login-nav .logo-text{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.25rem;color:var(--neon-green);}
+  .login-nav .nav-links{display:flex;gap:1.25rem;}
+  .login-nav .nav-links a{color:var(--text-soft);font-size:.875rem;text-decoration:none;transition:color .2s;}
+  .login-nav .nav-links a:hover{color:var(--neon-green);}
+  .login-nav .nav-links a.btn-nav{background:linear-gradient(135deg,var(--neon-green),var(--neon-cyan));color:#020D08;font-weight:700;padding:.45rem 1.1rem;border-radius:8px;}
+
+  /* Page */
+  .login-page{position:relative;z-index:1;flex:1;display:flex;align-items:center;justify-content:center;padding:3rem 1rem;}
+
+  /* Portal selector split */
+  .login-split{display:grid;grid-template-columns:1fr 420px;gap:3rem;width:100%;max-width:960px;align-items:start;}
+  .portal-chooser h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.8rem;font-weight:800;margin-bottom:.75rem;line-height:1.25;}
+  .portal-chooser p{color:var(--text-soft);font-size:.9rem;margin-bottom:2rem;line-height:1.65;}
+  .portal-list{display:flex;flex-direction:column;gap:.75rem;}
+  .portal-btn{
+    display:flex;align-items:center;gap:1rem;padding:1.1rem 1.25rem;
+    background:rgba(255,255,255,.025);border:2px solid var(--border);
+    border-radius:14px;cursor:pointer;text-decoration:none;color:var(--text);
+    transition:all .25s ease;position:relative;overflow:hidden;
+  }
+  .portal-btn::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--pb-color,var(--neon-green));border-radius:0 99px 99px 0;opacity:0;transition:opacity .25s;}
+  .portal-btn:hover{border-color:var(--pb-color,var(--neon-green));transform:translateX(4px);}
+  .portal-btn:hover::before{opacity:1;}
+  .portal-btn.active{border-color:var(--pb-color,var(--neon-green));background:rgba(0,255,135,.04);}
+  .portal-btn.active::before{opacity:1;}
+  .portal-btn[data-portal="portal-student"]{--pb-color:var(--neon-green);}
+  .portal-btn[data-portal="portal-judge"]{--pb-color:var(--neon-cyan);}
+  .portal-btn[data-portal="portal-admin"]{--pb-color:var(--neon-gold);}
+  .portal-btn[data-portal="cms-editor"]{--pb-color:#a78bfa;}
+  .pb-icon{width:42px;height:42px;border-radius:10px;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:var(--pb-color,var(--neon-green));flex-shrink:0;}
+  .pb-body{flex:1;}
+  .pb-label{font-weight:700;font-size:.95rem;}
+  .pb-desc{font-size:.78rem;color:var(--text-mute);}
+  .pb-arrow{color:var(--text-mute);font-size:.85rem;transition:transform .2s;}
+  .portal-btn:hover .pb-arrow{transform:translateX(4px);color:var(--pb-color);}
+
+  /* Login card */
+  .login-card-main{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:20px;padding:2rem;backdrop-filter:blur(16px);}
+  .card-header{text-align:center;margin-bottom:1.75rem;}
+  .card-portal-icon{width:60px;height:60px;border-radius:16px;margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;font-size:1.6rem;background:linear-gradient(135deg,rgba(0,255,135,.12),rgba(0,229,255,.08));color:var(--neon-green);}
+  .card-header h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.35rem;font-weight:800;margin-bottom:.35rem;}
+  .card-header p{font-size:.82rem;color:var(--text-mute);}
+  .field{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem;}
+  .field label{font-size:.8rem;font-weight:600;color:var(--text-soft);}
+  .field-icon-wrap{position:relative;}
+  .field-icon-wrap .fi{position:absolute;left:.9rem;top:50%;transform:translateY(-50%);color:var(--text-mute);font-size:.85rem;}
+  .field input{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:.7rem 1rem .7rem 2.6rem;color:var(--text);font-size:.9rem;font-family:inherit;width:100%;outline:none;transition:border-color .2s,box-shadow .2s;}
+  .field input:focus{border-color:var(--neon-green);box-shadow:0 0 0 3px rgba(0,255,135,.12);}
+  .pass-wrap{position:relative;}
+  .pass-wrap input{padding-left:2.6rem!important;padding-right:2.8rem;}
+  .pass-toggle{position:absolute;right:.85rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-mute);cursor:pointer;font-size:.9rem;}
+  .pass-toggle:hover{color:var(--neon-green);}
+  .btn-sign-in{width:100%;padding:.9rem;background:linear-gradient(135deg,var(--neon-green),var(--neon-cyan));color:#020D08;font-weight:800;font-size:.95rem;font-family:'Plus Jakarta Sans',sans-serif;border:none;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;transition:opacity .2s,transform .2s;box-shadow:0 4px 20px rgba(0,255,135,.25);margin-top:.5rem;}
+  .btn-sign-in:hover{opacity:.88;transform:translateY(-1px);}
+  .login-error{background:rgba(255,80,80,.08);border:1px solid rgba(255,80,80,.3);border-radius:8px;padding:.7rem 1rem;color:#ff8080;font-size:.83rem;margin-top:.75rem;display:none;}
+  .login-error.visible{display:block;}
+  .divider{display:flex;align-items:center;gap:.75rem;margin:1.25rem 0;color:var(--text-mute);font-size:.78rem;}
+  .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+  .register-link{text-align:center;font-size:.82rem;color:var(--text-soft);}
+  .register-link a{color:var(--neon-cyan);font-weight:600;text-decoration:none;}
+  .register-link a:hover{text-decoration:underline;}
+
+  @media(max-width:720px){
+    .login-split{grid-template-columns:1fr;gap:2rem;}
+    .portal-list{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
+  }
+  @media(max-width:480px){
+    .portal-list{grid-template-columns:1fr;}
+    .login-card-main{padding:1.5rem 1.1rem;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="login-nav">
+  <a href="index.html" class="logo">
+    <img src="assets/img/Logo.png" alt="AUC" onerror="this.style.display='none'">
+    <span class="logo-text">AUC</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+    <a href="register.html" class="btn-nav"><i class="fas fa-user-plus"></i> Register</a>
+  </div>
+</nav>
+
+<main class="login-page">
+  <div class="login-split">
+    <!-- LEFT: portal chooser -->
+    <div class="portal-chooser">
+      <div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,255,135,.08);border:1px solid rgba(0,255,135,.25);padding:.28rem .85rem;border-radius:999px;font-size:.75rem;color:var(--neon-green);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1rem;">
+        <i class="fas fa-shield-halved"></i> Secure Portal Access
+      </div>
+      <h2>Sign in to Your<br>AUC 2026 Portal</h2>
+      <p>Select the portal you've been approved to access, then enter your credentials.</p>
+
+      <div class="portal-list">
+        <a class="portal-btn active" data-portal="portal-student" href="javascript:void(0)" onclick="switchPortal('portal-student', this)">
+          <div class="pb-icon"><i class="fas fa-user-graduate"></i></div>
+          <div class="pb-body">
+            <div class="pb-label">Student Portal</div>
+            <div class="pb-desc">Team submissions & scoreboard</div>
+          </div>
+          <i class="fas fa-chevron-right pb-arrow"></i>
+        </a>
+        <a class="portal-btn" data-portal="portal-judge" href="javascript:void(0)" onclick="switchPortal('portal-judge', this)">
+          <div class="pb-icon"><i class="fas fa-gavel"></i></div>
+          <div class="pb-body">
+            <div class="pb-label">Judge Portal</div>
+            <div class="pb-desc">Evaluation & scoring panel</div>
+          </div>
+          <i class="fas fa-chevron-right pb-arrow"></i>
+        </a>
+        <a class="portal-btn" data-portal="portal-admin" href="javascript:void(0)" onclick="switchPortal('portal-admin', this)">
+          <div class="pb-icon"><i class="fas fa-shield-halved"></i></div>
+          <div class="pb-body">
+            <div class="pb-label">Admin HQ</div>
+            <div class="pb-desc">Secretariat operations console</div>
+          </div>
+          <i class="fas fa-chevron-right pb-arrow"></i>
+        </a>
+        <a class="portal-btn" data-portal="cms-editor" href="javascript:void(0)" onclick="switchPortal('cms-editor', this)">
+          <div class="pb-icon" style="color:#a78bfa;"><i class="fas fa-feather-alt"></i></div>
+          <div class="pb-body">
+            <div class="pb-label">CMS Editor</div>
+            <div class="pb-desc">Website content management</div>
+          </div>
+          <i class="fas fa-chevron-right pb-arrow"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- RIGHT: login card -->
+    <div class="login-card-main">
+      <div class="card-header">
+        <div class="card-portal-icon" id="cardIcon"><i class="fas fa-user-graduate"></i></div>
+        <h3 id="cardTitle">Student Portal</h3>
+        <p id="cardDesc">Enter your approved credentials to access your team dashboard</p>
+      </div>
+
+      <div class="field">
+        <label for="loginUsername">Username</label>
+        <div class="field-icon-wrap">
+          <i class="fi fas fa-at"></i>
+          <input type="text" id="loginUsername" autocomplete="username" placeholder="your_username">
+        </div>
+      </div>
+      <div class="field">
+        <label for="loginPassword">Password</label>
+        <div class="field-icon-wrap pass-wrap">
+          <i class="fi fas fa-lock"></i>
+          <input type="password" id="loginPassword" autocomplete="current-password" placeholder="••••••••">
+          <button class="pass-toggle" type="button" onclick="togglePass()"><i class="fas fa-eye" id="eyeIcon"></i></button>
+        </div>
+      </div>
+
+      <div class="login-error" id="loginError"></div>
+
+      <button class="btn-sign-in" id="btnSignIn" onclick="doLogin()">
+        <i class="fas fa-sign-in-alt"></i> Sign In to Portal
+      </button>
+
+      <div class="divider">New to AUC?</div>
+      <div class="register-link">Create your account — <a href="register.html">Register here</a></div>
+    </div>
+  </div>
+</main>
+
+<script src="auth-config.js"></script>
+<script>
+var currentPortal = 'portal-student';
+var portalMeta = {
+  'portal-student': { icon:'fa-user-graduate', label:'Student Portal', desc:'Enter your approved credentials to access your team dashboard', dest:'portal-student.html', color:'var(--neon-green)' },
+  'portal-judge':   { icon:'fa-gavel',         label:'Judge Portal',   desc:'Sign in to access evaluation panels and scoring tools', dest:'portal-judge.html', color:'var(--neon-cyan)' },
+  'portal-admin':   { icon:'fa-shield-halved', label:'Admin HQ',       desc:'Restricted access — Secretariat personnel only', dest:'portal-admin.html', color:'var(--neon-gold)' },
+  'cms-editor':     { icon:'fa-feather-alt',   label:'CMS Editor',     desc:'Authenticate to manage website content and pages', dest:'cms-editor.html', color:'#a78bfa' }
+};
+
+function switchPortal(key, btn) {
+  currentPortal = key;
+  document.querySelectorAll('.portal-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+
+  var meta = portalMeta[key];
+  document.getElementById('cardIcon').innerHTML = '<i class="fas ' + meta.icon + '"></i>';
+  document.getElementById('cardIcon').style.color = meta.color;
+  document.getElementById('cardTitle').textContent = meta.label;
+  document.getElementById('cardDesc').textContent = meta.desc;
+  hideError();
+  document.getElementById('loginUsername').value = '';
+  document.getElementById('loginPassword').value = '';
+}
+
+function togglePass() {
+  var inp = document.getElementById('loginPassword');
+  var icon = document.getElementById('eyeIcon');
+  if (inp.type === 'password') { inp.type='text'; icon.className='fas fa-eye-slash'; }
+  else { inp.type='password'; icon.className='fas fa-eye'; }
+}
+
+function doLogin() {
+  var u = document.getElementById('loginUsername').value.trim();
+  var p = document.getElementById('loginPassword').value;
+  if (!u || !p) { showError('Please enter your username and password.'); return; }
+
+  var result = window.AUC_AUTH.login(currentPortal, u, p);
+  if (result.ok) {
+    var dest = portalMeta[currentPortal].dest;
+    window.location.href = dest;
+  } else {
+    showError(result.msg || 'Invalid credentials. Please try again.');
+  }
+}
+
+function showError(msg){ var e=document.getElementById('loginError'); e.textContent=msg; e.classList.add('visible'); }
+function hideError(){ document.getElementById('loginError').classList.remove('visible'); }
+
+// Enter key support
+['loginUsername','loginPassword'].forEach(function(id){
+  var el = document.getElementById(id);
+  el && el.addEventListener('keydown', function(ev){ if(ev.key==='Enter') doLogin(); });
+});
+
+// If already authed to a portal, redirect
+window.addEventListener('DOMContentLoaded', function(){
+  var params = new URLSearchParams(location.search);
+  var redirect = params.get('portal');
+  if (redirect && portalMeta[redirect]) {
+    switchPortal(redirect, document.querySelector('[data-portal="'+redirect+'"]'));
+  }
+});
+</script>
+</body>
+</html>
